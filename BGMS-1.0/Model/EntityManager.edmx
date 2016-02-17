@@ -1,0 +1,1945 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="bgmsModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="bgmsModelStoreContainer">
+    <EntitySet Name="activities" EntityType="bgmsModel.Store.activities" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="agents" EntityType="bgmsModel.Store.agents" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="categories" EntityType="bgmsModel.Store.categories" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="collectioncheckitems" EntityType="bgmsModel.Store.collectioncheckitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="collectionorderitems" EntityType="bgmsModel.Store.collectionorderitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="counters" EntityType="bgmsModel.Store.counters" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="customercollections" EntityType="bgmsModel.Store.customercollections" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="customers" EntityType="bgmsModel.Store.customers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="paymentcheckitems" EntityType="bgmsModel.Store.paymentcheckitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="paymentorderitems" EntityType="bgmsModel.Store.paymentorderitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="purchaseorderitems" EntityType="bgmsModel.Store.purchaseorderitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="purchaseorders" EntityType="bgmsModel.Store.purchaseorders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="purchasereturnitems" EntityType="bgmsModel.Store.purchasereturnitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="purchasereturns" EntityType="bgmsModel.Store.purchasereturns" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="salesorderitems" EntityType="bgmsModel.Store.salesorderitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="salesorders" EntityType="bgmsModel.Store.salesorders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="salesreturnitems" EntityType="bgmsModel.Store.salesreturnitems" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="salesreturns" EntityType="bgmsModel.Store.salesreturns" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="stocks" EntityType="bgmsModel.Store.stocks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="supplierpayments" EntityType="bgmsModel.Store.supplierpayments" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="suppliers" EntityType="bgmsModel.Store.suppliers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="units" EntityType="bgmsModel.Store.units" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="users" EntityType="bgmsModel.Store.users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="adjustments" EntityType="bgmsModel.Store.adjustments" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_CustomerAgent" Association="bgmsModel.Store.FK_CustomerAgent">
+      <End Role="agent" EntitySet="agents" />
+      <End Role="customer" EntitySet="customers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesorderagent" Association="bgmsModel.Store.FK_salesorderagent">
+      <End Role="agent" EntitySet="agents" />
+      <End Role="salesorder" EntitySet="salesorders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesreturnagent" Association="bgmsModel.Store.FK_salesreturnagent">
+      <End Role="agent" EntitySet="agents" />
+      <End Role="salesreturn" EntitySet="salesreturns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockCategory" Association="bgmsModel.Store.FK_StockCategory">
+      <End Role="category" EntitySet="categories" />
+      <End Role="stock" EntitySet="stocks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_collectioncheckcustomercollection" Association="bgmsModel.Store.FK_collectioncheckcustomercollection">
+      <End Role="customercollection" EntitySet="customercollections" />
+      <End Role="collectioncheckitem" EntitySet="collectioncheckitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_collectionsalesordercustomercollection" Association="bgmsModel.Store.FK_collectionsalesordercustomercollection">
+      <End Role="customercollection" EntitySet="customercollections" />
+      <End Role="collectionorderitem" EntitySet="collectionorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_collectionsalesordersalesorder" Association="bgmsModel.Store.FK_collectionsalesordersalesorder">
+      <End Role="salesorder" EntitySet="salesorders" />
+      <End Role="collectionorderitem" EntitySet="collectionorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_customercollectioncustomer" Association="bgmsModel.Store.FK_customercollectioncustomer">
+      <End Role="customer" EntitySet="customers" />
+      <End Role="customercollection" EntitySet="customercollections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesordercustomer" Association="bgmsModel.Store.FK_salesordercustomer">
+      <End Role="customer" EntitySet="customers" />
+      <End Role="salesorder" EntitySet="salesorders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesreturncustomer" Association="bgmsModel.Store.FK_salesreturncustomer">
+      <End Role="customer" EntitySet="customers" />
+      <End Role="salesreturn" EntitySet="salesreturns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_supplierpaymentpaymentcheckitem" Association="bgmsModel.Store.FK_supplierpaymentpaymentcheckitem">
+      <End Role="supplierpayment" EntitySet="supplierpayments" />
+      <End Role="paymentcheckitem" EntitySet="paymentcheckitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_paymentorderitempurchaseorder" Association="bgmsModel.Store.FK_paymentorderitempurchaseorder">
+      <End Role="purchaseorder" EntitySet="purchaseorders" />
+      <End Role="paymentorderitem" EntitySet="paymentorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_paymentorderitemsupplierpayment" Association="bgmsModel.Store.FK_paymentorderitemsupplierpayment">
+      <End Role="supplierpayment" EntitySet="supplierpayments" />
+      <End Role="paymentorderitem" EntitySet="paymentorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PurchaseOrderDetails1" Association="bgmsModel.Store.FK_PurchaseOrderDetails1">
+      <End Role="purchaseorder" EntitySet="purchaseorders" />
+      <End Role="purchaseorderitem" EntitySet="purchaseorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PurchaseOrderItemStock1" Association="bgmsModel.Store.FK_PurchaseOrderItemStock1">
+      <End Role="stock" EntitySet="stocks" />
+      <End Role="purchaseorderitem" EntitySet="purchaseorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PurchaseOrderSupplier" Association="bgmsModel.Store.FK_PurchaseOrderSupplier">
+      <End Role="supplier" EntitySet="suppliers" />
+      <End Role="purchaseorder" EntitySet="purchaseorders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_purchasereturnitempurchasereturn" Association="bgmsModel.Store.FK_purchasereturnitempurchasereturn">
+      <End Role="purchasereturn" EntitySet="purchasereturns" />
+      <End Role="purchasereturnitem" EntitySet="purchasereturnitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_purchasereturnitemstock" Association="bgmsModel.Store.FK_purchasereturnitemstock">
+      <End Role="stock" EntitySet="stocks" />
+      <End Role="purchasereturnitem" EntitySet="purchasereturnitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_purchasereturnsupplier" Association="bgmsModel.Store.FK_purchasereturnsupplier">
+      <End Role="supplier" EntitySet="suppliers" />
+      <End Role="purchasereturn" EntitySet="purchasereturns" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesorderitemstock" Association="bgmsModel.Store.FK_salesorderitemstock">
+      <End Role="stock" EntitySet="stocks" />
+      <End Role="salesorderitem" EntitySet="salesorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesordersalesorderitem" Association="bgmsModel.Store.FK_salesordersalesorderitem">
+      <End Role="salesorder" EntitySet="salesorders" />
+      <End Role="salesorderitem" EntitySet="salesorderitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesreturnitemsalesreturn" Association="bgmsModel.Store.FK_salesreturnitemsalesreturn">
+      <End Role="salesreturn" EntitySet="salesreturns" />
+      <End Role="salesreturnitem" EntitySet="salesreturnitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_salesreturnitemstock" Association="bgmsModel.Store.FK_salesreturnitemstock">
+      <End Role="stock" EntitySet="stocks" />
+      <End Role="salesreturnitem" EntitySet="salesreturnitems" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockUnit" Association="bgmsModel.Store.FK_StockUnit">
+      <End Role="unit" EntitySet="units" />
+      <End Role="stock" EntitySet="stocks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_supplierpaymentsupplier" Association="bgmsModel.Store.FK_supplierpaymentsupplier">
+      <End Role="supplier" EntitySet="suppliers" />
+      <End Role="supplierpayment" EntitySet="supplierpayments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_adjustmentsstock" Association="bgmsModel.Store.FK_adjustmentsstock">
+      <End Role="stock" EntitySet="stocks" />
+      <End Role="adjustment" EntitySet="adjustments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="activities">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="agents">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="Address" Type="longtext" Nullable="true" />
+    <Property Name="Contact" Type="longtext" Nullable="true" />
+    <Property Name="Tin" Type="longtext" Nullable="true" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="true" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="categories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="true" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+  </EntityType>
+  <EntityType Name="collectioncheckitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentNo" Type="longtext" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="Amount" Type="double" Nullable="false" />
+    <Property Name="customercollectionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="collectionorderitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="salesorderId" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="double" Nullable="false" />
+    <Property Name="customercollectionId" Type="int" Nullable="false" />
+    <Property Name="BalanceGot" Type="double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="counters">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="Prefix" Type="varchar" Nullable="true" MaxLength="10" />
+    <Property Name="Owner" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="customercollections">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="PostedDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Remarks" Type="longtext" Nullable="false" />
+    <Property Name="TotalCheck" Type="double" Nullable="false" />
+    <Property Name="TotalPaid" Type="double" Nullable="false" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="false" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="customerId" Type="int" Nullable="false" />
+    <Property Name="Bank" Type="longtext" Nullable="false" />
+    <Property Name="DocumentNo" Type="varchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="customers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="Address" Type="longtext" Nullable="true" />
+    <Property Name="Contact" Type="longtext" Nullable="true" />
+    <Property Name="Fax" Type="longtext" Nullable="true" />
+    <Property Name="Tin" Type="longtext" Nullable="true" />
+    <Property Name="Commission" Type="double" Nullable="true" />
+    <Property Name="AgentId" Type="int" Nullable="true" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="true" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="paymentcheckitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentNo" Type="longtext" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="Amount" Type="double" Nullable="false" />
+    <Property Name="supplierpaymentId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="paymentorderitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Amount" Type="double" Nullable="false" />
+    <Property Name="purchaseorderId" Type="int" Nullable="false" />
+    <Property Name="supplierpaymentId" Type="int" Nullable="false" />
+    <Property Name="BalanceGot" Type="double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="purchaseorderitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="Price" Type="double" Nullable="false" />
+    <Property Name="stockId" Type="int" Nullable="false" />
+    <Property Name="PurchaseOrderId" Type="int" Nullable="false" />
+    <Property Name="QuantityReturned" Type="int" Nullable="false" />
+    <Property Name="Discount1" Type="double" Nullable="false" />
+    <Property Name="Discount2" Type="double" Nullable="false" />
+    <Property Name="Discount3" Type="double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="purchaseorders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentNo" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="Remarks" Type="longtext" Nullable="true" />
+    <Property Name="PostedDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="TotalAmount" Type="double" Nullable="false" />
+    <Property Name="supplierId" Type="int" Nullable="false" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="true" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="TotalPaid" Type="double" Nullable="false" />
+    <Property Name="TotalReturned" Type="double" Nullable="false" />
+    <Property Name="Discount1" Type="double" Nullable="false" />
+    <Property Name="Discount2" Type="double" Nullable="false" />
+    <Property Name="Discount3" Type="double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="purchasereturnitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quantity" Type="smallint" Nullable="false" />
+    <Property Name="Price" Type="double" Nullable="false" />
+    <Property Name="stockId" Type="int" Nullable="false" />
+    <Property Name="purchasereturnId" Type="int" Nullable="false" />
+    <Property Name="Discount1" Type="double" Nullable="false" />
+    <Property Name="Discount2" Type="double" Nullable="false" />
+    <Property Name="Discount3" Type="double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="purchasereturns">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentNo" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="Remarks" Type="longtext" Nullable="false" />
+    <Property Name="PostedDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="TotalAmount" Type="double" Nullable="false" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="false" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="supplierId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="salesorderitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Discount1" Type="double" Nullable="true" />
+    <Property Name="Discount2" Type="double" Nullable="true" />
+    <Property Name="Quantity" Type="int" Nullable="true" />
+    <Property Name="Price" Type="double" Nullable="false" />
+    <Property Name="stockId" Type="int" Nullable="false" />
+    <Property Name="salesorderId" Type="int" Nullable="false" />
+    <Property Name="QuantityReturned" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="salesorders">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentNo" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="PostedDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Remarks" Type="longtext" Nullable="true" />
+    <Property Name="Discount1" Type="double" Nullable="false" />
+    <Property Name="Discount2" Type="double" Nullable="false" />
+    <Property Name="TotalAmount" Type="double" Nullable="false" />
+    <Property Name="ModifyBy" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="customerId" Type="int" Nullable="false" />
+    <Property Name="agentId" Type="int" Nullable="false" />
+    <Property Name="TotalPaid" Type="double" Nullable="false" />
+    <Property Name="TotalReturned" Type="double" Nullable="false" />
+  </EntityType>
+  <EntityType Name="salesreturnitems">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quantity" Type="smallint" Nullable="false" />
+    <Property Name="Price" Type="double" Nullable="false" />
+    <Property Name="Discount1" Type="double" Nullable="false" />
+    <Property Name="Discount2" Type="double" Nullable="false" />
+    <Property Name="stockId" Type="int" Nullable="false" />
+    <Property Name="salesreturnId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="salesreturns">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocumentNo" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="Remarks" Type="longtext" Nullable="false" />
+    <Property Name="PostedDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="TotalAmount" Type="double" Nullable="false" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="false" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="customerId" Type="int" Nullable="false" />
+    <Property Name="agentId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="stocks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Description" Type="longtext" Nullable="true" />
+    <Property Name="Cost" Type="double" Nullable="true" />
+    <Property Name="Price" Type="double" Nullable="false" />
+    <Property Name="QtyOnHand" Type="int" Nullable="false" />
+    <Property Name="UnitId" Type="int" Nullable="true" />
+    <Property Name="CategoryId" Type="int" Nullable="true" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="true" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="supplierpayments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="PostedDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Remarks" Type="longtext" Nullable="false" />
+    <Property Name="TotalCheck" Type="double" Nullable="false" />
+    <Property Name="TotalPaid" Type="double" Nullable="false" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="false" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="Bank" Type="longtext" Nullable="false" />
+    <Property Name="supplierId" Type="int" Nullable="false" />
+    <Property Name="DocumentNo" Type="varchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="suppliers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="Address" Type="longtext" Nullable="true" />
+    <Property Name="Contact" Type="longtext" Nullable="true" />
+    <Property Name="Fax" Type="longtext" Nullable="true" />
+    <Property Name="Tin" Type="longtext" Nullable="true" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="true" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="units">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="ModifyBy" Type="longtext" Nullable="true" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+    <Property Name="PluralName" Type="varchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Firstname" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="Lastname" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="Contact" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="Username" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="Admin" Type="bool" Nullable="false" />
+    <Property Name="Active" Type="bool" Nullable="false" />
+    <Property Name="ModifyBy" Type="varchar" Nullable="true" MaxLength="255" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="true" Precision="0" />
+  </EntityType>
+  <EntityType Name="adjustments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ModifyDate" Type="datetime" Nullable="false" Precision="0" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="ModifyBy" Type="varchar" Nullable="false" MaxLength="255" />
+    <Property Name="stockId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_CustomerAgent">
+    <End Role="agent" Type="bgmsModel.Store.agents" Multiplicity="0..1" />
+    <End Role="customer" Type="bgmsModel.Store.customers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="agent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="customer">
+        <PropertyRef Name="AgentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesorderagent">
+    <End Role="agent" Type="bgmsModel.Store.agents" Multiplicity="1" />
+    <End Role="salesorder" Type="bgmsModel.Store.salesorders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="agent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesorder">
+        <PropertyRef Name="agentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesreturnagent">
+    <End Role="agent" Type="bgmsModel.Store.agents" Multiplicity="1" />
+    <End Role="salesreturn" Type="bgmsModel.Store.salesreturns" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="agent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesreturn">
+        <PropertyRef Name="agentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockCategory">
+    <End Role="category" Type="bgmsModel.Store.categories" Multiplicity="0..1" />
+    <End Role="stock" Type="bgmsModel.Store.stocks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="stock">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_collectioncheckcustomercollection">
+    <End Role="customercollection" Type="bgmsModel.Store.customercollections" Multiplicity="1" />
+    <End Role="collectioncheckitem" Type="bgmsModel.Store.collectioncheckitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customercollection">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="collectioncheckitem">
+        <PropertyRef Name="customercollectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_collectionsalesordercustomercollection">
+    <End Role="customercollection" Type="bgmsModel.Store.customercollections" Multiplicity="1" />
+    <End Role="collectionorderitem" Type="bgmsModel.Store.collectionorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customercollection">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="collectionorderitem">
+        <PropertyRef Name="customercollectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_collectionsalesordersalesorder">
+    <End Role="salesorder" Type="bgmsModel.Store.salesorders" Multiplicity="1" />
+    <End Role="collectionorderitem" Type="bgmsModel.Store.collectionorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="salesorder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="collectionorderitem">
+        <PropertyRef Name="salesorderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_customercollectioncustomer">
+    <End Role="customer" Type="bgmsModel.Store.customers" Multiplicity="1" />
+    <End Role="customercollection" Type="bgmsModel.Store.customercollections" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="customercollection">
+        <PropertyRef Name="customerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesordercustomer">
+    <End Role="customer" Type="bgmsModel.Store.customers" Multiplicity="1" />
+    <End Role="salesorder" Type="bgmsModel.Store.salesorders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesorder">
+        <PropertyRef Name="customerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesreturncustomer">
+    <End Role="customer" Type="bgmsModel.Store.customers" Multiplicity="1" />
+    <End Role="salesreturn" Type="bgmsModel.Store.salesreturns" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesreturn">
+        <PropertyRef Name="customerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_supplierpaymentpaymentcheckitem">
+    <End Role="supplierpayment" Type="bgmsModel.Store.supplierpayments" Multiplicity="1" />
+    <End Role="paymentcheckitem" Type="bgmsModel.Store.paymentcheckitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="supplierpayment">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="paymentcheckitem">
+        <PropertyRef Name="supplierpaymentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_paymentorderitempurchaseorder">
+    <End Role="purchaseorder" Type="bgmsModel.Store.purchaseorders" Multiplicity="1" />
+    <End Role="paymentorderitem" Type="bgmsModel.Store.paymentorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="purchaseorder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="paymentorderitem">
+        <PropertyRef Name="purchaseorderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_paymentorderitemsupplierpayment">
+    <End Role="supplierpayment" Type="bgmsModel.Store.supplierpayments" Multiplicity="1" />
+    <End Role="paymentorderitem" Type="bgmsModel.Store.paymentorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="supplierpayment">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="paymentorderitem">
+        <PropertyRef Name="supplierpaymentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PurchaseOrderDetails1">
+    <End Role="purchaseorder" Type="bgmsModel.Store.purchaseorders" Multiplicity="1" />
+    <End Role="purchaseorderitem" Type="bgmsModel.Store.purchaseorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="purchaseorder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="purchaseorderitem">
+        <PropertyRef Name="PurchaseOrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PurchaseOrderItemStock1">
+    <End Role="stock" Type="bgmsModel.Store.stocks" Multiplicity="1" />
+    <End Role="purchaseorderitem" Type="bgmsModel.Store.purchaseorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stock">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="purchaseorderitem">
+        <PropertyRef Name="stockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PurchaseOrderSupplier">
+    <End Role="supplier" Type="bgmsModel.Store.suppliers" Multiplicity="1" />
+    <End Role="purchaseorder" Type="bgmsModel.Store.purchaseorders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="supplier">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="purchaseorder">
+        <PropertyRef Name="supplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_purchasereturnitempurchasereturn">
+    <End Role="purchasereturn" Type="bgmsModel.Store.purchasereturns" Multiplicity="1" />
+    <End Role="purchasereturnitem" Type="bgmsModel.Store.purchasereturnitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="purchasereturn">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="purchasereturnitem">
+        <PropertyRef Name="purchasereturnId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_purchasereturnitemstock">
+    <End Role="stock" Type="bgmsModel.Store.stocks" Multiplicity="1" />
+    <End Role="purchasereturnitem" Type="bgmsModel.Store.purchasereturnitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stock">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="purchasereturnitem">
+        <PropertyRef Name="stockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_purchasereturnsupplier">
+    <End Role="supplier" Type="bgmsModel.Store.suppliers" Multiplicity="1" />
+    <End Role="purchasereturn" Type="bgmsModel.Store.purchasereturns" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="supplier">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="purchasereturn">
+        <PropertyRef Name="supplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesorderitemstock">
+    <End Role="stock" Type="bgmsModel.Store.stocks" Multiplicity="1" />
+    <End Role="salesorderitem" Type="bgmsModel.Store.salesorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stock">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesorderitem">
+        <PropertyRef Name="stockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesordersalesorderitem">
+    <End Role="salesorder" Type="bgmsModel.Store.salesorders" Multiplicity="1" />
+    <End Role="salesorderitem" Type="bgmsModel.Store.salesorderitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="salesorder">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesorderitem">
+        <PropertyRef Name="salesorderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesreturnitemsalesreturn">
+    <End Role="salesreturn" Type="bgmsModel.Store.salesreturns" Multiplicity="1" />
+    <End Role="salesreturnitem" Type="bgmsModel.Store.salesreturnitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="salesreturn">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesreturnitem">
+        <PropertyRef Name="salesreturnId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_salesreturnitemstock">
+    <End Role="stock" Type="bgmsModel.Store.stocks" Multiplicity="1" />
+    <End Role="salesreturnitem" Type="bgmsModel.Store.salesreturnitems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stock">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="salesreturnitem">
+        <PropertyRef Name="stockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockUnit">
+    <End Role="unit" Type="bgmsModel.Store.units" Multiplicity="0..1" />
+    <End Role="stock" Type="bgmsModel.Store.stocks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="unit">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="stock">
+        <PropertyRef Name="UnitId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_supplierpaymentsupplier">
+    <End Role="supplier" Type="bgmsModel.Store.suppliers" Multiplicity="1" />
+    <End Role="supplierpayment" Type="bgmsModel.Store.supplierpayments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="supplier">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="supplierpayment">
+        <PropertyRef Name="supplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_adjustmentsstock">
+    <End Role="stock" Type="bgmsModel.Store.stocks" Multiplicity="1" />
+    <End Role="adjustment" Type="bgmsModel.Store.adjustments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="stock">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="adjustment">
+        <PropertyRef Name="stockId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bgmsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="bgmsEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="activities" EntityType="bgmsModel.activity" />
+          <EntitySet Name="agents" EntityType="bgmsModel.agent" />
+          <EntitySet Name="categories" EntityType="bgmsModel.category" />
+          <EntitySet Name="collectioncheckitems" EntityType="bgmsModel.collectioncheckitem" />
+          <EntitySet Name="collectionorderitems" EntityType="bgmsModel.collectionorderitem" />
+          <EntitySet Name="counters" EntityType="bgmsModel.counter" />
+          <EntitySet Name="customercollections" EntityType="bgmsModel.customercollection" />
+          <EntitySet Name="customers" EntityType="bgmsModel.customer" />
+          <EntitySet Name="paymentcheckitems" EntityType="bgmsModel.paymentcheckitem" />
+          <EntitySet Name="paymentorderitems" EntityType="bgmsModel.paymentorderitem" />
+          <EntitySet Name="purchaseorderitems" EntityType="bgmsModel.purchaseorderitem" />
+          <EntitySet Name="purchaseorders" EntityType="bgmsModel.purchaseorder" />
+          <EntitySet Name="purchasereturnitems" EntityType="bgmsModel.purchasereturnitem" />
+          <EntitySet Name="purchasereturns" EntityType="bgmsModel.purchasereturn" />
+          <EntitySet Name="salesorderitems" EntityType="bgmsModel.salesorderitem" />
+          <EntitySet Name="salesorders" EntityType="bgmsModel.salesorder" />
+          <EntitySet Name="salesreturnitems" EntityType="bgmsModel.salesreturnitem" />
+          <EntitySet Name="salesreturns" EntityType="bgmsModel.salesreturn" />
+          <EntitySet Name="stocks" EntityType="bgmsModel.stock" />
+          <EntitySet Name="supplierpayments" EntityType="bgmsModel.supplierpayment" />
+          <EntitySet Name="suppliers" EntityType="bgmsModel.supplier" />
+          <EntitySet Name="units" EntityType="bgmsModel.unit" />
+          <EntitySet Name="users" EntityType="bgmsModel.user" />
+          <AssociationSet Name="FK_CustomerAgent" Association="bgmsModel.FK_CustomerAgent">
+            <End Role="agent" EntitySet="agents" />
+            <End Role="customer" EntitySet="customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesorderagent" Association="bgmsModel.FK_salesorderagent">
+            <End Role="agent" EntitySet="agents" />
+            <End Role="salesorder" EntitySet="salesorders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturnagent" Association="bgmsModel.FK_salesreturnagent">
+            <End Role="agent" EntitySet="agents" />
+            <End Role="salesreturn" EntitySet="salesreturns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockCategory" Association="bgmsModel.FK_StockCategory">
+            <End Role="category" EntitySet="categories" />
+            <End Role="stock" EntitySet="stocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_collectioncheckcustomercollection" Association="bgmsModel.FK_collectioncheckcustomercollection">
+            <End Role="customercollection" EntitySet="customercollections" />
+            <End Role="collectioncheckitem" EntitySet="collectioncheckitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_collectionsalesordercustomercollection" Association="bgmsModel.FK_collectionsalesordercustomercollection">
+            <End Role="customercollection" EntitySet="customercollections" />
+            <End Role="collectionorderitem" EntitySet="collectionorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_collectionsalesordersalesorder" Association="bgmsModel.FK_collectionsalesordersalesorder">
+            <End Role="salesorder" EntitySet="salesorders" />
+            <End Role="collectionorderitem" EntitySet="collectionorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_customercollectioncustomer" Association="bgmsModel.FK_customercollectioncustomer">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="customercollection" EntitySet="customercollections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesordercustomer" Association="bgmsModel.FK_salesordercustomer">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="salesorder" EntitySet="salesorders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturncustomer" Association="bgmsModel.FK_salesreturncustomer">
+            <End Role="customer" EntitySet="customers" />
+            <End Role="salesreturn" EntitySet="salesreturns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_supplierpaymentpaymentcheckitem" Association="bgmsModel.FK_supplierpaymentpaymentcheckitem">
+            <End Role="supplierpayment" EntitySet="supplierpayments" />
+            <End Role="paymentcheckitem" EntitySet="paymentcheckitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_paymentorderitempurchaseorder" Association="bgmsModel.FK_paymentorderitempurchaseorder">
+            <End Role="purchaseorder" EntitySet="purchaseorders" />
+            <End Role="paymentorderitem" EntitySet="paymentorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_paymentorderitemsupplierpayment" Association="bgmsModel.FK_paymentorderitemsupplierpayment">
+            <End Role="supplierpayment" EntitySet="supplierpayments" />
+            <End Role="paymentorderitem" EntitySet="paymentorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderDetails1" Association="bgmsModel.FK_PurchaseOrderDetails1">
+            <End Role="purchaseorder" EntitySet="purchaseorders" />
+            <End Role="purchaseorderitem" EntitySet="purchaseorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderItemStock1" Association="bgmsModel.FK_PurchaseOrderItemStock1">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="purchaseorderitem" EntitySet="purchaseorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseOrderSupplier" Association="bgmsModel.FK_PurchaseOrderSupplier">
+            <End Role="supplier" EntitySet="suppliers" />
+            <End Role="purchaseorder" EntitySet="purchaseorders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_purchasereturnitempurchasereturn" Association="bgmsModel.FK_purchasereturnitempurchasereturn">
+            <End Role="purchasereturn" EntitySet="purchasereturns" />
+            <End Role="purchasereturnitem" EntitySet="purchasereturnitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_purchasereturnitemstock" Association="bgmsModel.FK_purchasereturnitemstock">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="purchasereturnitem" EntitySet="purchasereturnitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_purchasereturnsupplier" Association="bgmsModel.FK_purchasereturnsupplier">
+            <End Role="supplier" EntitySet="suppliers" />
+            <End Role="purchasereturn" EntitySet="purchasereturns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesorderitemstock" Association="bgmsModel.FK_salesorderitemstock">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="salesorderitem" EntitySet="salesorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesordersalesorderitem" Association="bgmsModel.FK_salesordersalesorderitem">
+            <End Role="salesorder" EntitySet="salesorders" />
+            <End Role="salesorderitem" EntitySet="salesorderitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturnitemsalesreturn" Association="bgmsModel.FK_salesreturnitemsalesreturn">
+            <End Role="salesreturn" EntitySet="salesreturns" />
+            <End Role="salesreturnitem" EntitySet="salesreturnitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_salesreturnitemstock" Association="bgmsModel.FK_salesreturnitemstock">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="salesreturnitem" EntitySet="salesreturnitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockUnit" Association="bgmsModel.FK_StockUnit">
+            <End Role="unit" EntitySet="units" />
+            <End Role="stock" EntitySet="stocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_supplierpaymentsupplier" Association="bgmsModel.FK_supplierpaymentsupplier">
+            <End Role="supplier" EntitySet="suppliers" />
+            <End Role="supplierpayment" EntitySet="supplierpayments" />
+          </AssociationSet>
+          <EntitySet Name="adjustments" EntityType="bgmsModel.adjustment" />
+          <AssociationSet Name="FK_adjustmentsstock" Association="bgmsModel.FK_adjustmentsstock">
+            <End Role="stock" EntitySet="stocks" />
+            <End Role="adjustment" EntitySet="adjustments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="activity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="agent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Contact" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Tin" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ModifyBy" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <NavigationProperty Name="customers" Relationship="bgmsModel.FK_CustomerAgent" FromRole="agent" ToRole="customer" />
+          <NavigationProperty Name="salesorders" Relationship="bgmsModel.FK_salesorderagent" FromRole="agent" ToRole="salesorder" />
+          <NavigationProperty Name="salesreturns" Relationship="bgmsModel.FK_salesreturnagent" FromRole="agent" ToRole="salesreturn" />
+        </EntityType>
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+          <NavigationProperty Name="stocks" Relationship="bgmsModel.FK_StockCategory" FromRole="category" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="collectioncheckitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="Double" Name="Amount" Nullable="false" />
+          <Property Type="Int32" Name="customercollectionId" Nullable="false" />
+          <NavigationProperty Name="customercollection" Relationship="bgmsModel.FK_collectioncheckcustomercollection" FromRole="collectioncheckitem" ToRole="customercollection" />
+        </EntityType>
+        <EntityType Name="collectionorderitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="salesorderId" Nullable="false" />
+          <Property Type="Double" Name="Amount" Nullable="false" />
+          <Property Type="Int32" Name="customercollectionId" Nullable="false" />
+          <Property Type="Double" Name="BalanceGot" Nullable="false" />
+          <NavigationProperty Name="customercollection" Relationship="bgmsModel.FK_collectionsalesordercustomercollection" FromRole="collectionorderitem" ToRole="customercollection" />
+          <NavigationProperty Name="salesorder" Relationship="bgmsModel.FK_collectionsalesordersalesorder" FromRole="collectionorderitem" ToRole="salesorder" />
+        </EntityType>
+        <EntityType Name="counter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Count" Nullable="false" />
+          <Property Type="String" Name="Prefix" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Owner" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customercollection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="DateTime" Name="PostedDate" Precision="0" />
+          <Property Type="String" Name="Remarks" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Double" Name="TotalCheck" Nullable="false" />
+          <Property Type="Double" Name="TotalPaid" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Nullable="false" Precision="0" />
+          <Property Type="Int32" Name="customerId" Nullable="false" />
+          <Property Type="String" Name="Bank" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="collectioncheckitems" Relationship="bgmsModel.FK_collectioncheckcustomercollection" FromRole="customercollection" ToRole="collectioncheckitem" />
+          <NavigationProperty Name="collectionorderitems" Relationship="bgmsModel.FK_collectionsalesordercustomercollection" FromRole="customercollection" ToRole="collectionorderitem" />
+          <NavigationProperty Name="customer" Relationship="bgmsModel.FK_customercollectioncustomer" FromRole="customercollection" ToRole="customer" />
+        </EntityType>
+        <EntityType Name="customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Contact" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Fax" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Tin" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Double" Name="Commission" />
+          <Property Type="Int32" Name="AgentId" />
+          <Property Type="String" Name="ModifyBy" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <NavigationProperty Name="agent" Relationship="bgmsModel.FK_CustomerAgent" FromRole="customer" ToRole="agent" />
+          <NavigationProperty Name="customercollections" Relationship="bgmsModel.FK_customercollectioncustomer" FromRole="customer" ToRole="customercollection" />
+          <NavigationProperty Name="salesorders" Relationship="bgmsModel.FK_salesordercustomer" FromRole="customer" ToRole="salesorder" />
+          <NavigationProperty Name="salesreturns" Relationship="bgmsModel.FK_salesreturncustomer" FromRole="customer" ToRole="salesreturn" />
+        </EntityType>
+        <EntityType Name="paymentcheckitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="Double" Name="Amount" Nullable="false" />
+          <Property Type="Int32" Name="supplierpaymentId" Nullable="false" />
+          <NavigationProperty Name="supplierpayment" Relationship="bgmsModel.FK_supplierpaymentpaymentcheckitem" FromRole="paymentcheckitem" ToRole="supplierpayment" />
+        </EntityType>
+        <EntityType Name="paymentorderitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Double" Name="Amount" Nullable="false" />
+          <Property Type="Int32" Name="purchaseorderId" Nullable="false" />
+          <Property Type="Int32" Name="supplierpaymentId" Nullable="false" />
+          <Property Type="Double" Name="BalanceGot" Nullable="false" />
+          <NavigationProperty Name="purchaseorder" Relationship="bgmsModel.FK_paymentorderitempurchaseorder" FromRole="paymentorderitem" ToRole="purchaseorder" />
+          <NavigationProperty Name="supplierpayment" Relationship="bgmsModel.FK_paymentorderitemsupplierpayment" FromRole="paymentorderitem" ToRole="supplierpayment" />
+        </EntityType>
+        <EntityType Name="purchaseorderitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="Double" Name="Price" Nullable="false" />
+          <Property Type="Int32" Name="stockId" Nullable="false" />
+          <Property Type="Int32" Name="PurchaseOrderId" Nullable="false" />
+          <Property Type="Int32" Name="QuantityReturned" Nullable="false" />
+          <Property Type="Double" Name="Discount1" Nullable="false" />
+          <Property Type="Double" Name="Discount2" Nullable="false" />
+          <Property Type="Double" Name="Discount3" Nullable="false" />
+          <NavigationProperty Name="purchaseorder" Relationship="bgmsModel.FK_PurchaseOrderDetails1" FromRole="purchaseorderitem" ToRole="purchaseorder" />
+          <NavigationProperty Name="stock" Relationship="bgmsModel.FK_PurchaseOrderItemStock1" FromRole="purchaseorderitem" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="purchaseorder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="String" Name="Remarks" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PostedDate" Precision="0" />
+          <Property Type="Double" Name="TotalAmount" Nullable="false" />
+          <Property Type="Int32" Name="supplierId" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+          <Property Type="Double" Name="TotalPaid" Nullable="false" />
+          <Property Type="Double" Name="TotalReturned" Nullable="false" />
+          <Property Type="Double" Name="Discount1" Nullable="false" />
+          <Property Type="Double" Name="Discount2" Nullable="false" />
+          <Property Type="Double" Name="Discount3" Nullable="false" />
+          <NavigationProperty Name="paymentorderitems" Relationship="bgmsModel.FK_paymentorderitempurchaseorder" FromRole="purchaseorder" ToRole="paymentorderitem" />
+          <NavigationProperty Name="purchaseorderitems" Relationship="bgmsModel.FK_PurchaseOrderDetails1" FromRole="purchaseorder" ToRole="purchaseorderitem" />
+          <NavigationProperty Name="supplier" Relationship="bgmsModel.FK_PurchaseOrderSupplier" FromRole="purchaseorder" ToRole="supplier" />
+        </EntityType>
+        <EntityType Name="purchasereturnitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int16" Name="Quantity" Nullable="false" />
+          <Property Type="Double" Name="Price" Nullable="false" />
+          <Property Type="Int32" Name="stockId" Nullable="false" />
+          <Property Type="Int32" Name="purchasereturnId" Nullable="false" />
+          <Property Type="Double" Name="Discount1" Nullable="false" />
+          <Property Type="Double" Name="Discount2" Nullable="false" />
+          <Property Type="Double" Name="Discount3" Nullable="false" />
+          <NavigationProperty Name="purchasereturn" Relationship="bgmsModel.FK_purchasereturnitempurchasereturn" FromRole="purchasereturnitem" ToRole="purchasereturn" />
+          <NavigationProperty Name="stock" Relationship="bgmsModel.FK_purchasereturnitemstock" FromRole="purchasereturnitem" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="purchasereturn">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="String" Name="Remarks" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PostedDate" Precision="0" />
+          <Property Type="Double" Name="TotalAmount" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Nullable="false" Precision="0" />
+          <Property Type="Int32" Name="supplierId" Nullable="false" />
+          <NavigationProperty Name="purchasereturnitems" Relationship="bgmsModel.FK_purchasereturnitempurchasereturn" FromRole="purchasereturn" ToRole="purchasereturnitem" />
+          <NavigationProperty Name="supplier" Relationship="bgmsModel.FK_purchasereturnsupplier" FromRole="purchasereturn" ToRole="supplier" />
+        </EntityType>
+        <EntityType Name="salesorderitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Double" Name="Discount1" />
+          <Property Type="Double" Name="Discount2" />
+          <Property Type="Int32" Name="Quantity" />
+          <Property Type="Double" Name="Price" Nullable="false" />
+          <Property Type="Int32" Name="stockId" Nullable="false" />
+          <Property Type="Int32" Name="salesorderId" Nullable="false" />
+          <Property Type="Int32" Name="QuantityReturned" Nullable="false" />
+          <NavigationProperty Name="stock" Relationship="bgmsModel.FK_salesorderitemstock" FromRole="salesorderitem" ToRole="stock" />
+          <NavigationProperty Name="salesorder" Relationship="bgmsModel.FK_salesordersalesorderitem" FromRole="salesorderitem" ToRole="salesorder" />
+        </EntityType>
+        <EntityType Name="salesorder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="DateTime" Name="PostedDate" Precision="0" />
+          <Property Type="String" Name="Remarks" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Double" Name="Discount1" Nullable="false" />
+          <Property Type="Double" Name="Discount2" Nullable="false" />
+          <Property Type="Double" Name="TotalAmount" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Nullable="false" Precision="0" />
+          <Property Type="Int32" Name="customerId" Nullable="false" />
+          <Property Type="Int32" Name="agentId" Nullable="false" />
+          <Property Type="Double" Name="TotalPaid" Nullable="false" />
+          <Property Type="Double" Name="TotalReturned" Nullable="false" />
+          <NavigationProperty Name="agent" Relationship="bgmsModel.FK_salesorderagent" FromRole="salesorder" ToRole="agent" />
+          <NavigationProperty Name="collectionorderitems" Relationship="bgmsModel.FK_collectionsalesordersalesorder" FromRole="salesorder" ToRole="collectionorderitem" />
+          <NavigationProperty Name="customer" Relationship="bgmsModel.FK_salesordercustomer" FromRole="salesorder" ToRole="customer" />
+          <NavigationProperty Name="salesorderitems" Relationship="bgmsModel.FK_salesordersalesorderitem" FromRole="salesorder" ToRole="salesorderitem" />
+        </EntityType>
+        <EntityType Name="salesreturnitem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int16" Name="Quantity" Nullable="false" />
+          <Property Type="Double" Name="Price" Nullable="false" />
+          <Property Type="Double" Name="Discount1" Nullable="false" />
+          <Property Type="Double" Name="Discount2" Nullable="false" />
+          <Property Type="Int32" Name="stockId" Nullable="false" />
+          <Property Type="Int32" Name="salesreturnId" Nullable="false" />
+          <NavigationProperty Name="salesreturn" Relationship="bgmsModel.FK_salesreturnitemsalesreturn" FromRole="salesreturnitem" ToRole="salesreturn" />
+          <NavigationProperty Name="stock" Relationship="bgmsModel.FK_salesreturnitemstock" FromRole="salesreturnitem" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="salesreturn">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="String" Name="Remarks" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="PostedDate" Precision="0" />
+          <Property Type="Double" Name="TotalAmount" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Nullable="false" Precision="0" />
+          <Property Type="Int32" Name="customerId" Nullable="false" />
+          <Property Type="Int32" Name="agentId" Nullable="false" />
+          <NavigationProperty Name="agent" Relationship="bgmsModel.FK_salesreturnagent" FromRole="salesreturn" ToRole="agent" />
+          <NavigationProperty Name="customer" Relationship="bgmsModel.FK_salesreturncustomer" FromRole="salesreturn" ToRole="customer" />
+          <NavigationProperty Name="salesreturnitems" Relationship="bgmsModel.FK_salesreturnitemsalesreturn" FromRole="salesreturn" ToRole="salesreturnitem" />
+        </EntityType>
+        <EntityType Name="stock">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Double" Name="Cost" />
+          <Property Type="Double" Name="Price" Nullable="false" />
+          <Property Type="Int32" Name="QtyOnHand" Nullable="false" />
+          <Property Type="Int32" Name="UnitId" />
+          <Property Type="Int32" Name="CategoryId" />
+          <Property Type="String" Name="ModifyBy" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <NavigationProperty Name="category" Relationship="bgmsModel.FK_StockCategory" FromRole="stock" ToRole="category" />
+          <NavigationProperty Name="purchaseorderitems" Relationship="bgmsModel.FK_PurchaseOrderItemStock1" FromRole="stock" ToRole="purchaseorderitem" />
+          <NavigationProperty Name="purchasereturnitems" Relationship="bgmsModel.FK_purchasereturnitemstock" FromRole="stock" ToRole="purchasereturnitem" />
+          <NavigationProperty Name="salesorderitems" Relationship="bgmsModel.FK_salesorderitemstock" FromRole="stock" ToRole="salesorderitem" />
+          <NavigationProperty Name="salesreturnitems" Relationship="bgmsModel.FK_salesreturnitemstock" FromRole="stock" ToRole="salesreturnitem" />
+          <NavigationProperty Name="unit" Relationship="bgmsModel.FK_StockUnit" FromRole="stock" ToRole="unit" />
+          <NavigationProperty Name="adjustments" Relationship="bgmsModel.FK_adjustmentsstock" FromRole="stock" ToRole="adjustment" />
+        </EntityType>
+        <EntityType Name="supplierpayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="0" />
+          <Property Type="DateTime" Name="PostedDate" Precision="0" />
+          <Property Type="String" Name="Remarks" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Double" Name="TotalCheck" Nullable="false" />
+          <Property Type="Double" Name="TotalPaid" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Nullable="false" Precision="0" />
+          <Property Type="String" Name="Bank" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="supplierId" Nullable="false" />
+          <Property Type="String" Name="DocumentNo" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="paymentcheckitems" Relationship="bgmsModel.FK_supplierpaymentpaymentcheckitem" FromRole="supplierpayment" ToRole="paymentcheckitem" />
+          <NavigationProperty Name="paymentorderitems" Relationship="bgmsModel.FK_paymentorderitemsupplierpayment" FromRole="supplierpayment" ToRole="paymentorderitem" />
+          <NavigationProperty Name="supplier" Relationship="bgmsModel.FK_supplierpaymentsupplier" FromRole="supplierpayment" ToRole="supplier" />
+        </EntityType>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Address" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Contact" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Fax" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Tin" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ModifyBy" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <NavigationProperty Name="purchaseorders" Relationship="bgmsModel.FK_PurchaseOrderSupplier" FromRole="supplier" ToRole="purchaseorder" />
+          <NavigationProperty Name="purchasereturns" Relationship="bgmsModel.FK_purchasereturnsupplier" FromRole="supplier" ToRole="purchasereturn" />
+          <NavigationProperty Name="supplierpayments" Relationship="bgmsModel.FK_supplierpaymentsupplier" FromRole="supplier" ToRole="supplierpayment" />
+        </EntityType>
+        <EntityType Name="unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ModifyBy" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="String" Name="PluralName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="stocks" Relationship="bgmsModel.FK_StockUnit" FromRole="unit" ToRole="stock" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Firstname" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Lastname" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Contact" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="Admin" Nullable="false" />
+          <Property Type="Boolean" Name="Active" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ModifyDate" Precision="0" />
+        </EntityType>
+        <Association Name="FK_CustomerAgent">
+          <End Type="bgmsModel.agent" Role="agent" Multiplicity="0..1" />
+          <End Type="bgmsModel.customer" Role="customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="agent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="customer">
+              <PropertyRef Name="AgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesorderagent">
+          <End Type="bgmsModel.agent" Role="agent" Multiplicity="1" />
+          <End Type="bgmsModel.salesorder" Role="salesorder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="agent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesorder">
+              <PropertyRef Name="agentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturnagent">
+          <End Type="bgmsModel.agent" Role="agent" Multiplicity="1" />
+          <End Type="bgmsModel.salesreturn" Role="salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="agent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="agentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockCategory">
+          <End Type="bgmsModel.category" Role="category" Multiplicity="0..1" />
+          <End Type="bgmsModel.stock" Role="stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_collectioncheckcustomercollection">
+          <End Type="bgmsModel.customercollection" Role="customercollection" Multiplicity="1" />
+          <End Type="bgmsModel.collectioncheckitem" Role="collectioncheckitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customercollection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="collectioncheckitem">
+              <PropertyRef Name="customercollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_collectionsalesordercustomercollection">
+          <End Type="bgmsModel.customercollection" Role="customercollection" Multiplicity="1" />
+          <End Type="bgmsModel.collectionorderitem" Role="collectionorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customercollection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="collectionorderitem">
+              <PropertyRef Name="customercollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_collectionsalesordersalesorder">
+          <End Type="bgmsModel.salesorder" Role="salesorder" Multiplicity="1" />
+          <End Type="bgmsModel.collectionorderitem" Role="collectionorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="salesorder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="collectionorderitem">
+              <PropertyRef Name="salesorderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_customercollectioncustomer">
+          <End Type="bgmsModel.customer" Role="customer" Multiplicity="1" />
+          <End Type="bgmsModel.customercollection" Role="customercollection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="customercollection">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesordercustomer">
+          <End Type="bgmsModel.customer" Role="customer" Multiplicity="1" />
+          <End Type="bgmsModel.salesorder" Role="salesorder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesorder">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturncustomer">
+          <End Type="bgmsModel.customer" Role="customer" Multiplicity="1" />
+          <End Type="bgmsModel.salesreturn" Role="salesreturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesreturn">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_supplierpaymentpaymentcheckitem">
+          <End Type="bgmsModel.supplierpayment" Role="supplierpayment" Multiplicity="1" />
+          <End Type="bgmsModel.paymentcheckitem" Role="paymentcheckitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplierpayment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="paymentcheckitem">
+              <PropertyRef Name="supplierpaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_paymentorderitempurchaseorder">
+          <End Type="bgmsModel.purchaseorder" Role="purchaseorder" Multiplicity="1" />
+          <End Type="bgmsModel.paymentorderitem" Role="paymentorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseorder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="paymentorderitem">
+              <PropertyRef Name="purchaseorderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_paymentorderitemsupplierpayment">
+          <End Type="bgmsModel.supplierpayment" Role="supplierpayment" Multiplicity="1" />
+          <End Type="bgmsModel.paymentorderitem" Role="paymentorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplierpayment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="paymentorderitem">
+              <PropertyRef Name="supplierpaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderDetails1">
+          <End Type="bgmsModel.purchaseorder" Role="purchaseorder" Multiplicity="1" />
+          <End Type="bgmsModel.purchaseorderitem" Role="purchaseorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchaseorder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="purchaseorderitem">
+              <PropertyRef Name="PurchaseOrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderItemStock1">
+          <End Type="bgmsModel.stock" Role="stock" Multiplicity="1" />
+          <End Type="bgmsModel.purchaseorderitem" Role="purchaseorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="purchaseorderitem">
+              <PropertyRef Name="stockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseOrderSupplier">
+          <End Type="bgmsModel.supplier" Role="supplier" Multiplicity="1" />
+          <End Type="bgmsModel.purchaseorder" Role="purchaseorder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="purchaseorder">
+              <PropertyRef Name="supplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_purchasereturnitempurchasereturn">
+          <End Type="bgmsModel.purchasereturn" Role="purchasereturn" Multiplicity="1" />
+          <End Type="bgmsModel.purchasereturnitem" Role="purchasereturnitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="purchasereturn">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="purchasereturnitem">
+              <PropertyRef Name="purchasereturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_purchasereturnitemstock">
+          <End Type="bgmsModel.stock" Role="stock" Multiplicity="1" />
+          <End Type="bgmsModel.purchasereturnitem" Role="purchasereturnitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="purchasereturnitem">
+              <PropertyRef Name="stockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_purchasereturnsupplier">
+          <End Type="bgmsModel.supplier" Role="supplier" Multiplicity="1" />
+          <End Type="bgmsModel.purchasereturn" Role="purchasereturn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="purchasereturn">
+              <PropertyRef Name="supplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesorderitemstock">
+          <End Type="bgmsModel.stock" Role="stock" Multiplicity="1" />
+          <End Type="bgmsModel.salesorderitem" Role="salesorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesorderitem">
+              <PropertyRef Name="stockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesordersalesorderitem">
+          <End Type="bgmsModel.salesorder" Role="salesorder" Multiplicity="1" />
+          <End Type="bgmsModel.salesorderitem" Role="salesorderitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="salesorder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesorderitem">
+              <PropertyRef Name="salesorderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturnitemsalesreturn">
+          <End Type="bgmsModel.salesreturn" Role="salesreturn" Multiplicity="1" />
+          <End Type="bgmsModel.salesreturnitem" Role="salesreturnitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="salesreturn">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesreturnitem">
+              <PropertyRef Name="salesreturnId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_salesreturnitemstock">
+          <End Type="bgmsModel.stock" Role="stock" Multiplicity="1" />
+          <End Type="bgmsModel.salesreturnitem" Role="salesreturnitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="salesreturnitem">
+              <PropertyRef Name="stockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockUnit">
+          <End Type="bgmsModel.unit" Role="unit" Multiplicity="0..1" />
+          <End Type="bgmsModel.stock" Role="stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_supplierpaymentsupplier">
+          <End Type="bgmsModel.supplier" Role="supplier" Multiplicity="1" />
+          <End Type="bgmsModel.supplierpayment" Role="supplierpayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="supplierpayment">
+              <PropertyRef Name="supplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="adjustment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="ModifyDate" Nullable="false" Precision="0" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="String" Name="ModifyBy" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="stockId" Nullable="false" />
+          <NavigationProperty Name="stock" Relationship="bgmsModel.FK_adjustmentsstock" FromRole="adjustment" ToRole="stock" />
+        </EntityType>
+        <Association Name="FK_adjustmentsstock">
+          <End Type="bgmsModel.stock" Role="stock" Multiplicity="1" />
+          <End Type="bgmsModel.adjustment" Role="adjustment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stock">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="adjustment">
+              <PropertyRef Name="stockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="bgmsModelStoreContainer" CdmEntityContainer="bgmsEntities">
+    <EntitySetMapping Name="activities">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.activity)">
+        <MappingFragment StoreEntitySet="activities">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="agents">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.agent)">
+        <MappingFragment StoreEntitySet="agents">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Tin" ColumnName="Tin" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="categories">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.category)">
+        <MappingFragment StoreEntitySet="categories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="collectioncheckitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.collectioncheckitem)">
+        <MappingFragment StoreEntitySet="collectioncheckitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="customercollectionId" ColumnName="customercollectionId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="collectionorderitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.collectionorderitem)">
+        <MappingFragment StoreEntitySet="collectionorderitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="salesorderId" ColumnName="salesorderId" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="customercollectionId" ColumnName="customercollectionId" />
+          <ScalarProperty Name="BalanceGot" ColumnName="BalanceGot" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="counters">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.counter)">
+        <MappingFragment StoreEntitySet="counters">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Count" ColumnName="Count" />
+          <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customercollections">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.customercollection)">
+        <MappingFragment StoreEntitySet="customercollections">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="TotalCheck" ColumnName="TotalCheck" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="customerId" ColumnName="customerId" />
+          <ScalarProperty Name="Bank" ColumnName="Bank" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customers">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.customer)">
+        <MappingFragment StoreEntitySet="customers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Tin" ColumnName="Tin" />
+          <ScalarProperty Name="Commission" ColumnName="Commission" />
+          <ScalarProperty Name="AgentId" ColumnName="AgentId" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="paymentcheckitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.paymentcheckitem)">
+        <MappingFragment StoreEntitySet="paymentcheckitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="supplierpaymentId" ColumnName="supplierpaymentId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="paymentorderitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.paymentorderitem)">
+        <MappingFragment StoreEntitySet="paymentorderitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="purchaseorderId" ColumnName="purchaseorderId" />
+          <ScalarProperty Name="supplierpaymentId" ColumnName="supplierpaymentId" />
+          <ScalarProperty Name="BalanceGot" ColumnName="BalanceGot" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="purchaseorderitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.purchaseorderitem)">
+        <MappingFragment StoreEntitySet="purchaseorderitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="stockId" ColumnName="stockId" />
+          <ScalarProperty Name="PurchaseOrderId" ColumnName="PurchaseOrderId" />
+          <ScalarProperty Name="QuantityReturned" ColumnName="QuantityReturned" />
+          <ScalarProperty Name="Discount1" ColumnName="Discount1" />
+          <ScalarProperty Name="Discount2" ColumnName="Discount2" />
+          <ScalarProperty Name="Discount3" ColumnName="Discount3" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="purchaseorders">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.purchaseorder)">
+        <MappingFragment StoreEntitySet="purchaseorders">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="supplierId" ColumnName="supplierId" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="TotalReturned" ColumnName="TotalReturned" />
+          <ScalarProperty Name="Discount1" ColumnName="Discount1" />
+          <ScalarProperty Name="Discount2" ColumnName="Discount2" />
+          <ScalarProperty Name="Discount3" ColumnName="Discount3" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="purchasereturnitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.purchasereturnitem)">
+        <MappingFragment StoreEntitySet="purchasereturnitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="stockId" ColumnName="stockId" />
+          <ScalarProperty Name="purchasereturnId" ColumnName="purchasereturnId" />
+          <ScalarProperty Name="Discount1" ColumnName="Discount1" />
+          <ScalarProperty Name="Discount2" ColumnName="Discount2" />
+          <ScalarProperty Name="Discount3" ColumnName="Discount3" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="purchasereturns">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.purchasereturn)">
+        <MappingFragment StoreEntitySet="purchasereturns">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="supplierId" ColumnName="supplierId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="salesorderitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.salesorderitem)">
+        <MappingFragment StoreEntitySet="salesorderitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Discount1" ColumnName="Discount1" />
+          <ScalarProperty Name="Discount2" ColumnName="Discount2" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="stockId" ColumnName="stockId" />
+          <ScalarProperty Name="salesorderId" ColumnName="salesorderId" />
+          <ScalarProperty Name="QuantityReturned" ColumnName="QuantityReturned" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="salesorders">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.salesorder)">
+        <MappingFragment StoreEntitySet="salesorders">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="Discount1" ColumnName="Discount1" />
+          <ScalarProperty Name="Discount2" ColumnName="Discount2" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="customerId" ColumnName="customerId" />
+          <ScalarProperty Name="agentId" ColumnName="agentId" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="TotalReturned" ColumnName="TotalReturned" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="salesreturnitems">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.salesreturnitem)">
+        <MappingFragment StoreEntitySet="salesreturnitems">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Discount1" ColumnName="Discount1" />
+          <ScalarProperty Name="Discount2" ColumnName="Discount2" />
+          <ScalarProperty Name="stockId" ColumnName="stockId" />
+          <ScalarProperty Name="salesreturnId" ColumnName="salesreturnId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="salesreturns">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.salesreturn)">
+        <MappingFragment StoreEntitySet="salesreturns">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="customerId" ColumnName="customerId" />
+          <ScalarProperty Name="agentId" ColumnName="agentId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="stocks">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.stock)">
+        <MappingFragment StoreEntitySet="stocks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Cost" ColumnName="Cost" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="QtyOnHand" ColumnName="QtyOnHand" />
+          <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="supplierpayments">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.supplierpayment)">
+        <MappingFragment StoreEntitySet="supplierpayments">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="TotalCheck" ColumnName="TotalCheck" />
+          <ScalarProperty Name="TotalPaid" ColumnName="TotalPaid" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="Bank" ColumnName="Bank" />
+          <ScalarProperty Name="supplierId" ColumnName="supplierId" />
+          <ScalarProperty Name="DocumentNo" ColumnName="DocumentNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="suppliers">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.supplier)">
+        <MappingFragment StoreEntitySet="suppliers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Tin" ColumnName="Tin" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="units">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.unit)">
+        <MappingFragment StoreEntitySet="units">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="PluralName" ColumnName="PluralName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.user)">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+          <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Admin" ColumnName="Admin" />
+          <ScalarProperty Name="Active" ColumnName="Active" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="adjustments">
+      <EntityTypeMapping TypeName="IsTypeOf(bgmsModel.adjustment)">
+        <MappingFragment StoreEntitySet="adjustments">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ModifyBy" ColumnName="ModifyBy" />
+          <ScalarProperty Name="stockId" ColumnName="stockId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="DDLGenerationTemplate" Value="$(VSEFTools)\DBGen\SSDLToMySQL.tt" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

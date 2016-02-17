@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d3bcd96a29a64590ae75c6506fe2e73d" Name="Diagram1" ZoomLevel="25">
+        <EntityTypeShape EntityType="bgmsModel.activity" Width="1.5" PointX="8.75" PointY="2.875" />
+        <EntityTypeShape EntityType="bgmsModel.agent" Width="1.5" PointX="11.75" PointY="4.375" />
+        <EntityTypeShape EntityType="bgmsModel.category" Width="1.5" PointX="14.75" PointY="5.875" />
+        <EntityTypeShape EntityType="bgmsModel.collectioncheckitem" Width="1.5" PointX="17.75" PointY="7.375" />
+        <EntityTypeShape EntityType="bgmsModel.collectionorderitem" Width="1.5" PointX="20.75" PointY="8.875" />
+        <EntityTypeShape EntityType="bgmsModel.counter" Width="1.5" PointX="3.125" PointY="7" />
+        <EntityTypeShape EntityType="bgmsModel.customercollection" Width="1.5" PointX="5.625" PointY="8.5" />
+        <EntityTypeShape EntityType="bgmsModel.customer" Width="1.5" PointX="8.625" PointY="10" />
+        <EntityTypeShape EntityType="bgmsModel.paymentcheckitem" Width="1.5" PointX="11.625" PointY="11.5" />
+        <EntityTypeShape EntityType="bgmsModel.paymentorderitem" Width="1.5" PointX="15.125" PointY="11.375" />
+        <EntityTypeShape EntityType="bgmsModel.purchaseorderitem" Width="1.5" PointX="18.125" PointY="12.875" />
+        <EntityTypeShape EntityType="bgmsModel.purchaseorder" Width="1.5" PointX="22.75" PointY="13.5" />
+        <EntityTypeShape EntityType="bgmsModel.purchasereturnitem" Width="1.5" PointX="3.375" PointY="12.875" />
+        <EntityTypeShape EntityType="bgmsModel.purchasereturn" Width="1.5" PointX="6.375" PointY="14.5" />
+        <EntityTypeShape EntityType="bgmsModel.salesorderitem" Width="1.5" PointX="9.375" PointY="16" />
+        <EntityTypeShape EntityType="bgmsModel.salesorder" Width="1.5" PointX="12.375" PointY="17.5" />
+        <EntityTypeShape EntityType="bgmsModel.salesreturnitem" Width="1.5" PointX="15.375" PointY="19" />
+        <EntityTypeShape EntityType="bgmsModel.salesreturn" Width="1.5" PointX="18.375" PointY="20.5" />
+        <EntityTypeShape EntityType="bgmsModel.stock" Width="1.5" PointX="21.375" PointY="22" />
+        <EntityTypeShape EntityType="bgmsModel.supplierpayment" Width="1.5" PointX="3.625" PointY="19.125" />
+        <EntityTypeShape EntityType="bgmsModel.supplier" Width="1.5" PointX="6.125" PointY="20.625" />
+        <EntityTypeShape EntityType="bgmsModel.unit" Width="1.5" PointX="9.125" PointY="22.125" />
+        <EntityTypeShape EntityType="bgmsModel.user" Width="1.5" PointX="12.125" PointY="23.625" />
+        <AssociationConnector Association="bgmsModel.FK_CustomerAgent" />
+        <AssociationConnector Association="bgmsModel.FK_salesorderagent" />
+        <AssociationConnector Association="bgmsModel.FK_salesreturnagent" />
+        <AssociationConnector Association="bgmsModel.FK_StockCategory" />
+        <AssociationConnector Association="bgmsModel.FK_collectioncheckcustomercollection" />
+        <AssociationConnector Association="bgmsModel.FK_collectionsalesordercustomercollection" />
+        <AssociationConnector Association="bgmsModel.FK_collectionsalesordersalesorder" />
+        <AssociationConnector Association="bgmsModel.FK_customercollectioncustomer" />
+        <AssociationConnector Association="bgmsModel.FK_salesordercustomer" />
+        <AssociationConnector Association="bgmsModel.FK_salesreturncustomer" />
+        <AssociationConnector Association="bgmsModel.FK_supplierpaymentpaymentcheckitem" />
+        <AssociationConnector Association="bgmsModel.FK_paymentorderitempurchaseorder" />
+        <AssociationConnector Association="bgmsModel.FK_paymentorderitemsupplierpayment" />
+        <AssociationConnector Association="bgmsModel.FK_PurchaseOrderDetails1" />
+        <AssociationConnector Association="bgmsModel.FK_PurchaseOrderItemStock1" />
+        <AssociationConnector Association="bgmsModel.FK_PurchaseOrderSupplier" />
+        <AssociationConnector Association="bgmsModel.FK_purchasereturnitempurchasereturn" />
+        <AssociationConnector Association="bgmsModel.FK_purchasereturnitemstock" />
+        <AssociationConnector Association="bgmsModel.FK_purchasereturnsupplier" />
+        <AssociationConnector Association="bgmsModel.FK_salesorderitemstock" />
+        <AssociationConnector Association="bgmsModel.FK_salesordersalesorderitem" />
+        <AssociationConnector Association="bgmsModel.FK_salesreturnitemsalesreturn" />
+        <AssociationConnector Association="bgmsModel.FK_salesreturnitemstock" />
+        <AssociationConnector Association="bgmsModel.FK_StockUnit" />
+        <AssociationConnector Association="bgmsModel.FK_supplierpaymentsupplier" />
+        <EntityTypeShape EntityType="bgmsModel.adjustment" Width="1.5" PointX="10.596914000155831" PointY="7.30236630481778" />
+        <AssociationConnector Association="bgmsModel.FK_adjustmentsstock" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
