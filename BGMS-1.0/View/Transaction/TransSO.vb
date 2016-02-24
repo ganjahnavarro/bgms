@@ -243,7 +243,7 @@
     End Sub
 
     Private Sub setReadOnlyColumns()
-        enterGrid.Columns.Item("Desc").ReadOnly = True
+        'enterGrid.Columns.Item("Desc").ReadOnly = True
         enterGrid.Columns.Item("Unit").ReadOnly = True
         enterGrid.Columns.Item("Cost").ReadOnly = True
         enterGrid.Columns.Item("OnHand").ReadOnly = True
@@ -568,20 +568,19 @@
 
     Private Sub loadObjectItems(ByVal orderItems As List(Of salesorderitem))
         Util.clearRows(enterGrid)
-
+        'orderItem.stock.Description, _
         For Each orderItem In orderItems
-            enterGrid.Rows.Add( _
-                orderItem.Id, _
-                orderItem.stock.Name, _
-                orderItem.stock.Description, _
-                orderItem.Quantity, _
-                orderItem.stock.unit.Name, _
-                orderItem.Price, _
-                orderItem.stock.Cost, _
-                orderItem.stock.QtyOnHand, "", _
-                orderItem.Discount1, _
-                orderItem.Discount2, _
-                getRowAmount(orderItem.Quantity, orderItem.Price, _
+            enterGrid.Rows.Add(
+                orderItem.Id,
+                orderItem.stock.Name + " : " + orderItem.stock.Description,
+                orderItem.Quantity,
+                orderItem.stock.unit.Name,
+                orderItem.Price,
+                orderItem.stock.Cost,
+                orderItem.stock.QtyOnHand, "",
+                orderItem.Discount1,
+                orderItem.Discount2,
+                getRowAmount(orderItem.Quantity, orderItem.Price,
                     orderItem.Discount1, orderItem.Discount2))
         Next
         updateCountLabel()
@@ -623,6 +622,9 @@
     Private Sub setItemValues(ByRef orderItem As salesorderitem, _
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
+        Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
+        stockCode = stockCode.Trim
+
         orderItem.Price = enterGrid("Price", rowIndex).Value
         orderItem.Quantity = enterGrid("Qty", rowIndex).Value
 
@@ -633,7 +635,7 @@
         orderItem.Discount2 = d2
 
         orderItem.stockId = context.stocks _
-                   .Where(Function(c) c.Name.ToUpper.Equals(stockName.ToUpper) And c.Active = True) _
+                   .Where(Function(c) c.Name.ToUpper.Equals(stockCode.ToUpper) And c.Active = True) _
                    .Select(Function(c) c.Id).FirstOrDefault
     End Sub
 
@@ -686,19 +688,21 @@
     Private Sub stockChanged(ByVal e As DataGridViewCellEventArgs)
         If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
             Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
+            Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
+            stockCode = stockCode.Trim
 
-            If Not IsNothing(stockName) Then
-                If stockName.ToUpper.Equals(prevStockName.ToUpper) Then
+            If Not IsNothing(stockCode) Then
+                If stockCode.ToUpper.Equals(prevStockName.ToUpper) Then
                     Exit Sub
                 End If
 
-                prevStockName = stockName
+                prevStockName = stockCode
                 Using context As New bgmsEntities
                     selectedStock = context.stocks _
-                        .Where(Function(c) c.Name.Equals(stockName) And c.Active = True).FirstOrDefault
+                        .Where(Function(c) c.Name.Equals(stockCode) And c.Active = True).FirstOrDefault
 
                     If Not IsNothing(selectedStock) Then
-                        enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
+                        'enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
                         enterGrid("Unit", e.RowIndex).Value = selectedStock.unit.Name
                         enterGrid("Cost", e.RowIndex).Value = selectedStock.Cost
                         enterGrid("OnHand", e.RowIndex).Value = selectedStock.QtyOnHand
@@ -770,7 +774,7 @@
 
         enterGrid.Columns.Add("Id", "Id")
         enterGrid.Columns.Add("Stock", "Stock")
-        enterGrid.Columns.Add("Desc", "Description")
+        'enterGrid.Columns.Add("Desc", "Description")
         enterGrid.Columns.Add("Qty", "Qty")
         enterGrid.Columns.Add("Unit", "Unit")
         enterGrid.Columns.Add("Price", "Price")
@@ -807,9 +811,9 @@
         enterGrid.Columns.Item("Qty").Width = 40
         enterGrid.Columns.Item("Unit").Width = 40
 
-        enterGrid.Columns.Item("Stock").MinimumWidth = 130
+        enterGrid.Columns.Item("Stock").MinimumWidth = 270
         enterGrid.Columns.Item("Amount").MinimumWidth = 100
-        enterGrid.Columns.Item("Desc").MinimumWidth = 140
+        'enterGrid.Columns.Item("Desc").MinimumWidth = 140
 
         updateColumnSizes()
     End Sub

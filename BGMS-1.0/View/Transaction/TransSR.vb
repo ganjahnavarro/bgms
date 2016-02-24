@@ -479,18 +479,17 @@
         Util.clearRows(enterGrid)
 
         Dim hasDisc1, hasDisc2 As Boolean
-
+        'orderItem.stock.Description, _
         For Each orderItem In orderItems
-            enterGrid.Rows.Add( _
-                orderItem.Id, _
-                orderItem.stock.Name, _
-                orderItem.stock.Description, _
-                orderItem.Price, _
-                orderItem.Discount1, _
-                orderItem.Discount2, _
-                orderItem.Quantity, _
-                orderItem.stock.unit.Name, _
-                getRowAmount(orderItem.Quantity, orderItem.Price, _
+            enterGrid.Rows.Add(
+                orderItem.Id,
+                orderItem.stock.Name + " : " + orderItem.stock.Description,
+                orderItem.Price,
+                orderItem.Discount1,
+                orderItem.Discount2,
+                orderItem.Quantity,
+                orderItem.stock.unit.Name,
+                getRowAmount(orderItem.Quantity, orderItem.Price,
                     orderItem.Discount1, orderItem.Discount2))
 
             hasDisc1 = If(orderItem.Discount1 > 0, True, hasDisc1)
@@ -547,13 +546,16 @@
     Private Sub setItemValues(ByRef orderItem As salesreturnitem, _
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
+        Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
+        stockCode = stockCode.Trim
+
         orderItem.Price = enterGrid("Price", rowIndex).Value
         orderItem.Discount1 = enterGrid("Disc1", rowIndex).Value
         orderItem.Discount2 = enterGrid("Disc2", rowIndex).Value
         orderItem.Quantity = enterGrid("Qty", rowIndex).Value
 
         orderItem.stockId = context.stocks _
-                   .Where(Function(c) c.Name.ToUpper.Equals(stockName.ToUpper) And c.Active = True) _
+                   .Where(Function(c) c.Name.ToUpper.Equals(stockCode.ToUpper) And c.Active = True) _
                    .Select(Function(c) c.Id).FirstOrDefault
     End Sub
 
@@ -612,19 +614,21 @@
     Private Sub stockChanged(ByVal e As DataGridViewCellEventArgs)
         If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
             Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
+            Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
+            stockCode = stockCode.Trim
 
-            If Not IsNothing(stockName) Then
-                If stockName.ToUpper.Equals(prevStockName.ToUpper) Then
+            If Not IsNothing(stockCode) Then
+                If stockCode.ToUpper.Equals(prevStockName.ToUpper) Then
                     Exit Sub
                 End If
 
-                prevStockName = stockName
+                prevStockName = stockCode
                 Using context As New bgmsEntities
                     selectedStock = context.stocks _
-                        .Where(Function(c) c.Name.Equals(stockName) And c.Active = True).FirstOrDefault
+                        .Where(Function(c) c.Name.Equals(stockCode) And c.Active = True).FirstOrDefault
 
                     If Not IsNothing(selectedStock) Then
-                        enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
+                        'enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
                         enterGrid("Unit", e.RowIndex).Value = selectedStock.unit.Name
                         reloadSelectedStockVariables(e.RowIndex, True)
                         varsChanged(e)
@@ -677,7 +681,7 @@
 
         enterGrid.Columns.Add("Id", "Id")
         enterGrid.Columns.Add("Stock", "Stock")
-        enterGrid.Columns.Add("Desc", "Description")
+        'enterGrid.Columns.Add("Desc", "Description")
         enterGrid.Columns.Add("Price", "Price")
         enterGrid.Columns.Add("Disc1", "Disc1")
         enterGrid.Columns.Add("Disc2", "Disc2")
@@ -705,9 +709,9 @@
         enterGrid.Columns.Item("Qty").Width = 40
         enterGrid.Columns.Item("Unit").Width = 40
 
-        enterGrid.Columns.Item("Stock").MinimumWidth = 130
+        enterGrid.Columns.Item("Stock").MinimumWidth = 270
         enterGrid.Columns.Item("Amount").MinimumWidth = 100
-        enterGrid.Columns.Item("Desc").MinimumWidth = 140
+        'enterGrid.Columns.Item("Desc").MinimumWidth = 140
     End Sub
 
     Public Sub resetListSelection() Implements IControl.resetListSelection
@@ -738,7 +742,7 @@
 
             For Each item In items
                 If Not stockList.Contains(item.stock.Name.ToUpper) Then
-                    stockList.Add(item.stock.Name.ToUpper)
+                    stockList.Add(item.stock.Name.ToUpper + " : " + item.stock.Description)
                 End If
             Next
         End Using
@@ -957,12 +961,14 @@
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
                 Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
+                Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
+                stockCode = stockCode.Trim
 
-                If Not IsNothing(stockName) Then
-                    prevStockName = stockName
+                If Not IsNothing(stockCode) Then
+                    prevStockName = stockCode
                     Using context As New bgmsEntities
                         selectedStock = context.stocks _
-                            .Where(Function(c) c.Name.Equals(stockName) _
+                            .Where(Function(c) c.Name.Equals(stockCode) _
                                 And c.Active = True).FirstOrDefault
 
                         If Not IsNothing(selectedStock) Then
@@ -1050,7 +1056,7 @@
     End Sub
 
     Private Sub setReadOnlyColumns()
-        enterGrid.Columns.Item("Desc").ReadOnly = True
+        'enterGrid.Columns.Item("Desc").ReadOnly = True
         enterGrid.Columns.Item("Unit").ReadOnly = True
         enterGrid.Columns.Item("Amount").ReadOnly = True
     End Sub
