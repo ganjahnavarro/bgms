@@ -12,15 +12,15 @@
 
     Public Overrides Sub init()
         BOUND_LEFT = BOUND_LEFT + 25
-        BOUND_RIGHT = BOUND_RIGHT - 25
+        BOUND_RIGHT = BOUND_RIGHT - 50
         WIDTH_MAX = BOUND_RIGHT - BOUND_LEFT
 
         report_name = "Sales Monitoring by Agent"
 
         col1 = BOUND_LEFT + PADDING_COL
-        col2 = col1 + CInt(0.136 * WIDTH_MAX)
-        col3 = col2 + CInt(0.136 * WIDTH_MAX)
-        col4 = col3 + CInt(0.365 * WIDTH_MAX)
+        col2 = col1 + CInt(0.12 * WIDTH_MAX)
+        col3 = col2 + CInt(0.12 * WIDTH_MAX)
+        col4 = col3 + CInt(0.397 * WIDTH_MAX)
         col5 = col4 + CInt(0.241 * WIDTH_MAX)
 
         w3 = col4 - col3 - PADDING_COL
