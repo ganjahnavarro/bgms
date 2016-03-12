@@ -18,7 +18,7 @@ Public Class PrintTransaction : Inherits PrintDocument
     Protected DASHED_PEN As New Pen(Brushes.Black)
 
     Private DATE_FORMAT As String = "dd MMMM yyyy"
-    Private ARIAL_9, ARIAL_11, ARIAL_13B, COURIER_10B As Font
+    Private ARIAL_9, ARIAL_9B, ARIAL_11, ARIAL_13B, COURIER_10B As Font
 
     Private ALIGN_CENTER As New StringFormat
     Private ALIGN_RIGHT As New StringFormat
@@ -43,6 +43,7 @@ Public Class PrintTransaction : Inherits PrintDocument
         RIGHT_PADDING = 20
 
         ARIAL_9 = New Font("Arial", 9.8)
+        ARIAL_9B = New Font("Arial", 9.8, FontStyle.Bold)
         ARIAL_11 = New Font("Arial", 11)
         ARIAL_13B = New Font("Arial", 13, FontStyle.Bold)
         COURIER_10B = New Font("Courier New", 10, FontStyle.Bold)
@@ -175,8 +176,8 @@ Public Class PrintTransaction : Inherits PrintDocument
         getGroupedDiscounts()
 
         For Each pair In transactionDict
-            Dim grouptotalAmount = 0
-            Dim grouptotalDiscounted = 0
+            Dim groupTotalAmount = 0
+            Dim groupTotalDiscounted = 0
             Dim groupDiscount As String = " "
             For Each item In pair.Value
                 e.Graphics.DrawString(item.Quantity, ARIAL_9,
@@ -189,34 +190,25 @@ Public Class PrintTransaction : Inherits PrintDocument
                 e.Graphics.DrawString(item.Description, ARIAL_9, Brushes.Black,
                 getRectangle(rDesc, Y))
 
-                'If isDiscountPerItem Then
-                '    e.Graphics.DrawString(item.getDiscountDisplay, ARIAL_9, Brushes.Black, cDiscs + 5, Y)
-                'End If
+                e.Graphics.DrawString(FormatNumber(item.getAmount, 2), ARIAL_9,
+                    Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
 
-                'e.Graphics.DrawString(FormatNumber(item.Price, 2), ARIAL_9,
-                'Brushes.Black, createRectangle(cPrice, cDiscs), ALIGN_RIGHT)
-
-                'If isDiscountPerItem Then
-                '    e.Graphics.DrawString(FormatNumber(item.getDiscountedAmount), ARIAL_9,
-                'Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
-                'Else
-                '    e.Graphics.DrawString(FormatNumber(item.getAmount, 2), ARIAL_9,
-                '    Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
-                'End If
                 totalAmount += item.getAmount
                 totalDiscounted += item.getDiscountedAmount
-                grouptotalAmount += item.getAmount
-                grouptotalDiscounted += item.getDiscountedAmount
+                groupTotalAmount += item.getAmount
+                groupTotalDiscounted += item.getDiscountedAmount
                 groupDiscount = item.getDiscountDisplay
                 addY(ROW_HEIGHT)
             Next
 
-            'TODO Format discount display
+            Dim discountComputation As String = FormatNumber(groupTotalAmount, 2) & "     -     " &
+                FormatNumber((groupTotalAmount - groupTotalDiscounted), 2) & "     (" & groupDiscount & ")"
 
-            e.Graphics.DrawString(FormatNumber(grouptotalDiscounted, 2), ARIAL_9,
-            Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
+            e.Graphics.DrawString(discountComputation, ARIAL_9, Brushes.Black, cDesc - 50, Y)
 
-            e.Graphics.DrawString(groupDiscount, ARIAL_9, Brushes.Black, cDiscs + 5, Y)
+            e.Graphics.DrawString(FormatNumber(groupTotalDiscounted, 2), ARIAL_9B,
+                Brushes.Black, createRectangle(cDesc, BOUND_RIGHT - (RIGHT_PADDING + 10)), ALIGN_RIGHT)
+
             addY(ROW_HEIGHT)
         Next
 

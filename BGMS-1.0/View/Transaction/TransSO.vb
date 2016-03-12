@@ -688,8 +688,12 @@
     Private Sub stockChanged(ByVal e As DataGridViewCellEventArgs)
         If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
             Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
-            Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-            stockCode = stockCode.Trim
+            Dim stockCode As String = Nothing
+
+            If stockName.Contains(":") Then
+                stockCode = stockName.Substring(0, stockName.LastIndexOf(":"))
+                stockCode = stockCode.Trim
+            End If
 
             If Not IsNothing(stockCode) Then
                 If stockCode.ToUpper.Equals(prevStockName.ToUpper) Then
