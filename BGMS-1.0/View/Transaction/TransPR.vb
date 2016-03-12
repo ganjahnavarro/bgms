@@ -7,7 +7,7 @@
     Dim totalAmount As Double
     Dim prevStockName As String
 
-    Dim stockList As New AutoCompleteStringCollection
+    Dim stockListDesc As New AutoCompleteStringCollection
     Dim priceList As New List(Of Double)
     Dim discount1List As New List(Of Double)
     Dim discount2List As New List(Of Double)
@@ -692,7 +692,7 @@
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteSource = AutoCompleteSource.CustomSource
                 tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-                tb.AutoCompleteCustomSource = stockList
+                tb.AutoCompleteCustomSource = stockListDesc
             Else
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteMode = AutoCompleteMode.None
@@ -701,7 +701,7 @@
     End Sub
 
     Private Sub reloadStocks(ByVal name As String)
-        stockList.Clear()
+        stockListDesc.Clear()
         Using context As New bgmsEntities
             Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
                 "where p.posteddate is not null and c.purchaseorderid = p.id and p.supplierid = s.id " & _
@@ -710,8 +710,8 @@
             Dim items As List(Of purchaseorderitem) = context.purchaseorderitems.SqlQuery(qry).ToList
 
             For Each item In items
-                If Not stockList.Contains(item.stock.Name.ToUpper) Then
-                    stockList.Add(item.stock.Name.ToUpper + " : " + item.stock.Description)
+                If Not stockListDesc.Contains(item.stock.Name.ToUpper) Then
+                    stockListDesc.Add(item.stock.Name.ToUpper + " : " + item.stock.Description)
                 End If
             Next
         End Using
@@ -899,7 +899,7 @@
     Private Sub enterGrid_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.RowValidating
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not String.IsNullOrWhiteSpace(enterGrid("Stock", e.RowIndex).Value) Then
-                If Not stockList.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper) Then
+                If Not stockListDesc.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper) Then
                     Util.notifyError("Invalid Stock Name.")
                     e.Cancel = True
                     enterGrid.CurrentCell = enterGrid("Stock", e.RowIndex)
@@ -1042,7 +1042,7 @@
 
             If String.IsNullOrEmpty(tbSupplier.Text) Then
                 enterGrid.ReadOnly = True
-                stockList.Clear()
+                stockListDesc.Clear()
             Else
                 reloadStocks(tbSupplier.Text)
                 enterGrid.ReadOnly = False

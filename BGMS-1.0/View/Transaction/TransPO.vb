@@ -11,7 +11,7 @@
     Dim prevStockName As String
 
     Private Sub postConstruct(sender As Object, e As EventArgs) Handles MyBase.Load
-        Controller.initStocks()
+        Controller.initStocksDesc()
         Controller.initSuppliers()
         tbSupplier.AutoCompleteSource = AutoCompleteSource.CustomSource
         tbSupplier.AutoCompleteMode = AutoCompleteMode.SuggestAppend
@@ -739,7 +739,7 @@
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteSource = AutoCompleteSource.CustomSource
                 tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-                tb.AutoCompleteCustomSource = Controller.stockList
+                tb.AutoCompleteCustomSource = Controller.stockListDesc
                 tb.Width = tb.Width + 1000
             Else
                 Dim tb As TextBox = e.Control
@@ -825,7 +825,7 @@
     Private Sub enterGrid_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.RowValidating
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not String.IsNullOrWhiteSpace(enterGrid("Stock", e.RowIndex).Value) Then
-                If Not Controller.stockList.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper) Then
+                If Not Controller.stockListDesc.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper) Then
                     Util.notifyError("Invalid Stock Name.")
                     e.Cancel = True
                     enterGrid.CurrentCell = enterGrid("Stock", e.RowIndex)

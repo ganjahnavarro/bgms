@@ -2,7 +2,7 @@
 
     Public items As List(Of _Movement)
 
-    Private cStock, cDateMv, cDoc, cName, cQty, cPrice, cTotalLabel, _
+    Private cStock, cDateMv, cDoc, cName, cQty, cPrice, cDisc, cTotalLabel,
         stockTotal As Integer
     Private rQty, rPrice As Rectangle
     Private currentStock As String
@@ -15,7 +15,8 @@
         cDateMv = cStock + 40
         cDoc = cDateMv + CInt(0.14 * WIDTH_MAX)
         cName = cDoc + CInt(0.15 * WIDTH_MAX)
-        cQty = cName + CInt(0.45 * WIDTH_MAX)
+        cDisc = cName + CInt(0.325 * WIDTH_MAX)
+        cQty = cDisc + CInt(0.125 * WIDTH_MAX)
         cPrice = cQty + CInt(0.07 * WIDTH_MAX)
 
         cTotalLabel = cName + CInt(0.25 * WIDTH_MAX)
@@ -65,32 +66,35 @@
     End Sub
 
     Private Sub drawItems(ByRef e As Printing.PrintPageEventArgs)
+        Dim item As _Movement = items(INDEX)
+
         If String.IsNullOrEmpty(currentStock) Then
-            currentStock = items(INDEX).Stock
+            currentStock = item.Stock
             e.Graphics.DrawString(currentStock, COURIER_10, Brushes.Black, cStock, Y)
             Y += ROW_HEIGHT + PADDING_COL
         End If
 
-        e.Graphics.DrawString(Format(items(INDEX).Date, Constants.DATE_FORMAT), _
+        e.Graphics.DrawString(Format(item.Date, Constants.DATE_FORMAT),
             COURIER_10, Brushes.Black, cDateMv, Y)
-        e.Graphics.DrawString(items(INDEX).Doc & ": " & items(INDEX).DocNo, COURIER_10, Brushes.Black, cDoc, Y)
-        e.Graphics.DrawString(items(INDEX).Filter, COURIER_10, Brushes.Black, cName, Y)
+        e.Graphics.DrawString(item.Doc & ": " & item.DocNo, COURIER_10, Brushes.Black, cDoc, Y)
+        e.Graphics.DrawString(item.Filter, COURIER_10, Brushes.Black, cName, Y)
+        e.Graphics.DrawString(item.getDiscountDisplay(True), COURIER_10, Brushes.Black, cDisc, Y)
 
         rQty.Y = Y
         rPrice.Y = Y
-        e.Graphics.DrawString(items(INDEX).Qty, COURIER_10, Brushes.Black, rQty, ALIGN_RIGHT)
+        e.Graphics.DrawString(item.Qty, COURIER_10, Brushes.Black, rQty, ALIGN_RIGHT)
 
         'Less than 0. (-1) For adjustments. Need same column numbers on union
-        If items(INDEX).Price < 0 Then
-            e.Graphics.DrawString(FormatNumber(prevPrice, 2), COURIER_10B, Brushes.Black, _
+        If item.Price < 0 Then
+            e.Graphics.DrawString(FormatNumber(prevPrice, 2), COURIER_10B, Brushes.Black,
                 rPrice, ALIGN_RIGHT)
         Else
-            e.Graphics.DrawString(FormatNumber(items(INDEX).Price, 2), COURIER_10B, Brushes.Black, _
+            e.Graphics.DrawString(FormatNumber(item.Price, 2), COURIER_10B, Brushes.Black,
                 rPrice, ALIGN_RIGHT)
-            prevPrice = items(INDEX).Price
+            prevPrice = item.Price
         End If
 
-        stockTotal += items(INDEX).Qty
+        stockTotal += item.Qty
     End Sub
 
     Private Sub drawTotalForStock(ByRef e As Printing.PrintPageEventArgs)

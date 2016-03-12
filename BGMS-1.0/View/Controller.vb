@@ -7,6 +7,7 @@ Public Class Controller
     Public Shared config As New Dictionary(Of String, String)
 
     Public Shared stockList As New AutoCompleteStringCollection
+    Public Shared stockListDesc As New AutoCompleteStringCollection
     Public Shared agentList As New AutoCompleteStringCollection
     Public Shared categoryList As New AutoCompleteStringCollection
     Public Shared customerList As New AutoCompleteStringCollection
@@ -90,6 +91,14 @@ Public Class Controller
         stockList.Clear()
         Using context As New bgmsEntities
             stockList.AddRange(context.stocks.Where(Function(c) c.Active = True) _
+                .Select(Function(c) c.Name.ToUpper).ToArray())
+        End Using
+    End Sub
+
+    Public Sub initStocksDesc()
+        stockListDesc.Clear()
+        Using context As New bgmsEntities
+            stockListDesc.AddRange(context.stocks.Where(Function(c) c.Active = True) _
                 .Select(Function(c) c.Name.ToUpper + " : " + c.Description).ToArray())
         End Using
     End Sub

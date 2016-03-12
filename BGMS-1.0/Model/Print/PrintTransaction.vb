@@ -4,6 +4,7 @@ Imports System.Drawing.Printing
 Public Class PrintTransaction : Inherits PrintDocument
 
     Public items As List(Of _Transaction)
+    Public transactionDict As Dictionary(Of String, List(Of _Transaction))
     Public name, address, agent, docNo, stringDate As String
     Public docDate As Date
 
@@ -34,6 +35,8 @@ Public Class PrintTransaction : Inherits PrintDocument
     Private Sub initVariables()
         totalAmount = 0
         totalDiscounted = 0
+        transactionDict = New Dictionary(Of String, List(Of _Transaction))
+
         checkItemDiscounts()
 
         DASHED_PEN.DashPattern = DASHES
@@ -77,6 +80,21 @@ Public Class PrintTransaction : Inherits PrintDocument
         cDiscs = cPrice + CInt(0.1 * WIDTH_MAX)
         cAmount = cDiscs + CInt(0.06 * WIDTH_MAX)
     End Sub
+
+    Private Sub getGroupedDiscounts()
+        For Each transac In items
+            transac.sortDiscount()
+            Dim key As String = transac.Discount1.ToString + "-" + transac.Discount2.ToString + "-" + transac.Discount3.ToString
+            If transactionDict.ContainsKey(key) Then
+                transactionDict.Item(key).Add(transac)
+            Else
+                Dim list As New List(Of _Transaction)
+                list.Add(transac)
+                transactionDict.Add(key, list)
+            End If
+        Next
+    End Sub
+
 
     Private Sub checkItemDiscounts()
         isDiscountPerItem = False
@@ -152,37 +170,53 @@ Public Class PrintTransaction : Inherits PrintDocument
     End Sub
 
     Private Sub printBody(ByRef e As Printing.PrintPageEventArgs)
+        isDiscountPerItem = True
         addY(67)
+        getGroupedDiscounts()
 
-        For Each item In items
-            e.Graphics.DrawString(item.Quantity, ARIAL_9, _
-                Brushes.Black, createRectangle(cQty, cUnit), ALIGN_RIGHT)
+        For Each pair In transactionDict
+            Dim grouptotalAmount = 0
+            Dim grouptotalDiscounted = 0
+            Dim groupDiscount As String = " "
+            For Each item In pair.Value
+                e.Graphics.DrawString(item.Quantity, ARIAL_9,
+                        Brushes.Black, createRectangle(cQty, cUnit), ALIGN_RIGHT)
 
-            e.Graphics.DrawString(item.Unit, ARIAL_9, Brushes.Black, cUnit, Y)
+                e.Graphics.DrawString(item.Unit, ARIAL_9, Brushes.Black, cUnit, Y)
 
-            e.Graphics.DrawString(item.Stock, ARIAL_9, Brushes.Black, cStock, Y)
+                e.Graphics.DrawString(item.Stock, ARIAL_9, Brushes.Black, cStock, Y)
 
-            e.Graphics.DrawString(item.Description, ARIAL_9, Brushes.Black, _
+                e.Graphics.DrawString(item.Description, ARIAL_9, Brushes.Black,
                 getRectangle(rDesc, Y))
 
-            If isDiscountPerItem Then
-                e.Graphics.DrawString(item.getDiscountDisplay, ARIAL_9, Brushes.Black, cDiscs + 5, Y)
-            End If
+                'If isDiscountPerItem Then
+                '    e.Graphics.DrawString(item.getDiscountDisplay, ARIAL_9, Brushes.Black, cDiscs + 5, Y)
+                'End If
 
-            e.Graphics.DrawString(FormatNumber(item.Price, 2), ARIAL_9, _
-                Brushes.Black, createRectangle(cPrice, cDiscs), ALIGN_RIGHT)
+                'e.Graphics.DrawString(FormatNumber(item.Price, 2), ARIAL_9,
+                'Brushes.Black, createRectangle(cPrice, cDiscs), ALIGN_RIGHT)
 
-            If isDiscountPerItem Then
-                e.Graphics.DrawString(FormatNumber(item.getDiscountedAmount), ARIAL_9, _
-                    Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
-            Else
-                e.Graphics.DrawString(FormatNumber(item.getAmount, 2), ARIAL_9, _
-                    Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
-            End If
+                'If isDiscountPerItem Then
+                '    e.Graphics.DrawString(FormatNumber(item.getDiscountedAmount), ARIAL_9,
+                'Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
+                'Else
+                '    e.Graphics.DrawString(FormatNumber(item.getAmount, 2), ARIAL_9,
+                '    Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
+                'End If
+                totalAmount += item.getAmount
+                totalDiscounted += item.getDiscountedAmount
+                grouptotalAmount += item.getAmount
+                grouptotalDiscounted += item.getDiscountedAmount
+                groupDiscount = item.getDiscountDisplay
+                addY(ROW_HEIGHT)
+            Next
 
-            totalAmount += item.getAmount
-            totalDiscounted += item.getDiscountedAmount
+            'TODO Format discount display
 
+            e.Graphics.DrawString(FormatNumber(grouptotalDiscounted, 2), ARIAL_9,
+            Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
+
+            e.Graphics.DrawString(groupDiscount, ARIAL_9, Brushes.Black, cDiscs + 5, Y)
             addY(ROW_HEIGHT)
         Next
 
@@ -204,7 +238,7 @@ Public Class PrintTransaction : Inherits PrintDocument
             Not String.IsNullOrWhiteSpace(items(0).getDiscountDisplay) Then
             addY(ROW_HEIGHT)
 
-            e.Graphics.DrawString(items(0).getDiscountDisplay(False), ARIAL_11, _
+            e.Graphics.DrawString(items(0).getDiscountDisplay(False), ARIAL_11,
                 Brushes.Black, cPrice - 30, Y)
             e.Graphics.DrawString(FormatNumber(totalAmount - totalDiscounted, 2), ARIAL_9, _
                 Brushes.Black, createRectangle(cPrice, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
@@ -213,8 +247,8 @@ Public Class PrintTransaction : Inherits PrintDocument
             e.Graphics.DrawLine(DASHED_PEN, cAmount - 20, Y, BOUND_RIGHT - RIGHT_PADDING, Y)
             addY(4)
 
-            e.Graphics.DrawString(FormatNumber(totalDiscounted, 2), ARIAL_11, _
-            Brushes.Black, createRectangle(cPrice, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
+            e.Graphics.DrawString(FormatNumber(totalDiscounted, 2), ARIAL_11,
+            Brushes.Black, createRectangle(cPrice, BOUND_LEFT - RIGHT_PADDING), ALIGN_RIGHT)
         End If
     End Sub
 
