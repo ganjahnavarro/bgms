@@ -191,7 +191,7 @@ Public Class PrintTransaction : Inherits PrintDocument
                 getRectangle(rDesc, Y))
 
                 e.Graphics.DrawString(FormatNumber(item.getAmount, 2), ARIAL_9,
-                    Brushes.Black, createRectangle(cAmount, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
+                    Brushes.Black, createRectangle(cDesc, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
 
                 totalAmount += item.getAmount
                 totalDiscounted += item.getDiscountedAmount

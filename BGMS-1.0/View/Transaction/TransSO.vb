@@ -858,7 +858,16 @@
     Private Sub enterGrid_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.RowValidating
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not String.IsNullOrWhiteSpace(enterGrid("Stock", e.RowIndex).Value) Then
-                If Not Controller.stockListDesc.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper) Then
+
+                Dim stockName = enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper
+                Dim stockCode As String = Nothing
+
+                If stockName.Contains(":") Then
+                    stockCode = stockName.Substring(0, stockName.LastIndexOf(":"))
+                    stockCode = stockCode.ToUpper.Trim
+                End If
+
+                If Not IsNothing(stockCode) AndAlso Not Controller.stockList.Contains(stockCode) Then
                     Util.notifyError("Invalid Stock Name.")
                     e.Cancel = True
                     enterGrid.CurrentCell = enterGrid("Stock", e.RowIndex)
