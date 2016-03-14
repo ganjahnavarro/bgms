@@ -74,16 +74,17 @@
             "and i.stockid = s.id and sr.customerid = f.id and sr.posteddate is not null " &
             " and sr.date >= " & Util.inSql(dateFrom.Value) &
             " and sr.date <= " & Util.inSql(dateTo.Value) &
-            additionalCriteria & _
- _
-            " union all " & _
- _
-            "select s.name as stock, adj.modifydate as date, 'AD' as doc, concat('AD', adj.id) as docno, " &
-            "'' as filter, adj.quantity as qty, '-1' as price, '-1' as Discount1, '-1' as Discount2, '-1' as Discount3" &
-            " from adjustments adj, stocks s where adj.stockid = s.id " &
-            " and adj.modifydate >= " & Util.inSql(dateFrom.Value) &
-            " and adj.modifydate <= " & Util.inSql(dateTo.Value) &
             additionalCriteria
+        '       & _
+        '_
+        '           " union all " & _
+        '_
+        '           "select s.name as stock, adj.modifydate as date, 'AD' as doc, concat('AD', adj.id) as docno, " &
+        '           "'' as filter, adj.quantity as qty, '-1' as price, '-1' as Discount1, '-1' as Discount2, '-1' as Discount3" &
+        '           " from adjustments adj, stocks s where adj.stockid = s.id " &
+        '           " and adj.modifydate >= " & Util.inSql(dateFrom.Value) &
+        '           " and adj.modifydate <= " & Util.inSql(dateTo.Value) &
+        '           additionalCriteria
 
         qry += "order by stock, date "
 

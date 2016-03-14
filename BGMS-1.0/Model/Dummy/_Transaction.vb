@@ -9,15 +9,6 @@
     Public Property Discount2 As Double
     Public Property Discount3 As Double
 
-    Public Sub sortDiscount()
-        Dim arrayDisc() As Double = New Double() {Discount1, Discount2, Discount3}
-        Array.Sort(arrayDisc)
-        Discount1 = arrayDisc(0)
-        Discount2 = arrayDisc(1)
-        Discount3 = arrayDisc(2)
-
-    End Sub
-
     Public Function getAmount() As Double
         Return Price * Quantity
     End Function
@@ -45,9 +36,6 @@
     End Function
 
     Public Function getDiscountDisplay(ByVal withPrefix As Boolean) As String
-
-        sortDiscount()
-
         Dim display = String.Empty
         Dim prefix = If(withPrefix, "L", String.Empty)
 

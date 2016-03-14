@@ -84,7 +84,6 @@ Public Class PrintTransaction : Inherits PrintDocument
 
     Private Sub getGroupedDiscounts()
         For Each transac In items
-            transac.sortDiscount()
             Dim key As String = transac.Discount1.ToString + "-" + transac.Discount2.ToString + "-" + transac.Discount3.ToString
             If transactionDict.ContainsKey(key) Then
                 transactionDict.Item(key).Add(transac)
@@ -176,9 +175,10 @@ Public Class PrintTransaction : Inherits PrintDocument
         getGroupedDiscounts()
 
         For Each pair In transactionDict
-            Dim groupTotalAmount = 0
-            Dim groupTotalDiscounted = 0
-            Dim groupDiscount As String = " "
+            Dim groupTotalAmount As Double = 0
+            Dim groupTotalDiscounted As Double = 0
+            Dim groupDiscount As String = ""
+
             For Each item In pair.Value
                 e.Graphics.DrawString(item.Quantity, ARIAL_9,
                         Brushes.Black, createRectangle(cQty, cUnit), ALIGN_RIGHT)
@@ -189,6 +189,9 @@ Public Class PrintTransaction : Inherits PrintDocument
 
                 e.Graphics.DrawString(item.Description, ARIAL_9, Brushes.Black,
                 getRectangle(rDesc, Y))
+
+                e.Graphics.DrawString(FormatNumber(item.Price, 2), ARIAL_9,
+                    Brushes.Black, createRectangle(cPrice, cDiscs), ALIGN_RIGHT)
 
                 e.Graphics.DrawString(FormatNumber(item.getAmount, 2), ARIAL_9,
                     Brushes.Black, createRectangle(cDesc, BOUND_RIGHT - RIGHT_PADDING), ALIGN_RIGHT)
@@ -201,10 +204,12 @@ Public Class PrintTransaction : Inherits PrintDocument
                 addY(ROW_HEIGHT)
             Next
 
-            Dim discountComputation As String = FormatNumber(groupTotalAmount, 2) & "     -     " &
+            If Not String.IsNullOrWhiteSpace(groupDiscount) Then
+                Dim discountComputation As String = FormatNumber(groupTotalAmount, 2) & "     -     " &
                 FormatNumber((groupTotalAmount - groupTotalDiscounted), 2) & "     (" & groupDiscount & ")"
 
-            e.Graphics.DrawString(discountComputation, ARIAL_9, Brushes.Black, cDesc - 50, Y)
+                e.Graphics.DrawString(discountComputation, ARIAL_9, Brushes.Black, cDesc - 50, Y)
+            End If
 
             e.Graphics.DrawString(FormatNumber(groupTotalDiscounted, 2), ARIAL_9B,
                 Brushes.Black, createRectangle(cDesc, BOUND_RIGHT - (RIGHT_PADDING + 10)), ALIGN_RIGHT)
