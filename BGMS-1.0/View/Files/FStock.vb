@@ -241,6 +241,7 @@
 
         Util.notifyInfo("Added 1 Stock")
         Controller.stockList.Add(currentObject.Name.ToUpper)
+        Controller.stockDictionary.Add(currentObject.Name.Trim.ToUpper, currentObject.Description.ToUpper)
     End Sub
 
     Public Sub search() Implements IControl.search
@@ -248,7 +249,7 @@
     End Sub
 
     Public Sub setObjectValues(ByRef context As bgmsEntities)
-        currentObject.Name = tbName.Text
+        currentObject.Name = tbName.Text.Trim
         currentObject.Description = tbDescription.Text
         currentObject.Cost = If(String.IsNullOrWhiteSpace(tbCost.Text), Nothing, tbCost.Text)
         currentObject.Price = If(String.IsNullOrWhiteSpace(tbLast.Text), Nothing, tbLast.Text)

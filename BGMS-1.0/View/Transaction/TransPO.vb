@@ -16,9 +16,6 @@
         tbSupplier.AutoCompleteMode = AutoCompleteMode.SuggestAppend
         tbSupplier.AutoCompleteCustomSource = Controller.supplierList
 
-        'TODO
-        loadStockGrid()
-
         loadGrid()
         initialize()
         prevStockName = String.Empty
@@ -39,9 +36,6 @@
     End Sub
 
     Private Sub enterGrid_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.CellBeginEdit
-        'TODO Remove
-        Console.WriteLine("Cell begin edit..")
-
         btnCheck.Visible = False
         btnAddItem.Visible = False
     End Sub
@@ -154,6 +148,9 @@
     Public Sub showUpdateButtons(ByVal show As Boolean)
         btnCheck.Visible = show
         btnCancel.Visible = show
+
+        stockDescription.Text = String.Empty
+        stockDescription.Visible = show
 
         btnAdd.Visible = Not show
 
@@ -487,11 +484,12 @@
         Util.clearRows(enterGrid)
 
         Dim hasDisc1, hasDisc2, hasDisc3 As Boolean
-        'orderItem.stock.Description,
+
         For Each orderItem In orderItems
             enterGrid.Rows.Add(
                 orderItem.Id,
-                orderItem.stock.Name + " : " + orderItem.stock.Description,
+                orderItem.stock.Name,
+                orderItem.stock.Description,
                 orderItem.Quantity,
                 orderItem.stock.unit.Name,
                 orderItem.Price,
@@ -517,9 +515,6 @@
     End Sub
 
     Private Sub enterGrid_UserAddedRow(sender As Object, e As DataGridViewRowEventArgs) Handles enterGrid.UserAddedRow
-        'TODO Remove
-        Console.WriteLine("User added row..")
-
         updateCountLabel()
     End Sub
 
@@ -530,9 +525,8 @@
 
         enterGrid.Columns.Add("Id", "Id")
         enterGrid.Columns.Add("Stock", "Stock")
-        'enterGrid.Columns.Add("Desc", "Description")
+        enterGrid.Columns.Add("Desc", "Description")
         enterGrid.Columns.Add("Qty", "Qty")
-        'enterGrid.Columns.Add("Available", "Available")
         enterGrid.Columns.Add("Unit", "Unit")
         enterGrid.Columns.Add("Price", "Price")
         enterGrid.Columns.Add("Disc1", "D1")
@@ -543,9 +537,9 @@
         enterGrid.Columns.Item("Qty").Width = 40
         enterGrid.Columns.Item("Unit").Width = 40
 
-        enterGrid.Columns.Item("Stock").MinimumWidth = 270
+        enterGrid.Columns.Item("Stock").MinimumWidth = 130
         enterGrid.Columns.Item("Amount").MinimumWidth = 100
-        'enterGrid.Columns.Item("Desc").MinimumWidth = 140
+        enterGrid.Columns.Item("Desc").MinimumWidth = 140
 
         enterGrid.Columns.Item("Id").Visible = False
         setReadOnlyColumns()
@@ -569,9 +563,6 @@
     End Sub
 
     Private Sub enterGrid_CellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.CellValidated
-        'TODO Remove
-        Console.WriteLine("Cell validated..")
-
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             Select Case e.ColumnIndex
                 Case 1
@@ -587,34 +578,27 @@
     Private Sub stockChanged(ByVal e As DataGridViewCellEventArgs)
         If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
             Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
-            Dim stockCode As String = Nothing
 
-            If stockName.Contains(":") Then
-                stockCode = stockName.Substring(0, stockName.LastIndexOf(":"))
-                stockCode = stockCode.Trim
-            End If
-
-            If Not IsNothing(stockCode) Then
-                If stockCode.ToUpper.Equals(prevStockName.ToUpper) Then
+            If Not IsNothing(stockName) Then
+                If stockName.ToUpper.Equals(prevStockName.ToUpper) Then
                     Exit Sub
                 End If
 
-                prevStockName = stockCode
+                prevStockName = stockName
 
                 Using context As New bgmsEntities
                     selectedStock = context.stocks _
-                        .Where(Function(c) c.Name.Equals(stockCode) And c.Active = True).FirstOrDefault
+                        .Where(Function(c) c.Name.Equals(stockName) And c.Active = True).FirstOrDefault
 
                     If Not IsNothing(selectedStock) Then
-                        'enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
+                        enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
                         enterGrid("Unit", e.RowIndex).Value = selectedStock.unit.Name
 
+                        'TODO Check
                         'If IsNothing(enterGrid("Price", e.RowIndex).Value) Then
                         enterGrid("Price", e.RowIndex).Value =
                             If(selectedStock.Cost = 0, selectedStock.Price, selectedStock.Cost)
                         'End If
-
-                        'enterGrid("Available", e.RowIndex).Value = Util.getStockAvailableQty(selectedStock.Id)
 
                         If IsNothing(enterGrid("Qty", e.RowIndex).Value) Then
                             enterGrid("Qty", e.RowIndex).Value = 1
@@ -677,7 +661,6 @@
         Return Nothing
     End Function
 
-
     Private Sub updateTotalAmount()
         totalAmount = 0
 
@@ -725,8 +708,6 @@
     Private Sub setItemValues(ByRef orderItem As purchaseorderitem, _
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
-        Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-        stockCode = stockCode.Trim
 
         orderItem.Price = enterGrid("Price", rowIndex).Value
         orderItem.Quantity = enterGrid("Qty", rowIndex).Value
@@ -741,7 +722,7 @@
         orderItem.Discount3 = disc3
 
         orderItem.stockId = context.stocks _
-            .Where(Function(c) c.Name.ToUpper.Equals(stockCode.ToUpper) And c.Active = True) _
+            .Where(Function(c) c.Name.ToUpper.Equals(stockName.Trim.ToUpper) And c.Active = True) _
             .Select(Function(c) c.Id).FirstOrDefault
     End Sub
 
@@ -749,19 +730,14 @@
     End Sub
 
     Private Sub enterGrid_EditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles enterGrid.EditingControlShowing
-        'TODO Remove
-        Console.WriteLine("Edit control showing..")
-
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If enterGrid.Columns.Item(enterGrid.CurrentCell.ColumnIndex).HeaderText = "Stock" Then
-                stockInput = e.Control
-                stockInput.CharacterCasing = CharacterCasing.Upper
-                AddHandler stockInput.TextChanged, AddressOf stockInput_TextChanged
-                AddHandler stockInput.KeyDown, AddressOf stockInput_KeyDown
+                Dim tb As TextBox = e.Control
+                tb.AutoCompleteSource = AutoCompleteSource.CustomSource
+                tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+                tb.AutoCompleteCustomSource = Controller.stockList
 
-                'tb.AutoCompleteSource = AutoCompleteSource.CustomSource
-                'tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-                'tb.AutoCompleteCustomSource = Controller.stockListDesc
+                AddHandler tb.TextChanged, AddressOf stockInputChanged
             Else
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteMode = AutoCompleteMode.None
@@ -769,99 +745,17 @@
         End If
     End Sub
 
-    'start stock selection
+    Private Sub stockInputChanged(sender As Object, e As EventArgs)
+        If Not String.IsNullOrEmpty(Controller.updateMode) Then
+            Dim tb As TextBox = sender
 
-    Dim stockInput As TextBox
-    Dim selectedRowIndex As Integer
-
-    Private Sub enterGrid_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.CellClick
-        'TODO Remove
-        Console.WriteLine("Cell click..")
-
-        Dim bounds = enterGrid.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, True)
-        stockGrid.Location = New Point(0, bounds.Bottom)
-        enterGrid.Controls.Add(stockGrid)
-        stockGrid.Visible = True
-        stockGrid.BringToFront()
-    End Sub
-
-    Private Sub loadStockGrid()
-        Util.clearRows(stockGrid)
-        stockGrid.Columns.Clear()
-
-        stockGrid.Columns.Add("Stock", "Stock")
-        stockGrid.Columns.Add("Desc", "Description")
-
-        stockGrid.Width = 700
-        stockGrid.Height = 220
-
-        stockGrid.Columns("Stock").FillWeight = 3
-        stockGrid.Columns("Desc").FillWeight = 7
-    End Sub
-
-    Private Sub loadItems()
-        If Not IsNothing(stockGrid.Rows) Then
-            stockGrid.Rows.Clear()
-        End If
-
-        For Each pair In Controller.stockDictionary
-            If pair.Key.StartsWith(stockInput.Text) Then
-                stockGrid.Rows.Add(pair.Key, pair.Value)
-
-                If stockGrid.Rows.Count > 30 Then
-                    Exit Sub
-                End If
+            If Controller.stockDictionary.ContainsKey(tb.Text) Then
+                Controller.stockDictionary.TryGetValue(tb.Text, stockDescription.Text)
+            Else
+                stockDescription.Text = String.Empty
             End If
-        Next
-
-        '(dataGridView.ColumnHeadersVisible ? dataGridView.ColumnHeadersHeight  0) +
-        '      DataGridView.Rows.OfType<DataGridViewRow>().Where(r => r.Visible).Sum(r => r.Height);
-    End Sub
-
-    Private Sub stockInput_TextChanged(sender As Object, e As EventArgs)
-        'Handles stockInput.TextChanged
-        loadItems()
-        setSelectedRow()
-    End Sub
-
-    Private Sub stockInput_KeyDown(sender As Object, e As KeyEventArgs)
-        'Handles stockInput.KeyDown
-        If e.KeyCode.Equals(Keys.Down) Then
-            If selectedRowIndex + 1 < stockGrid.RowCount Then
-                selectedRowIndex = selectedRowIndex + 1
-                setSelectedRow()
-            End If
-
-            e.SuppressKeyPress = True
-            e.Handled = True
-
-        ElseIf e.KeyCode.Equals(Keys.Up) Then
-            If selectedRowIndex - 1 >= 0 Then
-                selectedRowIndex = selectedRowIndex - 1
-                setSelectedRow()
-            End If
-
-            e.SuppressKeyPress = True
-            e.Handled = True
-
-        ElseIf e.KeyCode.Equals(Keys.Enter) Then
-            Console.WriteLine("Value: " & stockGrid.CurrentCell.Value)
-            Me.Close()
-            e.SuppressKeyPress = True
         End If
     End Sub
-
-    Private Sub setSelectedRow()
-        If stockGrid.RowCount > 0 Then
-            stockGrid.ClearSelection()
-            stockGrid.CurrentCell = stockGrid.Rows(selectedRowIndex).Cells(0)
-            stockGrid.Rows(selectedRowIndex).Selected = True
-
-            'stockInput.Text = stockGrid.CurrentCell.Value
-        End If
-    End Sub
-
-    'end stock selection
 
     Private Sub discount1Changed(sender As Object, e As EventArgs) Handles tbDisc1.TextChanged
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
@@ -938,21 +832,12 @@
     End Sub
 
     Private Sub enterGrid_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.RowValidating
-        'TODO Remove
-        Console.WriteLine("Row validating..")
-
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not String.IsNullOrWhiteSpace(enterGrid("Stock", e.RowIndex).Value) Then
 
-                Dim stockName = enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper
-                Dim stockCode As String = Nothing
+                Dim stockName = enterGrid("Stock", e.RowIndex).Value
 
-                If stockName.Contains(":") Then
-                    stockCode = stockName.Substring(0, stockName.LastIndexOf(":"))
-                    stockCode = stockCode.ToUpper.Trim
-                End If
-
-                If Not IsNothing(stockCode) AndAlso Not Controller.stockList.Contains(stockCode) Then
+                If Not IsNothing(stockName) AndAlso Not Controller.stockList.Contains(stockName.ToString.Trim.ToUpper) Then
                     Util.notifyError("Invalid Stock Name.")
                     e.Cancel = True
                     enterGrid.CurrentCell = enterGrid("Stock", e.RowIndex)
@@ -1034,17 +919,11 @@
     End Sub
 
     Private Sub enterGrid_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.RowEnter
-        'TODO Remove
-        Console.WriteLine("Row enter..")
-
         Dim stockValue = enterGrid("Stock", e.RowIndex).Value
         prevStockName = If(Not IsNothing(stockValue), stockValue, String.Empty)
     End Sub
 
     Private Sub enterGrid_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.CellEnter
-        'TODO Remove
-        Console.WriteLine("Cell enter..")
-
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If enterGrid.Focused AndAlso enterGrid.CurrentCell.ReadOnly Then
                 SendKeys.Send("{TAB}")
@@ -1055,7 +934,7 @@
     End Sub
 
     Private Sub setReadOnlyColumns()
-        'enterGrid.Columns.Item("Desc").ReadOnly = True
+        enterGrid.Columns.Item("Desc").ReadOnly = True
         enterGrid.Columns.Item("Unit").ReadOnly = True
         enterGrid.Columns.Item("Amount").ReadOnly = True
     End Sub
@@ -1089,22 +968,15 @@
         Double.TryParse(values(10), d2)
         Double.TryParse(values(11), d3)
 
-        enterGrid.Rows.Add(values(0), values(1), values(2), _
-            qty, values(4), price, d1, d2, d3, _
+        enterGrid.Rows.Add(values(0), values(1), values(2),
+            qty, values(4), price, d1, d2, d3,
             getRowAmount(qty, price, d1, d2, d3))
 
         enterGrid.CurrentCell = enterGrid("Stock", enterGrid.RowCount - 2)
         updateCountLabel()
     End Sub
 
-    Private Sub enterGrid_KeyUp(sender As Object, e As KeyEventArgs) Handles enterGrid.KeyUp
-        'TODO Remove
-        Console.WriteLine("Key up: " & e.KeyValue)
-    End Sub
+    Private Sub enterGrid_CellClick(sender As Object, e As DataGridViewCellEventArgs)
 
-    Private Sub enterGrid_KeyDown(sender As Object, e As KeyEventArgs) Handles enterGrid.KeyDown
-        'TODO Remove
-        Console.WriteLine("Key down: " & e.KeyValue)
     End Sub
-
 End Class

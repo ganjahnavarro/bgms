@@ -7,7 +7,7 @@
     Dim selectedStock As stock
     Dim prevStockName As String
 
-    Dim stockListDesc As New AutoCompleteStringCollection
+    Dim stockList As New AutoCompleteStringCollection
     Dim priceList As New List(Of Double)
     Dim discountList1 As New List(Of Double)
     Dim discountList2 As New List(Of Double)
@@ -158,6 +158,9 @@
         btnCancel.Visible = show
 
         btnAdd.Visible = Not show
+
+        stockDescription.Text = String.Empty
+        stockDescription.Visible = show
 
         If getAllowEditDelete() Then
             btnEdit.Visible = Not show
@@ -479,11 +482,12 @@
         Util.clearRows(enterGrid)
 
         Dim hasDisc1, hasDisc2 As Boolean
-        'orderItem.stock.Description, _
+
         For Each orderItem In orderItems
             enterGrid.Rows.Add(
                 orderItem.Id,
-                orderItem.stock.Name + " : " + orderItem.stock.Description,
+                orderItem.stock.Name,
+                orderItem.stock.Description,
                 orderItem.Price,
                 orderItem.Discount1,
                 orderItem.Discount2,
@@ -628,7 +632,7 @@
                         .Where(Function(c) c.Name.Equals(stockCode) And c.Active = True).FirstOrDefault
 
                     If Not IsNothing(selectedStock) Then
-                        'enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
+                        enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
                         enterGrid("Unit", e.RowIndex).Value = selectedStock.unit.Name
                         reloadSelectedStockVariables(e.RowIndex, True)
                         varsChanged(e)
@@ -681,7 +685,7 @@
 
         enterGrid.Columns.Add("Id", "Id")
         enterGrid.Columns.Add("Stock", "Stock")
-        'enterGrid.Columns.Add("Desc", "Description")
+        enterGrid.Columns.Add("Desc", "Description")
         enterGrid.Columns.Add("Price", "Price")
         enterGrid.Columns.Add("Disc1", "Disc1")
         enterGrid.Columns.Add("Disc2", "Disc2")
@@ -709,9 +713,9 @@
         enterGrid.Columns.Item("Qty").Width = 40
         enterGrid.Columns.Item("Unit").Width = 40
 
-        enterGrid.Columns.Item("Stock").MinimumWidth = 270
+        enterGrid.Columns.Item("Stock").MinimumWidth = 130
         enterGrid.Columns.Item("Amount").MinimumWidth = 100
-        'enterGrid.Columns.Item("Desc").MinimumWidth = 140
+        enterGrid.Columns.Item("Desc").MinimumWidth = 140
     End Sub
 
     Public Sub resetListSelection() Implements IControl.resetListSelection
@@ -723,7 +727,9 @@
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteSource = AutoCompleteSource.CustomSource
                 tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-                tb.AutoCompleteCustomSource = stockListDesc
+                tb.AutoCompleteCustomSource = stockList
+
+                AddHandler tb.TextChanged, AddressOf stockInputChanged
             Else
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteMode = AutoCompleteMode.None
@@ -731,8 +737,20 @@
         End If
     End Sub
 
+    Private Sub stockInputChanged(sender As Object, e As EventArgs)
+        If Not String.IsNullOrEmpty(Controller.updateMode) Then
+            Dim tb As TextBox = sender
+
+            If Controller.stockDictionary.ContainsKey(tb.Text) Then
+                Controller.stockDictionary.TryGetValue(tb.Text, stockDescription.Text)
+            Else
+                stockDescription.Text = String.Empty
+            End If
+        End If
+    End Sub
+
     Private Sub reloadStocks(ByVal name As String)
-        stockListDesc.Clear()
+        stockList.Clear()
         Using context As New bgmsEntities
             Dim qry As String = "select c.* from salesorderitems c, salesorders p, customers s " & _
                 "where p.posteddate is not null and c.salesorderid = p.id and p.customerid = s.id " & _
@@ -741,8 +759,8 @@
             Dim items As List(Of salesorderitem) = context.salesorderitems.SqlQuery(qry).ToList
 
             For Each item In items
-                If Not stockListDesc.Contains(item.stock.Name.ToUpper) Then
-                    stockListDesc.Add(item.stock.Name.ToUpper + " : " + item.stock.Description)
+                If Not stockList.Contains(item.stock.Name.ToUpper) Then
+                    stockList.Add(item.stock.Name.ToUpper)
                 End If
             Next
         End Using
@@ -905,8 +923,10 @@
 
     Private Sub enterGrid_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.RowValidating
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
-            If Not String.IsNullOrWhiteSpace(enterGrid("Stock", e.RowIndex).Value) Then
-                If Not stockListDesc.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper) Then
+            Dim stockName = enterGrid("Stock", e.RowIndex).Value
+
+            If Not String.IsNullOrWhiteSpace(stockName) Then
+                If Not stockList.Contains(stockName.Trim.ToString.ToUpper) Then
                     Util.notifyError("Invalid Stock Name.")
                     e.Cancel = True
                     enterGrid.CurrentCell = enterGrid("Stock", e.RowIndex)
@@ -1022,7 +1042,7 @@
 
             If String.IsNullOrEmpty(tbCustomer.Text) Then
                 enterGrid.ReadOnly = True
-                stockListDesc.Clear()
+                stockList.Clear()
             Else
                 reloadStocks(tbCustomer.Text)
                 enterGrid.ReadOnly = False
@@ -1056,7 +1076,7 @@
     End Sub
 
     Private Sub setReadOnlyColumns()
-        'enterGrid.Columns.Item("Desc").ReadOnly = True
+        enterGrid.Columns.Item("Desc").ReadOnly = True
         enterGrid.Columns.Item("Unit").ReadOnly = True
         enterGrid.Columns.Item("Amount").ReadOnly = True
     End Sub

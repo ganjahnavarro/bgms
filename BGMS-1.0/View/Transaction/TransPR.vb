@@ -7,7 +7,7 @@
     Dim totalAmount As Double
     Dim prevStockName As String
 
-    Dim stockListDesc As New AutoCompleteStringCollection
+    Dim stockList As New AutoCompleteStringCollection
     Dim priceList As New List(Of Double)
     Dim discount1List As New List(Of Double)
     Dim discount2List As New List(Of Double)
@@ -68,6 +68,8 @@
             Controller.updateMode = Constants.UPDATE_MODE_EDIT
             Me.loadObject()
             showUpdateButtons(True)
+
+            reloadStocks(tbSupplier.Text)
         End If
     End Sub
 
@@ -154,6 +156,9 @@
         btnCancel.Visible = show
 
         btnAdd.Visible = Not show
+
+        stockDescription.Text = String.Empty
+        stockDescription.Visible = show
 
         If getAllowEditDelete() Then
             btnEdit.Visible = Not show
@@ -245,11 +250,12 @@
         Util.clearRows(enterGrid)
 
         Dim hasDisc1, hasDisc2, hasDisc3 As Boolean
-        'orderItem.stock.Description, _
+
         For Each orderItem In orderItems
             enterGrid.Rows.Add(
                 orderItem.Id,
-                orderItem.stock.Name + " : " + orderItem.stock.Description,
+                orderItem.stock.Name,
+                orderItem.stock.Description,
                 orderItem.Price,
                 orderItem.Discount1,
                 orderItem.Discount2,
@@ -299,6 +305,9 @@
         tbRemarks.Enabled = enable
         docDate.Enabled = enable
         tbSupplier.Enabled = enable
+
+        enterGrid.ReadOnly = Not enable
+        setReadOnlyColumns()
 
         If enable = True Then
             tbDocNo.Text = getUpdatedDocumentNo()
@@ -436,8 +445,6 @@
     Private Sub setItemValues(ByRef orderItem As purchasereturnitem, _
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
-        Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-        stockCode = stockCode.Trim
 
         orderItem.Price = enterGrid("Price", rowIndex).Value
         orderItem.Quantity = enterGrid("Qty", rowIndex).Value
@@ -446,7 +453,7 @@
         orderItem.Discount3 = enterGrid("Disc3", rowIndex).Value
 
         orderItem.stockId = context.stocks _
-                   .Where(Function(c) c.Name.ToUpper.Equals(stockCode.ToUpper) AndAlso c.Active = True) _
+                   .Where(Function(c) c.Name.ToUpper.Equals(stockName.Trim.ToUpper) AndAlso c.Active = True) _
                    .Select(Function(c) c.Id).FirstOrDefault
     End Sub
 
@@ -474,7 +481,7 @@
 
         enterGrid.Columns.Add("Id", "Id")
         enterGrid.Columns.Add("Stock", "Stock")
-        'enterGrid.Columns.Add("Desc", "Description")
+        enterGrid.Columns.Add("Desc", "Description")
         enterGrid.Columns.Add("Price", "Price")
         enterGrid.Columns.Add("Disc1", "D1")
         enterGrid.Columns.Add("Disc2", "D2")
@@ -486,9 +493,9 @@
         enterGrid.Columns.Item("Qty").Width = 40
         enterGrid.Columns.Item("Unit").Width = 40
 
-        enterGrid.Columns.Item("Stock").MinimumWidth = 270
+        enterGrid.Columns.Item("Stock").MinimumWidth = 130
         enterGrid.Columns.Item("Amount").MinimumWidth = 100
-        'enterGrid.Columns.Item("Desc").MinimumWidth = 140
+        enterGrid.Columns.Item("Desc").MinimumWidth = 140
 
         enterGrid.Columns.Item("Id").Visible = False
         setReadOnlyColumns()
@@ -548,22 +555,22 @@
 
     Private Sub stockChanged(ByVal e As DataGridViewCellEventArgs)
         If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
-            Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
-            Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-            stockCode = stockCode.Trim
+            Dim stockName As String = enterGrid("Stock", e.RowIndex).Value
 
-            If Not IsNothing(stockCode) Then
-                If stockCode.ToUpper.Equals(prevStockName.ToUpper) Then
+            If Not IsNothing(stockName) Then
+                stockName = stockName.Trim.ToUpper
+
+                If stockName.Equals(prevStockName.Trim.ToUpper) Then
                     Exit Sub
                 End If
 
-                prevStockName = stockCode
+                prevStockName = stockName
                 Using context As New bgmsEntities
                     selectedStock = context.stocks _
-                        .Where(Function(c) c.Name.Equals(stockCode) AndAlso c.Active = True).FirstOrDefault
+                        .Where(Function(c) c.Name.Equals(stockName) AndAlso c.Active = True).FirstOrDefault
 
                     If Not IsNothing(selectedStock) Then
-                        'enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
+                        enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
                         enterGrid("Unit", e.RowIndex).Value = selectedStock.unit.Name
                         reloadSelectedStockVariables(e.RowIndex, True)
                         varsChanged(e)
@@ -692,7 +699,9 @@
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteSource = AutoCompleteSource.CustomSource
                 tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-                tb.AutoCompleteCustomSource = stockListDesc
+                tb.AutoCompleteCustomSource = stockList
+
+                AddHandler tb.TextChanged, AddressOf stockInputChanged
             Else
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteMode = AutoCompleteMode.None
@@ -700,8 +709,20 @@
         End If
     End Sub
 
+    Private Sub stockInputChanged(sender As Object, e As EventArgs)
+        If Not String.IsNullOrEmpty(Controller.updateMode) Then
+            Dim tb As TextBox = sender
+
+            If Controller.stockDictionary.ContainsKey(tb.Text) Then
+                Controller.stockDictionary.TryGetValue(tb.Text, stockDescription.Text)
+            Else
+                stockDescription.Text = String.Empty
+            End If
+        End If
+    End Sub
+
     Private Sub reloadStocks(ByVal name As String)
-        stockListDesc.Clear()
+        stockList.Clear()
         Using context As New bgmsEntities
             Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
                 "where p.posteddate is not null and c.purchaseorderid = p.id and p.supplierid = s.id " & _
@@ -710,8 +731,9 @@
             Dim items As List(Of purchaseorderitem) = context.purchaseorderitems.SqlQuery(qry).ToList
 
             For Each item In items
-                If Not stockListDesc.Contains(item.stock.Name.ToUpper) Then
-                    stockListDesc.Add(item.stock.Name.ToUpper + " : " + item.stock.Description)
+                If Not stockList.Contains(item.stock.Name.ToUpper) Then
+                    Console.WriteLine("Item: " & item.stock.Name)
+                    stockList.Add(item.stock.Name.Trim.ToUpper)
                 End If
             Next
         End Using
@@ -720,17 +742,13 @@
     Private Sub loadAvailablePrices(ByVal stockId As Integer, _
             ByVal name As String, ByVal setFields As Boolean, ByVal rowIndex As Integer)
         Using context As New bgmsEntities
-            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
-                "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.purchaseorderid = p.id and p.supplierid = s.id " & _
+            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
+                "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.purchaseorderid = p.id and p.supplierid = s.id " &
                 "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
 
             priceList = context.purchaseorderitems.SqlQuery(qry) _
                 .OrderByDescending(Function(c) c.Id) _
                 .Select(Function(c) c.Price).ToList
-
-            '.Where(Function(c) c.purchaseorder.supplier.Name.ToUpper.Equals(name.ToUpper) _
-            '    AndAlso c.purchaseorder.supplier.Active = True _
-            '    AndAlso c.stockId.Equals(stockId)
         End Using
 
         If setFields AndAlso priceList.Count > 0 Then
@@ -861,10 +879,10 @@
         Dim maxQtyOrdered, maxQtyReturned As Integer
 
         Using context As New bgmsEntities
-            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
-               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price & _
-               "' and c.discount1 = '" & disc1 & "' and c.discount2 = '" & disc2 & "' and c.discount3 = '" & disc3 & _
-               "' and c.purchaseorderid = p.id and p.supplierid = s.id " & _
+            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
+               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price &
+               "' and c.discount1 = '" & disc1 & "' and c.discount2 = '" & disc2 & "' and c.discount3 = '" & disc3 &
+               "' and c.purchaseorderid = p.id and p.supplierid = s.id " &
                "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
 
             Dim orderedItems = context.purchaseorderitems.SqlQuery(qry).ToList
@@ -899,7 +917,7 @@
     Private Sub enterGrid_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.RowValidating
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not String.IsNullOrWhiteSpace(enterGrid("Stock", e.RowIndex).Value) Then
-                If Not stockListDesc.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.ToUpper) Then
+                If Not stockList.Contains(enterGrid("Stock", e.RowIndex).Value.ToString.Trim.ToUpper) Then
                     Util.notifyError("Invalid Stock Name.")
                     e.Cancel = True
                     enterGrid.CurrentCell = enterGrid("Stock", e.RowIndex)
@@ -961,15 +979,15 @@
     Private Sub enterGrid_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.RowEnter
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
-                Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
-                Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-                stockCode = stockCode.Trim
+                Dim stockName As String = enterGrid("Stock", e.RowIndex).Value
 
-                If Not IsNothing(stockCode) Then
-                    prevStockName = stockCode
+                If Not IsNothing(stockName) Then
+                    stockName = stockName.Trim.ToUpper
+
+                    prevStockName = stockName
                     Using context As New bgmsEntities
                         selectedStock = context.stocks _
-                            .Where(Function(c) c.Name.Equals(stockCode) _
+                            .Where(Function(c) c.Name.Equals(stockName) _
                                 AndAlso c.Active = True).FirstOrDefault
 
                         If Not IsNothing(selectedStock) Then
@@ -1042,7 +1060,7 @@
 
             If String.IsNullOrEmpty(tbSupplier.Text) Then
                 enterGrid.ReadOnly = True
-                stockListDesc.Clear()
+                stockList.Clear()
             Else
                 reloadStocks(tbSupplier.Text)
                 enterGrid.ReadOnly = False
@@ -1063,7 +1081,7 @@
     End Sub
 
     Private Sub setReadOnlyColumns()
-        'enterGrid.Columns.Item("Desc").ReadOnly = True
+        enterGrid.Columns.Item("Desc").ReadOnly = True
         enterGrid.Columns.Item("Unit").ReadOnly = True
         enterGrid.Columns.Item("Amount").ReadOnly = True
     End Sub

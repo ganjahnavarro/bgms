@@ -59,6 +59,7 @@ Partial Class TransPR
         Me.notificationLabel = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.lblCount = New System.Windows.Forms.Label()
+        Me.stockDescription = New System.Windows.Forms.Label()
         Me.ButtonsPanel.SuspendLayout()
         CType(Me.btnPrint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSearch, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -249,10 +250,10 @@ Partial Class TransPR
         Me.Panel1.BackColor = System.Drawing.Color.MediumSeaGreen
         Me.Panel1.Controls.Add(Me.enterGrid)
         Me.Panel1.Font = New System.Drawing.Font("Tahoma", 13.0!)
-        Me.Panel1.Location = New System.Drawing.Point(20, 232)
+        Me.Panel1.Location = New System.Drawing.Point(20, 250)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Padding = New System.Windows.Forms.Padding(1)
-        Me.Panel1.Size = New System.Drawing.Size(993, 436)
+        Me.Panel1.Size = New System.Drawing.Size(993, 418)
         Me.Panel1.TabIndex = 132
         '
         'enterGrid
@@ -283,7 +284,7 @@ Partial Class TransPR
         Me.enterGrid.DefaultCellStyle = DataGridViewCellStyle3
         Me.enterGrid.EnableHeadersVisualStyles = False
         Me.enterGrid.GridColor = System.Drawing.Color.Gainsboro
-        Me.enterGrid.Location = New System.Drawing.Point(4, 3)
+        Me.enterGrid.Location = New System.Drawing.Point(4, 4)
         Me.enterGrid.MultiSelect = False
         Me.enterGrid.Name = "enterGrid"
         Me.enterGrid.ReadOnly = True
@@ -304,7 +305,7 @@ Partial Class TransPR
         Me.enterGrid.RowsDefaultCellStyle = DataGridViewCellStyle5
         Me.enterGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.enterGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
-        Me.enterGrid.Size = New System.Drawing.Size(975, 429)
+        Me.enterGrid.Size = New System.Drawing.Size(975, 428)
         Me.enterGrid.TabIndex = 144
         '
         'Label4
@@ -469,12 +470,25 @@ Partial Class TransPR
         Me.lblCount.Text = "0"
         Me.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'stockDescription
+        '
+        Me.stockDescription.AutoSize = True
+        Me.stockDescription.Font = New System.Drawing.Font("Tahoma", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.stockDescription.ForeColor = System.Drawing.Color.SeaGreen
+        Me.stockDescription.Location = New System.Drawing.Point(19, 222)
+        Me.stockDescription.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.stockDescription.Name = "stockDescription"
+        Me.stockDescription.Size = New System.Drawing.Size(139, 21)
+        Me.stockDescription.TabIndex = 175
+        Me.stockDescription.Text = "Stock Description"
+        '
         'TransPR
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1034, 742)
+        Me.ClientSize = New System.Drawing.Size(1034, 741)
+        Me.Controls.Add(Me.stockDescription)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.lblCount)
         Me.Controls.Add(Me.notificationPanel)
@@ -554,4 +568,5 @@ Partial Class TransPR
     Friend WithEvents btnPrint As System.Windows.Forms.PictureBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents lblCount As System.Windows.Forms.Label
+    Friend WithEvents stockDescription As Label
 End Class

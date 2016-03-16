@@ -61,6 +61,7 @@ Partial Class TransSR
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.lblCount = New System.Windows.Forms.Label()
+        Me.stockDescription = New System.Windows.Forms.Label()
         Me.ButtonsPanel.SuspendLayout()
         CType(Me.btnPrint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSearch, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -493,12 +494,25 @@ Partial Class TransSR
         Me.lblCount.Text = "0"
         Me.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'stockDescription
+        '
+        Me.stockDescription.AutoSize = True
+        Me.stockDescription.Font = New System.Drawing.Font("Tahoma", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.stockDescription.ForeColor = System.Drawing.Color.SeaGreen
+        Me.stockDescription.Location = New System.Drawing.Point(21, 224)
+        Me.stockDescription.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.stockDescription.Name = "stockDescription"
+        Me.stockDescription.Size = New System.Drawing.Size(139, 21)
+        Me.stockDescription.TabIndex = 176
+        Me.stockDescription.Text = "Stock Description"
+        '
         'TransSR
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1034, 742)
+        Me.ClientSize = New System.Drawing.Size(1034, 741)
+        Me.Controls.Add(Me.stockDescription)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.lblCount)
         Me.Controls.Add(Me.Label5)
@@ -582,4 +596,5 @@ Partial Class TransSR
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents lblCount As System.Windows.Forms.Label
+    Friend WithEvents stockDescription As Label
 End Class

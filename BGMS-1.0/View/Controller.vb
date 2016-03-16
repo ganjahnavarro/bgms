@@ -94,7 +94,7 @@ Public Class Controller
         stockList.Clear()
         Using context As New bgmsEntities
             stockList.AddRange(context.stocks.Where(Function(c) c.Active = True) _
-                .Select(Function(c) c.Name.ToUpper).ToArray())
+                .Select(Function(c) c.Name.Trim.ToUpper).ToArray())
         End Using
     End Sub
 

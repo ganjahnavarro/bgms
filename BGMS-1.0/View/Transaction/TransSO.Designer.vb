@@ -52,6 +52,7 @@ Partial Class TransSO
         Me.btnCancel = New System.Windows.Forms.PictureBox()
         Me.btnCheck = New System.Windows.Forms.PictureBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.enterGrid = New BGMS.EnterDataGridView()
         Me.lblPostedOn = New System.Windows.Forms.Label()
         Me.lblOn = New System.Windows.Forms.Label()
         Me.lblBy = New System.Windows.Forms.Label()
@@ -65,7 +66,7 @@ Partial Class TransSO
         Me.Label8 = New System.Windows.Forms.Label()
         Me.tbDoc = New System.Windows.Forms.TextBox()
         Me.btnAddItem = New System.Windows.Forms.PictureBox()
-        Me.enterGrid = New BGMS.EnterDataGridView()
+        Me.stockDescription = New System.Windows.Forms.Label()
         Me.ButtonsPanel.SuspendLayout()
         CType(Me.btnPrint, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSearch, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -77,9 +78,9 @@ Partial Class TransSO
         CType(Me.btnCancel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnCheck, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        CType(Me.enterGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.notificationPanel.SuspendLayout()
         CType(Me.btnAddItem, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.enterGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label7
@@ -172,7 +173,7 @@ Partial Class TransSO
         Me.tbRemarks.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.tbRemarks.Multiline = True
         Me.tbRemarks.Name = "tbRemarks"
-        Me.tbRemarks.Size = New System.Drawing.Size(420, 74)
+        Me.tbRemarks.Size = New System.Drawing.Size(420, 56)
         Me.tbRemarks.TabIndex = 113
         '
         'Label2
@@ -348,11 +349,62 @@ Partial Class TransSO
         Me.Panel1.BackColor = System.Drawing.Color.MediumSeaGreen
         Me.Panel1.Controls.Add(Me.enterGrid)
         Me.Panel1.Font = New System.Drawing.Font("Tahoma", 13.0!)
-        Me.Panel1.Location = New System.Drawing.Point(31, 265)
+        Me.Panel1.Location = New System.Drawing.Point(31, 270)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Padding = New System.Windows.Forms.Padding(1)
         Me.Panel1.Size = New System.Drawing.Size(969, 398)
         Me.Panel1.TabIndex = 126
+        '
+        'enterGrid
+        '
+        Me.enterGrid.AllowUserToResizeRows = False
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.enterGrid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        Me.enterGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.enterGrid.BackgroundColor = System.Drawing.SystemColors.Window
+        Me.enterGrid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.enterGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.MediumSeaGreen
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Tahoma", 13.0!)
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.WhiteSmoke
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.MediumSeaGreen
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.enterGrid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        Me.enterGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Tahoma", 13.0!)
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.LightSkyBlue
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.enterGrid.DefaultCellStyle = DataGridViewCellStyle3
+        Me.enterGrid.EnableHeadersVisualStyles = False
+        Me.enterGrid.GridColor = System.Drawing.Color.Gainsboro
+        Me.enterGrid.Location = New System.Drawing.Point(4, 4)
+        Me.enterGrid.MultiSelect = False
+        Me.enterGrid.Name = "enterGrid"
+        Me.enterGrid.ReadOnly = True
+        Me.enterGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.MediumSeaGreen
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Tahoma", 13.0!)
+        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.WhiteSmoke
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.MediumSeaGreen
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.enterGrid.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
+        Me.enterGrid.RowHeadersVisible = False
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.LightSkyBlue
+        Me.enterGrid.RowsDefaultCellStyle = DataGridViewCellStyle5
+        Me.enterGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.enterGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.enterGrid.Size = New System.Drawing.Size(948, 390)
+        Me.enterGrid.TabIndex = 132
         '
         'lblPostedOn
         '
@@ -500,63 +552,25 @@ Partial Class TransSO
         Me.btnAddItem.TabIndex = 170
         Me.btnAddItem.TabStop = False
         '
-        'enterGrid
+        'stockDescription
         '
-        Me.enterGrid.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.enterGrid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
-        Me.enterGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.enterGrid.BackgroundColor = System.Drawing.SystemColors.Window
-        Me.enterGrid.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.enterGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.MediumSeaGreen
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Tahoma", 13.0!)
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.WhiteSmoke
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.MediumSeaGreen
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.enterGrid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
-        Me.enterGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Tahoma", 13.0!)
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.LightSkyBlue
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.enterGrid.DefaultCellStyle = DataGridViewCellStyle3
-        Me.enterGrid.EnableHeadersVisualStyles = False
-        Me.enterGrid.GridColor = System.Drawing.Color.Gainsboro
-        Me.enterGrid.Location = New System.Drawing.Point(4, 4)
-        Me.enterGrid.MultiSelect = False
-        Me.enterGrid.Name = "enterGrid"
-        Me.enterGrid.ReadOnly = True
-        Me.enterGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.MediumSeaGreen
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Tahoma", 13.0!)
-        DataGridViewCellStyle4.ForeColor = System.Drawing.Color.WhiteSmoke
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.MediumSeaGreen
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.enterGrid.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
-        Me.enterGrid.RowHeadersVisible = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.LightSkyBlue
-        Me.enterGrid.RowsDefaultCellStyle = DataGridViewCellStyle5
-        Me.enterGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.enterGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
-        Me.enterGrid.Size = New System.Drawing.Size(948, 390)
-        Me.enterGrid.TabIndex = 132
+        Me.stockDescription.AutoSize = True
+        Me.stockDescription.Font = New System.Drawing.Font("Tahoma", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.stockDescription.ForeColor = System.Drawing.Color.SeaGreen
+        Me.stockDescription.Location = New System.Drawing.Point(29, 240)
+        Me.stockDescription.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.stockDescription.Name = "stockDescription"
+        Me.stockDescription.Size = New System.Drawing.Size(139, 21)
+        Me.stockDescription.TabIndex = 175
+        Me.stockDescription.Text = "Stock Description"
         '
         'TransSO
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1034, 742)
+        Me.ClientSize = New System.Drawing.Size(1034, 741)
+        Me.Controls.Add(Me.stockDescription)
         Me.Controls.Add(Me.tbDoc)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.notificationPanel)
@@ -605,10 +619,10 @@ Partial Class TransSO
         CType(Me.btnCancel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnCheck, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        CType(Me.enterGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.notificationPanel.ResumeLayout(False)
         Me.notificationPanel.PerformLayout()
         CType(Me.btnAddItem, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.enterGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -652,4 +666,5 @@ Partial Class TransSO
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents tbDoc As System.Windows.Forms.TextBox
     Friend WithEvents btnAddItem As System.Windows.Forms.PictureBox
+    Friend WithEvents stockDescription As Label
 End Class
