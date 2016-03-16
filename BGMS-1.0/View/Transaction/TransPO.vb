@@ -11,11 +11,13 @@
     Dim prevStockName As String
 
     Private Sub postConstruct(sender As Object, e As EventArgs) Handles MyBase.Load
-        Controller.initStocksDesc()
         Controller.initSuppliers()
         tbSupplier.AutoCompleteSource = AutoCompleteSource.CustomSource
         tbSupplier.AutoCompleteMode = AutoCompleteMode.SuggestAppend
         tbSupplier.AutoCompleteCustomSource = Controller.supplierList
+
+        'TODO
+        loadStockGrid()
 
         loadGrid()
         initialize()
@@ -37,6 +39,9 @@
     End Sub
 
     Private Sub enterGrid_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.CellBeginEdit
+        'TODO Remove
+        Console.WriteLine("Cell begin edit..")
+
         btnCheck.Visible = False
         btnAddItem.Visible = False
     End Sub
@@ -512,6 +517,9 @@
     End Sub
 
     Private Sub enterGrid_UserAddedRow(sender As Object, e As DataGridViewRowEventArgs) Handles enterGrid.UserAddedRow
+        'TODO Remove
+        Console.WriteLine("User added row..")
+
         updateCountLabel()
     End Sub
 
@@ -561,6 +569,9 @@
     End Sub
 
     Private Sub enterGrid_CellValidated(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.CellValidated
+        'TODO Remove
+        Console.WriteLine("Cell validated..")
+
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             Select Case e.ColumnIndex
                 Case 1
@@ -738,19 +749,119 @@
     End Sub
 
     Private Sub enterGrid_EditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles enterGrid.EditingControlShowing
+        'TODO Remove
+        Console.WriteLine("Edit control showing..")
+
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If enterGrid.Columns.Item(enterGrid.CurrentCell.ColumnIndex).HeaderText = "Stock" Then
-                Dim tb As TextBox = e.Control
-                tb.AutoCompleteSource = AutoCompleteSource.CustomSource
-                tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-                tb.AutoCompleteCustomSource = Controller.stockListDesc
-                tb.Width = tb.Width + 1000
+                stockInput = e.Control
+                stockInput.CharacterCasing = CharacterCasing.Upper
+                AddHandler stockInput.TextChanged, AddressOf stockInput_TextChanged
+                AddHandler stockInput.KeyDown, AddressOf stockInput_KeyDown
+
+                'tb.AutoCompleteSource = AutoCompleteSource.CustomSource
+                'tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+                'tb.AutoCompleteCustomSource = Controller.stockListDesc
             Else
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteMode = AutoCompleteMode.None
             End If
         End If
     End Sub
+
+    'start stock selection
+
+    Dim stockInput As TextBox
+    Dim selectedRowIndex As Integer
+
+    Private Sub enterGrid_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.CellClick
+        'TODO Remove
+        Console.WriteLine("Cell click..")
+
+        Dim bounds = enterGrid.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, True)
+        stockGrid.Location = New Point(0, bounds.Bottom)
+        enterGrid.Controls.Add(stockGrid)
+        stockGrid.Visible = True
+        stockGrid.BringToFront()
+    End Sub
+
+    Private Sub loadStockGrid()
+        Util.clearRows(stockGrid)
+        stockGrid.Columns.Clear()
+
+        stockGrid.Columns.Add("Stock", "Stock")
+        stockGrid.Columns.Add("Desc", "Description")
+
+        stockGrid.Width = 700
+        stockGrid.Height = 220
+
+        stockGrid.Columns("Stock").FillWeight = 3
+        stockGrid.Columns("Desc").FillWeight = 7
+    End Sub
+
+    Private Sub loadItems()
+        If Not IsNothing(stockGrid.Rows) Then
+            stockGrid.Rows.Clear()
+        End If
+
+        For Each pair In Controller.stockDictionary
+            If pair.Key.StartsWith(stockInput.Text) Then
+                stockGrid.Rows.Add(pair.Key, pair.Value)
+
+                If stockGrid.Rows.Count > 30 Then
+                    Exit Sub
+                End If
+            End If
+        Next
+
+        '(dataGridView.ColumnHeadersVisible ? dataGridView.ColumnHeadersHeight  0) +
+        '      DataGridView.Rows.OfType<DataGridViewRow>().Where(r => r.Visible).Sum(r => r.Height);
+    End Sub
+
+    Private Sub stockInput_TextChanged(sender As Object, e As EventArgs)
+        'Handles stockInput.TextChanged
+        loadItems()
+        setSelectedRow()
+    End Sub
+
+    Private Sub stockInput_KeyDown(sender As Object, e As KeyEventArgs)
+        'Handles stockInput.KeyDown
+        If e.KeyCode.Equals(Keys.Down) Then
+            If selectedRowIndex + 1 < stockGrid.RowCount Then
+                selectedRowIndex = selectedRowIndex + 1
+                setSelectedRow()
+            End If
+
+            e.SuppressKeyPress = True
+            e.Handled = True
+
+        ElseIf e.KeyCode.Equals(Keys.Up) Then
+            If selectedRowIndex - 1 >= 0 Then
+                selectedRowIndex = selectedRowIndex - 1
+                setSelectedRow()
+            End If
+
+            e.SuppressKeyPress = True
+            e.Handled = True
+
+        ElseIf e.KeyCode.Equals(Keys.Enter) Then
+            Console.WriteLine("Value: " & stockGrid.CurrentCell.Value)
+            Me.Close()
+            e.SuppressKeyPress = True
+        End If
+    End Sub
+
+    Private Sub setSelectedRow()
+        If stockGrid.RowCount > 0 Then
+            stockGrid.ClearSelection()
+            stockGrid.CurrentCell = stockGrid.Rows(selectedRowIndex).Cells(0)
+            stockGrid.Rows(selectedRowIndex).Selected = True
+
+            'stockInput.Text = stockGrid.CurrentCell.Value
+        End If
+    End Sub
+
+    'end stock selection
 
     Private Sub discount1Changed(sender As Object, e As EventArgs) Handles tbDisc1.TextChanged
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
@@ -827,6 +938,9 @@
     End Sub
 
     Private Sub enterGrid_RowValidating(sender As Object, e As DataGridViewCellCancelEventArgs) Handles enterGrid.RowValidating
+        'TODO Remove
+        Console.WriteLine("Row validating..")
+
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not String.IsNullOrWhiteSpace(enterGrid("Stock", e.RowIndex).Value) Then
 
@@ -920,11 +1034,17 @@
     End Sub
 
     Private Sub enterGrid_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.RowEnter
+        'TODO Remove
+        Console.WriteLine("Row enter..")
+
         Dim stockValue = enterGrid("Stock", e.RowIndex).Value
         prevStockName = If(Not IsNothing(stockValue), stockValue, String.Empty)
     End Sub
 
     Private Sub enterGrid_CellEnter(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.CellEnter
+        'TODO Remove
+        Console.WriteLine("Cell enter..")
+
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If enterGrid.Focused AndAlso enterGrid.CurrentCell.ReadOnly Then
                 SendKeys.Send("{TAB}")
@@ -977,5 +1097,14 @@
         updateCountLabel()
     End Sub
 
+    Private Sub enterGrid_KeyUp(sender As Object, e As KeyEventArgs) Handles enterGrid.KeyUp
+        'TODO Remove
+        Console.WriteLine("Key up: " & e.KeyValue)
+    End Sub
+
+    Private Sub enterGrid_KeyDown(sender As Object, e As KeyEventArgs) Handles enterGrid.KeyDown
+        'TODO Remove
+        Console.WriteLine("Key down: " & e.KeyValue)
+    End Sub
 
 End Class

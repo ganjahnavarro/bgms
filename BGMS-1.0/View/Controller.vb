@@ -7,12 +7,13 @@ Public Class Controller
     Public Shared config As New Dictionary(Of String, String)
 
     Public Shared stockList As New AutoCompleteStringCollection
-    Public Shared stockListDesc As New AutoCompleteStringCollection
     Public Shared agentList As New AutoCompleteStringCollection
     Public Shared categoryList As New AutoCompleteStringCollection
     Public Shared customerList As New AutoCompleteStringCollection
     Public Shared supplierList As New AutoCompleteStringCollection
     Public Shared unitList As New AutoCompleteStringCollection
+
+    Public Shared stockDictionary As New Dictionary(Of String, String)
 
     Private Sub postConstruct(sender As Object, e As EventArgs) Handles MyBase.Load
         'loadConfig()
@@ -21,6 +22,8 @@ Public Class Controller
             Using context As New bgmsEntities
                 currentUser = context.users.FirstOrDefault
             End Using
+
+            initStocksDictionary()
 
             hotkeyListener.Enabled = True
             pollTimer.Enabled = True
@@ -95,11 +98,12 @@ Public Class Controller
         End Using
     End Sub
 
-    Public Sub initStocksDesc()
-        stockListDesc.Clear()
+    Public Sub initStocksDictionary()
+        stockDictionary.Clear()
         Using context As New bgmsEntities
-            stockListDesc.AddRange(context.stocks.Where(Function(c) c.Active = True) _
-                .Select(Function(c) c.Name.ToUpper + " : " + c.Description).ToArray())
+            stockDictionary = context.stocks.Where(Function(c) c.Active = True) _
+                .OrderBy(Function(c) c.Name) _
+                .ToDictionary(Function(c) c.Name.ToUpper.Trim, Function(c) c.Description)
         End Using
     End Sub
 

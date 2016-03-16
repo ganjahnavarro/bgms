@@ -481,6 +481,12 @@
     <Compile Include="View\Transaction\SelectSP.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="View\Transaction\StockSelection.Designer.vb">
+      <DependentUpon>StockSelection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="View\Transaction\StockSelection.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="View\Transaction\TransCC.Designer.vb">
       <DependentUpon>TransCC.vb</DependentUpon>
     </Compile>
@@ -620,6 +626,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Transaction\SelectSP.resx">
       <DependentUpon>SelectSP.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Transaction\StockSelection.resx">
+      <DependentUpon>StockSelection.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Transaction\TransCC.resx">
       <DependentUpon>TransCC.vb</DependentUpon>

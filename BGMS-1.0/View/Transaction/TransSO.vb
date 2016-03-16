@@ -11,7 +11,7 @@
     Dim currentPrefix, currentUnprefixedDoc As String
 
     Private Sub postConstruct(sender As Object, e As EventArgs) Handles MyBase.Load
-        Controller.initStocksDesc()
+        Controller.initStocksDictionary()
         Controller.initCustomers()
         tbCustomer.AutoCompleteSource = AutoCompleteSource.CustomSource
         tbCustomer.AutoCompleteMode = AutoCompleteMode.SuggestAppend
@@ -847,7 +847,7 @@
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteSource = AutoCompleteSource.CustomSource
                 tb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-                tb.AutoCompleteCustomSource = Controller.stockListDesc
+                'tb.AutoCompleteCustomSource = Controller.stockListDesc
             Else
                 Dim tb As TextBox = e.Control
                 tb.AutoCompleteMode = AutoCompleteMode.None
