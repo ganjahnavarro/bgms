@@ -35,4 +35,8 @@
     Public Shared RECEIVED_BY = "Received By: _________________________"
     'KK9YEcAvwSn3hXpz
 
+    Public Shared CONNECTION_STRING_NAME As String = String.Empty
+    Public Shared CONNECTION_STRING_NAME_MASTER As String = "name=master"
+    Public Shared CONNECTION_STRING_NAME_SLAVE As String = "name=slave"
+
 End Class

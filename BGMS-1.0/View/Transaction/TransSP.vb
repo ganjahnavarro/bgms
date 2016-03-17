@@ -225,14 +225,14 @@
     End Sub
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.supplierpayments.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             context.paymentcheckitems.RemoveRange(currentObject.paymentcheckitems)
             context.paymentorderitems.RemoveRange(currentObject.paymentorderitems)
             context.supplierpayments.Remove(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " deleted a supplier payment (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a supplier payment (" &
                 currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -319,7 +319,7 @@
     End Sub
 
     Private Function getUpdatedDocumentNo() As String
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim counter = context.counters.Where(Function(c) _
                c.Owner.Equals(Constants.OWNER_NAME_SUPPLIER_PAYMENT)).FirstOrDefault
 
@@ -336,7 +336,7 @@
             Exit Sub
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim nextObj As New supplierpayment
             nextObj = context.supplierpayments _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) > 0) _
@@ -350,7 +350,7 @@
     End Sub
 
     Public Sub previousObject() Implements IControl.previousObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim prevObj As New supplierpayment
             prevObj = context.supplierpayments _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) < 0) _
@@ -364,7 +364,7 @@
     End Sub
 
     Public Sub firstObject() Implements IControl.firstObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim firstObj As New supplierpayment
             firstObj = context.supplierpayments _
                 .OrderBy(Function(c) c.DocumentNo).FirstOrDefault
@@ -377,7 +377,7 @@
     End Sub
 
     Public Sub lastObject() Implements IControl.lastObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim lastObj As New supplierpayment
             lastObj = context.supplierpayments _
                 .OrderByDescending(Function(c) c.DocumentNo).FirstOrDefault
@@ -422,7 +422,7 @@
     End Function
 
     Public Sub loadObject() Implements IControl.loadObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
 
             If Not IsNothing(currentObject) Then
                 currentObject = context.supplierpayments _
@@ -481,10 +481,10 @@
         Util.clearRows(enterGridChecks)
 
         For Each orderItem In currentObject.paymentcheckitems
-            enterGridChecks.Rows.Add( _
-                orderItem.Id, _
-                orderItem.DocumentNo, _
-                Format(orderItem.Date, Constants.DATE_FORMAT), _
+            enterGridChecks.Rows.Add(
+                orderItem.Id,
+                orderItem.DocumentNo,
+                Format(orderItem.Date, Constants.DATE_FORMAT),
                 orderItem.Amount)
         Next
     End Sub
@@ -493,11 +493,11 @@
         Util.clearRows(enterGridOrders)
 
         For Each orderItem In currentObject.paymentorderitems
-            enterGridOrders.Rows.Add( _
-                orderItem.Id, _
-                orderItem.purchaseorder.DocumentNo, _
-                Format(orderItem.purchaseorder.Date), _
-                orderItem.BalanceGot, _
+            enterGridOrders.Rows.Add(
+                orderItem.Id,
+                orderItem.purchaseorder.DocumentNo,
+                Format(orderItem.purchaseorder.Date),
+                orderItem.BalanceGot,
                 orderItem.Amount)
         Next
     End Sub
@@ -524,7 +524,7 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New supplierpayment
             setObjectValues(context)
 
@@ -535,7 +535,7 @@
 
             context.supplierpayments.Add(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " created a supplier payment (" & _
+            Dim action As String = Controller.currentUser.Username & " created a supplier payment (" &
                 currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -560,7 +560,7 @@
         currentObject.TotalPaid = paidTotalAmount
         currentObject.TotalCheck = checkTotalAmount
 
-        currentObject.Bank = If(String.IsNullOrEmpty(tbBank.Text), _
+        currentObject.Bank = If(String.IsNullOrEmpty(tbBank.Text),
             Constants.DEFAULT_BANK, tbBank.Text)
 
         currentObject.ModifyBy = Controller.currentUser.Username
@@ -587,7 +587,7 @@
 
         For rowIndex = 0 To enterGridChecks.RowCount - 2
 
-            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridChecks("Id", rowIndex).Value), _
+            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridChecks("Id", rowIndex).Value),
                 Nothing, enterGridChecks("Id", rowIndex).Value)
 
             If Not IsNothing(itemId) And itemId <> 0 Then
@@ -667,7 +667,7 @@
 
         For rowIndex = 0 To enterGridOrders.RowCount - 2
 
-            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridOrders("Id", rowIndex).Value), _
+            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridOrders("Id", rowIndex).Value),
                     Nothing, enterGridOrders("Id", rowIndex).Value)
 
             If Not IsNothing(itemId) And itemId <> 0 Then
@@ -697,7 +697,7 @@
         Next
     End Sub
 
-    Private Sub setOrderItem(ByRef item As paymentorderitem, _
+    Private Sub setOrderItem(ByRef item As paymentorderitem,
            ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim docNo As String = enterGridOrders("PO", rowIndex).Value
         item.purchaseorderId = context.purchaseorders _
@@ -708,12 +708,12 @@
     End Sub
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.supplierpayments _
                 .Where(Function(c) c.Id.Equals(currentObject.Id)).FirstOrDefault()
             setObjectValues(context)
 
-            Dim action As String = Controller.currentUser.Username & " updated a supplier payment (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a supplier payment (" &
                 currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -724,8 +724,8 @@
 
     Private Sub reloadOrders(ByVal name As String)
         orderList.Clear()
-        Using context As New bgmsEntities
-            Dim qry As String = "select c.* from purchaseorders c, suppliers s " & _
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim qry As String = "select c.* from purchaseorders c, suppliers s " &
                 "where c.supplierId = s.Id and c.posteddate is not null and ucase(s.Name) = '" _
                 & name.ToUpper & "' and s.active = true"
 
@@ -759,7 +759,7 @@
                 End If
 
                 prevOrderName = orderDocNo
-                Using context As New bgmsEntities
+                Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                     selectedOrder = context.purchaseorders _
                         .Where(Function(c) c.DocumentNo.ToUpper.Equals(orderDocNo.ToUpper)) _
                         .FirstOrDefault
@@ -772,7 +772,7 @@
 
                         enterGridOrders("Date", rowIndex).Value = Format(selectedOrder.Date, Constants.DATE_FORMAT)
                         enterGridOrders("Balance", rowIndex).Value = selectedOrder.getBalance
-                        enterGridOrders("Paid", rowIndex).Value = _
+                        enterGridOrders("Paid", rowIndex).Value =
                             If(remaining >= selectedOrder.getBalance, selectedOrder.getBalance, remaining)
                     End If
                 End Using

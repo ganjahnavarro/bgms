@@ -98,7 +98,7 @@
     Private Sub filterGrid()
         itemsGrid.Rows.Clear()
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Select Case Controller.previousForm
                 Case TransPO.Name
                     Dim objx = context.purchaseorders.Include("Supplier") _
@@ -109,8 +109,8 @@
                         .Take(300).ToList
 
                     For Each obj In objx
-                        itemsGrid.Rows.Add(obj.DocumentNo, _
-                            Format(obj.Date, Constants.DATE_FORMAT), _
+                        itemsGrid.Rows.Add(obj.DocumentNo,
+                            Format(obj.Date, Constants.DATE_FORMAT),
                             obj.supplier.Name, obj.TotalAmount)
                     Next
                     Exit Select
@@ -124,8 +124,8 @@
                         .Take(300).ToList
 
                     For Each obj In objx
-                        itemsGrid.Rows.Add(obj.DocumentNo, _
-                            Format(obj.Date, Constants.DATE_FORMAT), _
+                        itemsGrid.Rows.Add(obj.DocumentNo,
+                            Format(obj.Date, Constants.DATE_FORMAT),
                             obj.customer.Name, obj.TotalAmount)
                     Next
                     Exit Select
@@ -139,8 +139,8 @@
                         .Take(300).ToList
 
                     For Each obj In objx
-                        itemsGrid.Rows.Add(obj.DocumentNo, _
-                            Format(obj.Date, Constants.DATE_FORMAT), _
+                        itemsGrid.Rows.Add(obj.DocumentNo,
+                            Format(obj.Date, Constants.DATE_FORMAT),
                             obj.supplier.Name, obj.TotalAmount)
                     Next
                     Exit Select
@@ -154,8 +154,8 @@
                         .Take(300).ToList
 
                     For Each obj In objx
-                        itemsGrid.Rows.Add(obj.DocumentNo, _
-                            Format(obj.Date, Constants.DATE_FORMAT), _
+                        itemsGrid.Rows.Add(obj.DocumentNo,
+                            Format(obj.Date, Constants.DATE_FORMAT),
                             obj.customer.Name, obj.TotalAmount)
                     Next
                     Exit Select
@@ -169,8 +169,8 @@
                         .Take(300).ToList
 
                     For Each obj In objx
-                        itemsGrid.Rows.Add(obj.DocumentNo, _
-                            Format(obj.Date, Constants.DATE_FORMAT), _
+                        itemsGrid.Rows.Add(obj.DocumentNo,
+                            Format(obj.Date, Constants.DATE_FORMAT),
                             obj.customer.Name, obj.TotalCheck, obj.TotalPaid)
                     Next
                     Exit Select
@@ -184,8 +184,8 @@
                         .Take(300).ToList
 
                     For Each obj In objx
-                        itemsGrid.Rows.Add(obj.DocumentNo, _
-                            Format(obj.Date, Constants.DATE_FORMAT), _
+                        itemsGrid.Rows.Add(obj.DocumentNo,
+                            Format(obj.Date, Constants.DATE_FORMAT),
                             obj.supplier.Name, obj.TotalCheck, obj.TotalPaid)
                     Next
                     Exit Select
@@ -194,7 +194,7 @@
     End Sub
 
     Private Sub selectObject(ByVal docNo As String)
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Select Case Controller.previousForm
                 Case TransPO.Name
                     TransPO.currentObject = context.purchaseorders _

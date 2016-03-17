@@ -176,7 +176,7 @@
 
         rptQry.Replace(" order by o.documentno", " order by i.date")
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             printDoc.items = context.Database _
                 .SqlQuery(Of _Special)(rptQry) _
                 .ToList()
@@ -200,7 +200,7 @@
         printDoc.report_detail = rptDetail
         printDoc.filterName = If(lblFilter.Text.ToUpper.Equals("CUSTOMER") OrElse lblFilter.Text.ToUpper.Equals("AGENT"), "CUSTOMER - AGENT", lblFilter.Text)
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             printDoc.items = context.Database _
                 .SqlQuery(Of _TransactionList)(rptQry) _
                 .ToList()
@@ -225,7 +225,7 @@
         printDoc.filterName = If(lblFilter.Text.ToUpper.Equals("CUSTOMER") OrElse lblFilter.Text.ToUpper.Equals("AGENT"), "CUSTOMER - AGENT", lblFilter.Text)
         printDoc.ccOrSp = ccOrSp
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             printDoc.items = context.Database _
                 .SqlQuery(Of _TransactionDetail)(rptQry) _
                 .ToList()

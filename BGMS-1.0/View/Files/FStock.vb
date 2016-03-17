@@ -127,12 +127,12 @@
 #End Region
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.stocks.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             currentObject.Active = False
 
-            Dim action As String = Controller.currentUser.Username & " deleted a stock (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a stock (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -163,7 +163,7 @@
 
     Public Sub loadObject() Implements IControl.loadObject
         If Not IsNothing(currentObject) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 currentObject = context.stocks _
                     .Include("Unit").Include("Category") _
                     .Where(Function(c) c.Id = currentObject.Id) _
@@ -171,7 +171,7 @@
             End Using
             loadCurrentObject()
         Else
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 currentObject = context.stocks _
                     .Include("Unit").Include("Category") _
                     .Where(Function(c) c.Active = True) _
@@ -195,10 +195,10 @@
         tbName.Text = currentObject.Name
         tbDescription.Text = currentObject.Description
 
-        tbCost.Text = If(IsNothing(currentObject.Cost), String.Empty, _
+        tbCost.Text = If(IsNothing(currentObject.Cost), String.Empty,
             FormatNumber(CDbl(currentObject.Cost), 2))
 
-        tbLast.Text = If(IsNothing(currentObject.Price), String.Empty, _
+        tbLast.Text = If(IsNothing(currentObject.Price), String.Empty,
             FormatNumber(CDbl(currentObject.Price), 2))
 
         tbOnHand.Text = If(IsNothing(currentObject.QtyOnHand), String.Empty, currentObject.QtyOnHand)
@@ -227,12 +227,12 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New stock
             setObjectValues(context)
             context.stocks.Add(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " added a stock (" & _
+            Dim action As String = Controller.currentUser.Username & " added a stock (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -280,12 +280,12 @@
     End Function
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.stocks.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             setObjectValues(context)
 
-            Dim action As String = Controller.currentUser.Username & " updated a stock (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a stock (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -324,7 +324,7 @@
 
         If Controller.updateMode.Equals(Constants.UPDATE_MODE_CREATE) _
             OrElse Not currentObject.Name.ToUpper.Equals(tbName.Text.ToUpper) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 'c.Active = True AndAlso 
                 Dim duplicate = context.stocks _
                     .Where(Function(c) c.Name.ToUpper.Equals(tbName.Text.ToUpper)) _
@@ -373,9 +373,9 @@
     End Sub
 
     Private Sub findObjectByName(ByVal name As String)
-        Using context = New bgmsEntities
-            currentObject = (From stock In context.stocks.Include("Unit").Include("Category") _
-                Select stock).Where(Function(c) c.Name.Equals(name) And c.Active = True).FirstOrDefault()
+        Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            currentObject = (From stock In context.stocks.Include("Unit").Include("Category")
+                             Select stock).Where(Function(c) c.Name.Equals(name) And c.Active = True).FirstOrDefault()
         End Using
     End Sub
 
@@ -402,7 +402,7 @@
         If tbSearch.Text = String.Empty Then
             displayList(Util.getInitialStockNames)
         Else
-            Using context = New bgmsEntities
+            Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 displayList(context.stocks _
                     .Where(Function(c) _
                         (c.Name.ToUpper.StartsWith(tbSearch.Text.ToUpper) _

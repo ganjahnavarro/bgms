@@ -122,12 +122,12 @@
 #End Region
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.categories.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             currentObject.Active = False
 
-            Dim action As String = Controller.currentUser.Username & " deleted a category (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a category (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -154,7 +154,7 @@
         If Not IsNothing(currentObject) Then
             loadCurrentObject()
         Else
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 currentObject = context.categories _
                     .Where(Function(c) c.Active = True) _
                     .OrderBy(Function(c) c.Name) _
@@ -189,12 +189,12 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New category
             setObjectValues()
             context.categories.Add(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " added a category (" & _
+            Dim action As String = Controller.currentUser.Username & " added a category (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -219,12 +219,12 @@
     End Function
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.categories.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             setObjectValues()
 
-            Dim action As String = Controller.currentUser.Username & " updated a category (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a category (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -240,7 +240,7 @@
 
         If Controller.updateMode.Equals(Constants.UPDATE_MODE_CREATE) _
             OrElse Not currentObject.Name.ToUpper.Equals(tbLast.Text.ToUpper) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 'c.Active = True AndAlso 
                 Dim duplicate = context.categories _
                     .Where(Function(c) c.Name.ToUpper.Equals(tbLast.Text.ToUpper)) _
@@ -270,7 +270,7 @@
     End Sub
 
     Private Sub findObjectByName(ByVal name As String)
-        Using context = New bgmsEntities
+        Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.categories.Where(Function(c) c.Name.Equals(name) And c.Active = True).FirstOrDefault
         End Using
     End Sub
@@ -296,7 +296,7 @@
         If tbSearch.Text = String.Empty Then
             displayList(Util.getCategoryNames)
         Else
-            Using context = New bgmsEntities
+            Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 displayList(context.categories _
                     .Where(Function(c) c.Active = True And c.Name.ToLower _
                         .Contains(tbSearch.Text.ToLower)) _

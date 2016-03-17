@@ -182,14 +182,14 @@
 #End Region
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.customercollections.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             context.collectioncheckitems.RemoveRange(currentObject.collectioncheckitems)
             context.collectionorderitems.RemoveRange(currentObject.collectionorderitems)
             context.customercollections.Remove(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " deleted a customer collection (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a customer collection (" &
                    currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -263,7 +263,7 @@
         setReadOnlyColumns()
 
         If enable Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 tbDocNo.Text = getUpdatedDocumentNo(context)
             End Using
 
@@ -281,7 +281,7 @@
             Exit Sub
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim nextObj As New customercollection
             nextObj = context.customercollections _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) > 0) _
@@ -295,7 +295,7 @@
     End Sub
 
     Public Sub previousObject() Implements IControl.previousObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim prevObj As New customercollection
             prevObj = context.customercollections _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) < 0) _
@@ -309,7 +309,7 @@
     End Sub
 
     Public Sub firstObject() Implements IControl.firstObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim firstObj As New customercollection
             firstObj = context.customercollections _
                 .OrderBy(Function(c) c.DocumentNo).FirstOrDefault
@@ -322,7 +322,7 @@
     End Sub
 
     Public Sub lastObject() Implements IControl.lastObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim lastObj As New customercollection
             lastObj = context.customercollections _
                 .OrderByDescending(Function(c) c.DocumentNo).FirstOrDefault
@@ -367,7 +367,7 @@
     End Function
 
     Public Sub loadObject() Implements IControl.loadObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
 
             If Not IsNothing(currentObject) Then
                 currentObject = context.customercollections _
@@ -426,10 +426,10 @@
         Util.clearRows(enterGridChecks)
 
         For Each orderItem In currentObject.collectioncheckitems
-            enterGridChecks.Rows.Add( _
-                orderItem.Id, _
-                orderItem.DocumentNo, _
-                Format(orderItem.Date, Constants.DATE_FORMAT), _
+            enterGridChecks.Rows.Add(
+                orderItem.Id,
+                orderItem.DocumentNo,
+                Format(orderItem.Date, Constants.DATE_FORMAT),
                 orderItem.Amount)
         Next
     End Sub
@@ -438,11 +438,11 @@
         Util.clearRows(enterGridOrders)
 
         For Each orderItem In currentObject.collectionorderitems
-            enterGridOrders.Rows.Add( _
-                orderItem.Id, _
-                orderItem.salesorder.DocumentNo, _
-                Format(orderItem.salesorder.Date, Constants.DATE_FORMAT), _
-                orderItem.BalanceGot, _
+            enterGridOrders.Rows.Add(
+                orderItem.Id,
+                orderItem.salesorder.DocumentNo,
+                Format(orderItem.salesorder.Date, Constants.DATE_FORMAT),
+                orderItem.BalanceGot,
                 orderItem.Amount)
         Next
     End Sub
@@ -469,7 +469,7 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New customercollection
             setObjectValues(context)
 
@@ -479,7 +479,7 @@
 
             counter.Count += 1
 
-            Dim action As String = Controller.currentUser.Username & " created a customer collection (" & _
+            Dim action As String = Controller.currentUser.Username & " created a customer collection (" &
                    currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -505,7 +505,7 @@
         currentObject.TotalPaid = paidTotalAmount
         currentObject.TotalCheck = checkTotalAmount
 
-        currentObject.Bank = If(String.IsNullOrEmpty(tbBank.Text), _
+        currentObject.Bank = If(String.IsNullOrEmpty(tbBank.Text),
             Constants.DEFAULT_BANK, tbBank.Text)
 
         currentObject.ModifyBy = Controller.currentUser.Username
@@ -543,7 +543,7 @@
 
         For rowIndex = 0 To enterGridChecks.RowCount - 2
 
-            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridChecks("Id", rowIndex).Value), _
+            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridChecks("Id", rowIndex).Value),
                  Nothing, enterGridChecks("Id", rowIndex).Value)
 
             If Not IsNothing(itemId) And itemId <> 0 Then
@@ -623,7 +623,7 @@
 
         For rowIndex = 0 To enterGridOrders.RowCount - 2
 
-            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridOrders("Id", rowIndex).Value), _
+            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGridOrders("Id", rowIndex).Value),
                  Nothing, enterGridOrders("Id", rowIndex).Value)
 
             If Not IsNothing(itemId) And itemId <> 0 Then
@@ -652,7 +652,7 @@
         Next
     End Sub
 
-    Private Sub setOrderItem(ByRef item As collectionorderitem, _
+    Private Sub setOrderItem(ByRef item As collectionorderitem,
            ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim docNo As String = enterGridOrders("SO", rowIndex).Value
         item.salesorderId = context.salesorders _
@@ -663,12 +663,12 @@
     End Sub
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.customercollections _
                 .Where(Function(c) c.Id.Equals(currentObject.Id)).FirstOrDefault()
             setObjectValues(context)
 
-            Dim action As String = Controller.currentUser.Username & " updated a customer collection (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a customer collection (" &
                    currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -694,7 +694,7 @@
 
         enterGridChecks.Columns.Item("Id").Visible = False
 
-        enterGridChecks.Columns.Item("Amount").DefaultCellStyle.Alignment = _
+        enterGridChecks.Columns.Item("Amount").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
         enterGridChecks.Columns.Item("Amount").DefaultCellStyle.Format = "N2"
     End Sub
@@ -713,9 +713,9 @@
         enterGridOrders.Columns.Item("Id").Visible = False
         setReadOnlyColumns()
 
-        enterGridOrders.Columns.Item("Balance").DefaultCellStyle.Alignment = _
+        enterGridOrders.Columns.Item("Balance").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGridOrders.Columns.Item("Paid").DefaultCellStyle.Alignment = _
+        enterGridOrders.Columns.Item("Paid").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
 
         enterGridOrders.Columns.Item("Balance").DefaultCellStyle.Format = "N2"
@@ -724,8 +724,8 @@
 
     Private Sub reloadOrders(ByVal name As String)
         orderList.Clear()
-        Using context As New bgmsEntities
-            Dim qry As String = "select s.* from salesorders s, customers c " & _
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim qry As String = "select s.* from salesorders s, customers c " &
                 "where s.customerId = c.Id and s.postedDate is not null and ucase(c.Name) = '" _
                 & name.ToUpper & "' and c.active = true"
 
@@ -759,7 +759,7 @@
                 End If
 
                 prevOrderName = orderDocNo
-                Using context As New bgmsEntities
+                Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                     selectedOrder = context.salesorders _
                         .Where(Function(c) c.DocumentNo.ToUpper.Equals(orderDocNo.ToUpper)) _
                         .FirstOrDefault
@@ -772,7 +772,7 @@
 
                         enterGridOrders("Date", rowIndex).Value = Format(selectedOrder.Date, Constants.DATE_FORMAT)
                         enterGridOrders("Balance", rowIndex).Value = selectedOrder.getBalance
-                        enterGridOrders("Paid", rowIndex).Value = _
+                        enterGridOrders("Paid", rowIndex).Value =
                             If(remaining >= selectedOrder.getBalance, selectedOrder.getBalance, remaining)
                     End If
                 End Using

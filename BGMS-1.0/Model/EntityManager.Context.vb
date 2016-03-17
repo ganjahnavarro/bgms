@@ -14,8 +14,8 @@ Imports System.Data.Entity.Infrastructure
 Partial Public Class bgmsEntities
     Inherits DbContext
 
-    Public Sub New()
-        MyBase.New("name=bgmsEntities")
+    Public Sub New(ByVal connectionStringName As String)
+        MyBase.New(connectionStringName)
     End Sub
 
     Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)

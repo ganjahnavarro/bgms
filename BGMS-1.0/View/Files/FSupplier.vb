@@ -130,12 +130,12 @@
 #End Region
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.suppliers.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             currentObject.Active = False
 
-            Dim action As String = Controller.currentUser.Username & " deleted a supplier (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a supplier (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -166,7 +166,7 @@
         If Not IsNothing(currentObject) Then
             loadCurrentObject()
         Else
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 currentObject = context.suppliers _
                     .Where(Function(c) c.Active = True) _
                     .OrderBy(Function(c) c.Name) _
@@ -210,12 +210,12 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New supplier
             setObjectValues()
             context.suppliers.Add(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " added a supplier (" & _
+            Dim action As String = Controller.currentUser.Username & " added a supplier (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -244,12 +244,12 @@
     End Function
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.suppliers.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             setObjectValues()
 
-            Dim action As String = Controller.currentUser.Username & " updated a supplier (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a supplier (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -265,7 +265,7 @@
 
         If Controller.updateMode.Equals(Constants.UPDATE_MODE_CREATE) _
             OrElse Not currentObject.Name.ToUpper.Equals(tbName.Text.ToUpper) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 'c.Active = True AndAlso
                 Dim duplicate = context.suppliers _
                     .Where(Function(c) c.Name.ToUpper.Equals(tbLast.Text.ToUpper)) _
@@ -295,7 +295,7 @@
     End Sub
 
     Private Sub findObjectByName(ByVal name As String)
-        Using context = New bgmsEntities
+        Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.suppliers.Where(Function(c) c.Name.Equals(name) And c.Active = True).FirstOrDefault
         End Using
     End Sub
@@ -314,10 +314,10 @@
         If tbSearch.Text = String.Empty Then
             displayList(Util.getSupplierNames)
         Else
-            Using context = New bgmsEntities
+            Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 displayList(context.suppliers _
                         .Where(Function(c) _
-                            c.Name.ToLower.Contains(tbSearch.Text.ToLower) And _
+                            c.Name.ToLower.Contains(tbSearch.Text.ToLower) And
                             c.Active = True) _
                     .OrderBy(Function(c) c.Name) _
                     .Select(Function(c) c.Name) _
@@ -336,7 +336,7 @@
     Public Sub printObject() Implements IControl.printObject
         Dim suppliersDoc As New PrintSuppliers
         If btnPrint.Visible Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 suppliersDoc.suppliers = context.suppliers _
                     .OrderBy(Function(c) c.Name).ToList()
             End Using

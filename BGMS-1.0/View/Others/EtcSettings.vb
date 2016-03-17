@@ -13,7 +13,7 @@
     End Sub
 
     Private Sub loadValues()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             counters = context.counters.ToDictionary(Function(c) c.Prefix, Function(c) c)
         End Using
 
@@ -59,7 +59,7 @@
     End Sub
 
     Private Sub saveChanges()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             counters = context.counters.ToDictionary(Function(c) c.Prefix, Function(c) c)
 
             counters.Item("DR").Count = counterSODR.Text

@@ -175,13 +175,13 @@
     End Function
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.purchaseorders.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             context.purchaseorderitems.RemoveRange(currentObject.purchaseorderitems)
             context.purchaseorders.Remove(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " deleted a purchase order (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a purchase order (" &
                    currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -228,7 +228,7 @@
     End Sub
 
     Public Sub loadObject() Implements IControl.loadObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             If Not IsNothing(currentObject) Then
                 currentObject = context.purchaseorders _
                     .Include("PurchaseOrderItems").Include("Supplier") _
@@ -255,7 +255,7 @@
             Exit Sub
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim nextObj As New purchaseorder
             nextObj = context.purchaseorders _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) > 0) _
@@ -273,7 +273,7 @@
             Exit Sub
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim prevObj As New purchaseorder
             prevObj = context.purchaseorders _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) < 0) _
@@ -287,7 +287,7 @@
     End Sub
 
     Public Sub firstObject() Implements IControl.firstObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim firstObj As New purchaseorder
             firstObj = context.purchaseorders _
                 .OrderBy(Function(c) c.DocumentNo).FirstOrDefault
@@ -300,7 +300,7 @@
     End Sub
 
     Public Sub lastObject() Implements IControl.lastObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim lastObj As New purchaseorder
             lastObj = context.purchaseorders _
                 .OrderByDescending(Function(c) c.DocumentNo).FirstOrDefault
@@ -331,12 +331,12 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New purchaseorder
             setObjectValues(context)
             context.purchaseorders.Add(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " create a purchase order (" & _
+            Dim action As String = Controller.currentUser.Username & " create a purchase order (" &
                    currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -389,12 +389,12 @@
     End Function
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.purchaseorders _
                     .Where(Function(c) c.Id.Equals(currentObject.Id)).FirstOrDefault()
             setObjectValues(context)
 
-            Dim action As String = Controller.currentUser.Username & " updated a purchase order (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a purchase order (" &
                    currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -419,7 +419,7 @@
         If Controller.updateMode.Equals(Constants.UPDATE_MODE_CREATE) _
             OrElse Not currentObject.DocumentNo.ToUpper.Equals(tbDocNo.Text.ToUpper) Then
             Dim duplicateDocNo As String
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 duplicateDocNo = context.purchaseorders _
                     .Where(Function(c) c.DocumentNo.ToUpper.Equals(tbDocNo.Text.ToUpper)) _
                     .Select(Function(c) c.DocumentNo).FirstOrDefault
@@ -544,15 +544,15 @@
         enterGrid.Columns.Item("Id").Visible = False
         setReadOnlyColumns()
 
-        enterGrid.Columns.Item("Price").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Price").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc1").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc1").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc2").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc2").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc3").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc3").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Amount").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Amount").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
 
         enterGrid.Columns.Item("Price").DefaultCellStyle.Format = "N2"
@@ -586,7 +586,7 @@
 
                 prevStockName = stockName
 
-                Using context As New bgmsEntities
+                Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                     selectedStock = context.stocks _
                         .Where(Function(c) c.Name.Equals(stockName) And c.Active = True).FirstOrDefault
 
@@ -645,15 +645,15 @@
         Return getRowAmount(qty, price, disc1, disc2, disc3)
     End Function
 
-    Public Function getRowAmount(ByVal qty As Double, ByVal price As Double, _
+    Public Function getRowAmount(ByVal qty As Double, ByVal price As Double,
             ByVal disc1 As Double, ByVal disc2 As Double, ByVal disc3 As Double) As Double
         If Not IsNothing(qty) And Not IsNothing(price) Then
             Dim amount = qty * price
-            amount = If(IsNothing(disc1), amount, _
+            amount = If(IsNothing(disc1), amount,
                         amount - (amount * (disc1 / 100)))
-            amount = If(IsNothing(disc2), amount, _
+            amount = If(IsNothing(disc2), amount,
                         amount - (amount * (disc2 / 100)))
-            amount = If(IsNothing(disc3), amount, _
+            amount = If(IsNothing(disc3), amount,
                         amount - (amount * (disc3 / 100)))
             Return amount
         End If
@@ -676,7 +676,7 @@
 
         For rowIndex = 0 To enterGrid.RowCount - 2
 
-            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGrid("Id", rowIndex).Value), _
+            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGrid("Id", rowIndex).Value),
                 Nothing, enterGrid("Id", rowIndex).Value)
 
             If Not IsNothing(itemId) And itemId <> 0 Then
@@ -705,7 +705,7 @@
         Next
     End Sub
 
-    Private Sub setItemValues(ByRef orderItem As purchaseorderitem, _
+    Private Sub setItemValues(ByRef orderItem As purchaseorderitem,
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
 
@@ -893,7 +893,7 @@
 
     Public Sub printObject() Implements IControl.printObject
         If btnPrint.Visible And Not IsNothing(currentObject) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 printDoc.name = currentObject.supplier.Name
                 printDoc.address = currentObject.supplier.Address
                 printDoc.docNo = currentObject.DocumentNo
@@ -901,11 +901,11 @@
                 printDoc.agent = String.Empty
 
                 printDoc.items = context.Database _
-                    .SqlQuery(Of _Transaction)( _
-                        "select i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, s.name as stock, " & _
-                        "s.description, i.price, i.discount1, i.discount2, i.discount3 " & _
-                        "from purchaseorderitems i, stocks s, units u " & _
-                        "where i.stockid = s.id and s.unitid = u.id " & _
+                    .SqlQuery(Of _Transaction)(
+                        "select i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, s.name as stock, " &
+                        "s.description, i.price, i.discount1, i.discount2, i.discount3 " &
+                        "from purchaseorderitems i, stocks s, units u " &
+                        "where i.stockid = s.id and s.unitid = u.id " &
                         "and i.purchaseorderid = '" & currentObject.Id & "'") _
                     .ToList()
             End Using

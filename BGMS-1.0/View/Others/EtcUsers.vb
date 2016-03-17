@@ -118,7 +118,7 @@
 #End Region
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.users.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
 
@@ -127,7 +127,7 @@
             Else
                 currentObject.Active = False
 
-                Dim action As String = Controller.currentUser.Username & " deleted a user (" & _
+                Dim action As String = Controller.currentUser.Username & " deleted a user (" &
                     currentObject.Username & ")"
                 context.activities.Add(New activity(action))
 
@@ -197,12 +197,12 @@
 
     Public Sub saveObject() Implements IControl.saveObject
         Try
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 currentObject = New user
                 setObjectValues()
                 context.users.Add(currentObject)
 
-                Dim action As String = Controller.currentUser.Username & " added a user (" & _
+                Dim action As String = Controller.currentUser.Username & " added a user (" &
                     currentObject.Username & ")"
                 context.activities.Add(New activity(action))
 
@@ -211,14 +211,14 @@
             End Using
         Catch ex As Entity.Validation.DbEntityValidationException
             For Each eve As Entity.Validation.DbEntityValidationResult In ex.EntityValidationErrors
-                MsgBox(String.Format("Entity of type {0} in state {1} has the following validation errors:", _
+                MsgBox(String.Format("Entity of type {0} in state {1} has the following validation errors:",
                                    eve.Entry.Entity.GetType().Name, eve.Entry.State))
                 For Each ve As Entity.Validation.DbValidationError In eve.ValidationErrors
                     MsgBox(ve.PropertyName & " - " & ve.ErrorMessage)
                 Next
             Next
         End Try
-        
+
     End Sub
 
     Public Sub search() Implements IControl.search
@@ -242,12 +242,12 @@
     End Function
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.users.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             setObjectValues()
 
-            Dim action As String = Controller.currentUser.Username & " updated a user (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a user (" &
                 currentObject.Username & ")"
             context.activities.Add(New activity(action))
 
@@ -269,7 +269,7 @@
             Return "Password confirmation is required."
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             'c.Active = True AndAlso
             Dim duplicate = context.users _
                 .Where(Function(c) c.Username.ToUpper.Equals(tbName.Text.ToUpper)) _
@@ -302,7 +302,7 @@
     End Sub
 
     Private Sub findObjectByName(ByVal name As String)
-        Using context = New bgmsEntities
+        Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.users.Where(Function(c) c.Username.Equals(name) And c.Active = True).FirstOrDefault
         End Using
     End Sub
@@ -315,10 +315,10 @@
         If tbSearch.Text = "" Then
             displayList(Util.getUsernames)
         Else
-            Using context = New bgmsEntities
+            Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 displayList(context.users _
                     .Where(Function(c) _
-                        c.Username.ToLower.Contains(tbSearch.Text.ToLower) And _
+                        c.Username.ToLower.Contains(tbSearch.Text.ToLower) And
                         c.Active = True) _
                     .OrderBy(Function(c) c.Username) _
                     .Select(Function(c) c.Username) _

@@ -25,18 +25,18 @@
     End Sub
 
     Private Sub loadUnposteds()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim unposteds = context.supplierpayments _
                 .Where(Function(c) c.PostedDate.Equals(Nothing)).ToList()
 
             itemsGrid.Rows.Clear()
 
             For Each obj In unposteds
-                itemsGrid.Rows.Add( _
-                    obj.Id, _
-                    obj.DocumentNo, _
-                    obj.supplier.Name, _
-                    Format(obj.Date, Constants.DATE_FORMAT), _
+                itemsGrid.Rows.Add(
+                    obj.Id,
+                    obj.DocumentNo,
+                    obj.supplier.Name,
+                    Format(obj.Date, Constants.DATE_FORMAT),
                     obj.TotalPaid)
             Next
 
@@ -57,14 +57,14 @@
             ids.Add(itemsGrid("Id", row.Index).Value)
         Next
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim payments = context.supplierpayments _
                       .Where(Function(c) ids.Contains(c.Id)).ToList()
 
             For Each payment In payments
                 payment.PostedDate = docDate.Value
 
-                Dim action As String = Controller.currentUser.Username & " posted a supplier payment (" & _
+                Dim action As String = Controller.currentUser.Username & " posted a supplier payment (" &
                    payment.DocumentNo & ")"
                 context.activities.Add(New activity(action))
 

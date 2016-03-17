@@ -24,18 +24,18 @@
     End Sub
 
     Private Sub loadUnpostedSalesOrders()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim unposteds = context.salesorders _
                 .Where(Function(c) c.PostedDate.Equals(Nothing)).ToList()
 
             itemsGrid.Rows.Clear()
 
             For Each obj In unposteds
-                itemsGrid.Rows.Add( _
-                    obj.Id, _
-                    obj.DocumentNo, _
-                    obj.customer.Name, _
-                    Format(obj.Date, Constants.DATE_FORMAT), _
+                itemsGrid.Rows.Add(
+                    obj.Id,
+                    obj.DocumentNo,
+                    obj.customer.Name,
+                    Format(obj.Date, Constants.DATE_FORMAT),
                     obj.TotalAmount)
             Next
 
@@ -56,7 +56,7 @@
             ids.Add(itemsGrid("Id", row.Index).Value)
         Next
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim pos = context.salesorders _
                       .Where(Function(c) ids.Contains(c.Id)).ToList()
 
@@ -69,7 +69,7 @@
                     item.stock.Price = item.Price
                 Next
 
-                Dim action As String = Controller.currentUser.Username & " posted a sales order (" & _
+                Dim action As String = Controller.currentUser.Username & " posted a sales order (" &
                    order.DocumentNo & ")"
                 context.activities.Add(New activity(action))
             Next

@@ -138,12 +138,12 @@
 #End Region
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.customers.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             currentObject.Active = False
 
-            Dim action As String = Controller.currentUser.Username & " deleted a customer (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a customer (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -171,7 +171,7 @@
 
     Public Sub loadObject() Implements IControl.loadObject
         If Not IsNothing(currentObject) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 currentObject = context.customers _
                     .Include("Agent") _
                     .Where(Function(c) c.Id = currentObject.Id) _
@@ -179,7 +179,7 @@
             End Using
             loadCurrentObject()
         Else
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 currentObject = context.customers _
                     .Include("Agent") _
                     .Where(Function(c) c.Active = True) _
@@ -232,12 +232,12 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New customer
             setObjectValues(context)
             context.customers.Add(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " added a customer (" & _
+            Dim action As String = Controller.currentUser.Username & " added a customer (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -275,12 +275,12 @@
     End Function
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.customers.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             setObjectValues(context)
 
-            Dim action As String = Controller.currentUser.Username & " updated a customer (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a customer (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
 
@@ -301,7 +301,7 @@
 
         If Controller.updateMode.Equals(Constants.UPDATE_MODE_CREATE) _
             OrElse Not currentObject.Name.ToUpper.Equals(tbName.Text.ToUpper) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 'c.Active = True AndAlso 
                 Dim duplicate = context.customers _
                     .Where(Function(c) c.Name.ToUpper.Equals(tbName.Text.ToUpper)) _
@@ -331,9 +331,9 @@
     End Sub
 
     Private Sub findObjectByName(ByVal name As String)
-        Using context = New bgmsEntities
-            currentObject = (From customer In context.customers.Include("Agent") _
-                Select customer).Where(Function(c) c.Name.Equals(name) And c.Active = True).FirstOrDefault()
+        Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            currentObject = (From customer In context.customers.Include("Agent")
+                             Select customer).Where(Function(c) c.Name.Equals(name) And c.Active = True).FirstOrDefault()
         End Using
     End Sub
 
@@ -351,10 +351,10 @@
         If tbSearch.Text = String.Empty Then
             displayList(Util.getCustomerNames)
         Else
-            Using context = New bgmsEntities
+            Using context = New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 displayList(context.customers _
                     .Where(Function(c) _
-                        c.Name.ToLower.Contains(tbSearch.Text.ToLower) And _
+                        c.Name.ToLower.Contains(tbSearch.Text.ToLower) And
                         c.Active = True) _
                     .OrderBy(Function(c) c.Name) _
                     .Select(Function(c) c.Name) _
@@ -376,7 +376,7 @@
     Public Sub printObject() Implements IControl.printObject
         Dim customersDoc As New PrintCustomers
         If btnPrint.Visible Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 customersDoc.customers = context.customers _
                     .Include("Agent") _
                     .OrderBy(Function(c) c.Name).ToList()

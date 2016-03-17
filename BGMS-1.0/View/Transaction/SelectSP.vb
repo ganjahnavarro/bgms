@@ -40,7 +40,7 @@
     Private Sub loadObjects()
         itemsGrid.Rows.Clear()
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim hasRecords As Boolean = False
             Dim withBalances = context.purchaseorders _
                 .Where(Function(c) c.supplier.Name.ToUpper.Equals(supplierName.ToUpper) _
@@ -50,10 +50,10 @@
 
             For Each obj In withBalances
                 If obj.getBalance > 0 Then
-                    itemsGrid.Rows.Add( _
-                    obj.Id, _
-                    obj.DocumentNo, _
-                    Format(obj.Date, Constants.DATE_FORMAT), _
+                    itemsGrid.Rows.Add(
+                    obj.Id,
+                    obj.DocumentNo,
+                    Format(obj.Date, Constants.DATE_FORMAT),
                     obj.getBalance)
 
                     hasRecords = True

@@ -197,7 +197,7 @@
     End Sub
 
     Public Sub loadObject() Implements IControl.loadObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             If Not IsNothing(currentObject) Then
                 currentObject = context.purchasereturns _
                     .Include("PurchaseReturnItems").Include("Supplier") _
@@ -285,13 +285,13 @@
     End Sub
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.purchasereturns.Where(Function(c) _
                     c.Id.Equals(currentObject.Id)).FirstOrDefault
             context.purchasereturnitems.RemoveRange(currentObject.purchasereturnitems)
             context.purchasereturns.Remove(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " deleted a purchase return (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a purchase return (" &
                 currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -321,7 +321,7 @@
     End Sub
 
     Private Function getUpdatedDocumentNo() As String
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim counter = context.counters.Where(Function(c) _
                c.Owner.Equals(Constants.OWNER_NAME_PURCHASE_RETURN)).FirstOrDefault
 
@@ -348,7 +348,7 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New purchasereturn
             setObjectValues(context)
 
@@ -359,7 +359,7 @@
 
             context.purchasereturns.Add(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " created a purchase return (" & _
+            Dim action As String = Controller.currentUser.Username & " created a purchase return (" &
                 currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -369,12 +369,12 @@
     End Sub
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.purchasereturns _
                     .Where(Function(c) c.Id.Equals(currentObject.Id)).FirstOrDefault()
             setObjectValues(context)
 
-            Dim action As String = Controller.currentUser.Username & " updated a purchase return (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a purchase return (" &
                 currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -413,7 +413,7 @@
 
         For rowIndex = 0 To enterGrid.RowCount - 2
 
-            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGrid("Id", rowIndex).Value), _
+            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGrid("Id", rowIndex).Value),
                 Nothing, enterGrid("Id", rowIndex).Value)
 
             If Not IsNothing(itemId) AndAlso itemId <> 0 Then
@@ -442,7 +442,7 @@
         Next
     End Sub
 
-    Private Sub setItemValues(ByRef orderItem As purchasereturnitem, _
+    Private Sub setItemValues(ByRef orderItem As purchasereturnitem,
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
 
@@ -500,15 +500,15 @@
         enterGrid.Columns.Item("Id").Visible = False
         setReadOnlyColumns()
 
-        enterGrid.Columns.Item("Price").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Price").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc1").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc1").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc2").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc2").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc3").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc3").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Amount").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Amount").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
 
         enterGrid.Columns.Item("Price").DefaultCellStyle.Format = "N2"
@@ -565,7 +565,7 @@
                 End If
 
                 prevStockName = stockName
-                Using context As New bgmsEntities
+                Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                     selectedStock = context.stocks _
                         .Where(Function(c) c.Name.Equals(stockName) AndAlso c.Active = True).FirstOrDefault
 
@@ -599,15 +599,15 @@
         Return getRowAmount(qty, price, disc1, disc2, disc3)
     End Function
 
-    Private Function getRowAmount(ByVal qty As Integer, ByVal price As Double, _
+    Private Function getRowAmount(ByVal qty As Integer, ByVal price As Double,
         ByVal disc1 As Double, ByVal disc2 As Double, ByVal disc3 As Double) As Double
         If Not IsNothing(qty) AndAlso Not IsNothing(price) Then
             Dim amount = qty * price
-            amount = If(IsNothing(disc1), amount, _
+            amount = If(IsNothing(disc1), amount,
                         amount - (amount * (disc1 / 100)))
-            amount = If(IsNothing(disc2), amount, _
+            amount = If(IsNothing(disc2), amount,
                         amount - (amount * (disc2 / 100)))
-            amount = If(IsNothing(disc3), amount, _
+            amount = If(IsNothing(disc3), amount,
                         amount - (amount * (disc3 / 100)))
             Return amount
         End If
@@ -629,7 +629,7 @@
             Exit Sub
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim nextObj As New purchasereturn
             nextObj = context.purchasereturns _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) > 0) _
@@ -647,7 +647,7 @@
             Exit Sub
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim prevObj As New purchasereturn
             prevObj = context.purchasereturns _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) < 0) _
@@ -661,7 +661,7 @@
     End Sub
 
     Public Sub firstObject() Implements IControl.firstObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim firstObj As New purchasereturn
             firstObj = context.purchasereturns _
                 .OrderBy(Function(c) c.DocumentNo).FirstOrDefault
@@ -674,7 +674,7 @@
     End Sub
 
     Public Sub lastObject() Implements IControl.lastObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim lastObj As New purchasereturn
             lastObj = context.purchasereturns _
                 .OrderByDescending(Function(c) c.DocumentNo).FirstOrDefault
@@ -723,9 +723,9 @@
 
     Private Sub reloadStocks(ByVal name As String)
         stockList.Clear()
-        Using context As New bgmsEntities
-            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
-                "where p.posteddate is not null and c.purchaseorderid = p.id and p.supplierid = s.id " & _
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
+                "where p.posteddate is not null and c.purchaseorderid = p.id and p.supplierid = s.id " &
                 "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
 
             Dim items As List(Of purchaseorderitem) = context.purchaseorderitems.SqlQuery(qry).ToList
@@ -739,9 +739,9 @@
         End Using
     End Sub
 
-    Private Sub loadAvailablePrices(ByVal stockId As Integer, _
+    Private Sub loadAvailablePrices(ByVal stockId As Integer,
             ByVal name As String, ByVal setFields As Boolean, ByVal rowIndex As Integer)
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
                 "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.purchaseorderid = p.id and p.supplierid = s.id " &
                 "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
@@ -757,23 +757,23 @@
     End Sub
 
     Private Sub loadAvailableDiscounts1(ByVal rowIndex As Integer)
-        If Not IsNothing(selectedStock) AndAlso _
+        If Not IsNothing(selectedStock) AndAlso
             Not String.IsNullOrWhiteSpace(enterGrid("Price", rowIndex).Value) Then
 
             Dim p As Double
             Double.TryParse(enterGrid("Price", rowIndex).Value, p)
 
-            loadAvailableDiscounts1(selectedStock.Id, tbSupplier.Text, _
+            loadAvailableDiscounts1(selectedStock.Id, tbSupplier.Text,
                 p, True, rowIndex)
         End If
     End Sub
 
-    Private Sub loadAvailableDiscounts1(ByVal stockId As Integer, ByVal name As String, _
+    Private Sub loadAvailableDiscounts1(ByVal stockId As Integer, ByVal name As String,
             ByVal price As Double, ByVal setFields As Boolean, ByVal rowIndex As Integer)
-        Using context As New bgmsEntities
-            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
-                "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price & _
-                "' and c.purchaseorderid = p.id and p.supplierid = s.id " & _
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
+                "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price &
+                "' and c.purchaseorderid = p.id and p.supplierid = s.id " &
                 "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
 
             discount1List = context.purchaseorderitems.SqlQuery(qry) _
@@ -787,26 +787,26 @@
     End Sub
 
     Private Sub loadAvailableDiscounts2(ByVal rowIndex As Integer)
-        If Not IsNothing(selectedStock) AndAlso _
-            Not String.IsNullOrWhiteSpace(enterGrid("Price", rowIndex).Value) AndAlso _
+        If Not IsNothing(selectedStock) AndAlso
+            Not String.IsNullOrWhiteSpace(enterGrid("Price", rowIndex).Value) AndAlso
             Not String.IsNullOrWhiteSpace(enterGrid("Disc1", rowIndex).Value) Then
 
             Dim p, d1 As Double
             Double.TryParse(enterGrid("Price", rowIndex).Value, p)
             Double.TryParse(enterGrid("Disc1", rowIndex).Value, d1)
 
-            loadAvailableDiscounts2(selectedStock.Id, tbSupplier.Text, _
+            loadAvailableDiscounts2(selectedStock.Id, tbSupplier.Text,
                 p, d1, True, rowIndex)
         End If
     End Sub
 
-    Private Sub loadAvailableDiscounts2(ByVal stockId As Integer, ByVal name As String, _
-            ByVal price As Double, ByVal disc1 As Double, ByVal setFields As Boolean, _
+    Private Sub loadAvailableDiscounts2(ByVal stockId As Integer, ByVal name As String,
+            ByVal price As Double, ByVal disc1 As Double, ByVal setFields As Boolean,
             ByVal rowIndex As Integer)
-        Using context As New bgmsEntities
-            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
-               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price & "' and c.discount1 = '" & disc1 & _
-               "' and c.purchaseorderid = p.id and p.supplierid = s.id " & _
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
+               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price & "' and c.discount1 = '" & disc1 &
+               "' and c.purchaseorderid = p.id and p.supplierid = s.id " &
                "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
 
             discount2List = context.purchaseorderitems.SqlQuery(qry) _
@@ -820,9 +820,9 @@
     End Sub
 
     Private Sub loadAvailableDiscounts3(ByVal rowIndex As Integer)
-        If Not IsNothing(selectedStock) AndAlso _
-            Not String.IsNullOrWhiteSpace(enterGrid("Price", rowIndex).Value) AndAlso _
-            Not String.IsNullOrWhiteSpace(enterGrid("Disc1", rowIndex).Value) AndAlso _
+        If Not IsNothing(selectedStock) AndAlso
+            Not String.IsNullOrWhiteSpace(enterGrid("Price", rowIndex).Value) AndAlso
+            Not String.IsNullOrWhiteSpace(enterGrid("Disc1", rowIndex).Value) AndAlso
             Not String.IsNullOrWhiteSpace(enterGrid("Disc2", rowIndex).Value) Then
 
             Dim p, d1, d2 As Double
@@ -830,19 +830,19 @@
             Double.TryParse(enterGrid("Disc1", rowIndex).Value, d1)
             Double.TryParse(enterGrid("Disc2", rowIndex).Value, d2)
 
-            loadAvailableDiscounts3(selectedStock.Id, tbSupplier.Text, _
+            loadAvailableDiscounts3(selectedStock.Id, tbSupplier.Text,
                 p, d1, d2, True, rowIndex)
         End If
     End Sub
 
-    Private Sub loadAvailableDiscounts3(ByVal stockId As Integer, ByVal name As String, _
-            ByVal price As Double, ByVal disc1 As Double, ByVal disc2 As Double, _
+    Private Sub loadAvailableDiscounts3(ByVal stockId As Integer, ByVal name As String,
+            ByVal price As Double, ByVal disc1 As Double, ByVal disc2 As Double,
             ByVal setFields As Boolean, ByVal rowIndex As Integer)
-        Using context As New bgmsEntities
-            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " & _
-               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price & _
-               "' and c.discount1 = '" & disc1 & "' and c.discount2 = '" & disc2 & _
-               "' and c.purchaseorderid = p.id and p.supplierid = s.id " & _
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
+               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price &
+               "' and c.discount1 = '" & disc1 & "' and c.discount2 = '" & disc2 &
+               "' and c.purchaseorderid = p.id and p.supplierid = s.id " &
                "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
 
             discount3List = context.purchaseorderitems.SqlQuery(qry) _
@@ -856,10 +856,10 @@
     End Sub
 
     Private Sub loadMaxTotalQuantity(ByVal rowIndex As Integer)
-        If Not IsNothing(selectedStock) AndAlso _
-            Not String.IsNullOrWhiteSpace(enterGrid("Price", rowIndex).Value) AndAlso _
-            Not String.IsNullOrWhiteSpace(enterGrid("Disc1", rowIndex).Value) AndAlso _
-            Not String.IsNullOrWhiteSpace(enterGrid("Disc2", rowIndex).Value) AndAlso _
+        If Not IsNothing(selectedStock) AndAlso
+            Not String.IsNullOrWhiteSpace(enterGrid("Price", rowIndex).Value) AndAlso
+            Not String.IsNullOrWhiteSpace(enterGrid("Disc1", rowIndex).Value) AndAlso
+            Not String.IsNullOrWhiteSpace(enterGrid("Disc2", rowIndex).Value) AndAlso
             Not String.IsNullOrWhiteSpace(enterGrid("Disc3", rowIndex).Value) Then
 
             Dim p, d1, d2, d3 As Double
@@ -868,17 +868,17 @@
             Double.TryParse(enterGrid("Disc2", rowIndex).Value, d2)
             Double.TryParse(enterGrid("Disc3", rowIndex).Value, d3)
 
-            loadMaxTotalQuantity(selectedStock.Id, tbSupplier.Text, _
+            loadMaxTotalQuantity(selectedStock.Id, tbSupplier.Text,
                p, d1, d2, d3, True, rowIndex)
         End If
     End Sub
 
-    Private Sub loadMaxTotalQuantity(ByVal stockId As Integer, ByVal name As String, _
-            ByVal price As Double, ByVal disc1 As Double, ByVal disc2 As Double, ByVal disc3 As Double, _
+    Private Sub loadMaxTotalQuantity(ByVal stockId As Integer, ByVal name As String,
+            ByVal price As Double, ByVal disc1 As Double, ByVal disc2 As Double, ByVal disc3 As Double,
             ByVal setFields As Boolean, ByVal rowIndex As Integer)
         Dim maxQtyOrdered, maxQtyReturned As Integer
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim qry As String = "select c.* from purchaseorderitems c, purchaseorders p, suppliers s " &
                "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price &
                "' and c.discount1 = '" & disc1 & "' and c.discount2 = '" & disc2 & "' and c.discount3 = '" & disc3 &
@@ -887,10 +887,10 @@
 
             Dim orderedItems = context.purchaseorderitems.SqlQuery(qry).ToList
 
-            Dim anotherQry As String = "select c.* from purchasereturnitems c, purchasereturns p, suppliers s " & _
-               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price & _
-               "' and c.discount1 = '" & disc1 & "' and c.discount2 = '" & disc2 & "' and c.discount3 = '" & disc3 & _
-               "' and c.purchasereturnid = p.id and p.supplierid = s.id " & _
+            Dim anotherQry As String = "select c.* from purchasereturnitems c, purchasereturns p, suppliers s " &
+               "where p.posteddate is not null and c.stockId = '" & stockId & "' and c.price = '" & price &
+               "' and c.discount1 = '" & disc1 & "' and c.discount2 = '" & disc2 & "' and c.discount3 = '" & disc3 &
+               "' and c.purchasereturnid = p.id and p.supplierid = s.id " &
                "and ucase(s.name) = '" & name.ToUpper & "' and s.active = true"
 
             Dim returnedItems = context.purchasereturnitems.SqlQuery(anotherQry).ToList()
@@ -905,7 +905,7 @@
                 maxQtyReturned += item.Quantity
             Next
 
-            maxQuantity = If(IsNothing(maxQtyReturned), maxQtyOrdered, _
+            maxQuantity = If(IsNothing(maxQtyReturned), maxQtyOrdered,
                 maxQtyOrdered - maxQtyReturned)
         End Using
 
@@ -985,7 +985,7 @@
                     stockName = stockName.Trim.ToUpper
 
                     prevStockName = stockName
-                    Using context As New bgmsEntities
+                    Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                         selectedStock = context.stocks _
                             .Where(Function(c) c.Name.Equals(stockName) _
                                 AndAlso c.Active = True).FirstOrDefault
@@ -1009,16 +1009,16 @@
 
     Private Sub reloadSelectedStockVariables(ByVal rowIndex As Integer, ByVal setFields As Boolean)
         loadAvailablePrices(selectedStock.Id, tbSupplier.Text, setFields, rowIndex)
-        loadAvailableDiscounts1(selectedStock.Id, tbSupplier.Text, _
+        loadAvailableDiscounts1(selectedStock.Id, tbSupplier.Text,
             enterGrid("Price", rowIndex).Value, setFields, rowIndex)
-        loadAvailableDiscounts2(selectedStock.Id, tbSupplier.Text, _
+        loadAvailableDiscounts2(selectedStock.Id, tbSupplier.Text,
             enterGrid("Price", rowIndex).Value, enterGrid("Disc1", rowIndex).Value, setFields, rowIndex)
-        loadAvailableDiscounts3(selectedStock.Id, tbSupplier.Text, _
-            enterGrid("Price", rowIndex).Value, enterGrid("Disc1", rowIndex).Value, _
+        loadAvailableDiscounts3(selectedStock.Id, tbSupplier.Text,
+            enterGrid("Price", rowIndex).Value, enterGrid("Disc1", rowIndex).Value,
              enterGrid("Disc2", rowIndex).Value, setFields, rowIndex)
-        loadMaxTotalQuantity(selectedStock.Id, tbSupplier.Text, _
-            enterGrid("Price", rowIndex).Value, _
-            enterGrid("Disc1", rowIndex).Value, enterGrid("Disc2", rowIndex).Value, _
+        loadMaxTotalQuantity(selectedStock.Id, tbSupplier.Text,
+            enterGrid("Price", rowIndex).Value,
+            enterGrid("Disc1", rowIndex).Value, enterGrid("Disc2", rowIndex).Value,
             enterGrid("Disc3", rowIndex).Value, setFields, rowIndex)
     End Sub
 
@@ -1026,7 +1026,7 @@
         Dim printDoc As New PrintTransaction
 
         If btnPrint.Visible And Not IsNothing(currentObject) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 printDoc.name = currentObject.supplier.Name
                 printDoc.address = currentObject.supplier.Address
                 printDoc.docNo = currentObject.DocumentNo
@@ -1034,11 +1034,11 @@
                 printDoc.agent = String.Empty
 
                 printDoc.items = context.Database _
-                    .SqlQuery(Of _Transaction)( _
-                        "select i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, s.name as stock, " & _
-                        "s.description, i.price, i.discount1, i.discount2, i.discount3 " & _
-                        "from purchasereturnitems i, stocks s, units u " & _
-                        "where i.stockid = s.id and s.unitid = u.id " & _
+                    .SqlQuery(Of _Transaction)(
+                        "select i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, s.name as stock, " &
+                        "s.description, i.price, i.discount1, i.discount2, i.discount3 " &
+                        "from purchasereturnitems i, stocks s, units u " &
+                        "where i.stockid = s.id and s.unitid = u.id " &
                         "and i.purchasereturnid = '" & currentObject.Id & "'") _
                     .ToList()
             End Using

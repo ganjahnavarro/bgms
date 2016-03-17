@@ -24,7 +24,7 @@
     End Function
 
     Private Sub loadUsers()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             users = context.users.Where(Function(c) c.Active = True).ToList()
         End Using
     End Sub

@@ -88,7 +88,7 @@
 
         qry += "order by stock, date "
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             context.Database.CommandTimeout = 90
 
             printDoc.items = context.Database _

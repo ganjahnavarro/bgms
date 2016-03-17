@@ -25,18 +25,18 @@
     End Sub
 
     Private Sub loadUnposteds()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim unposteds = context.salesreturns _
                 .Where(Function(c) c.PostedDate.Equals(Nothing)).ToList()
 
             itemsGrid.Rows.Clear()
 
             For Each obj In unposteds
-                itemsGrid.Rows.Add( _
-                    obj.Id, _
-                    obj.DocumentNo, _
-                    obj.customer.Name, _
-                    Format(obj.Date, Constants.DATE_FORMAT), _
+                itemsGrid.Rows.Add(
+                    obj.Id,
+                    obj.DocumentNo,
+                    obj.customer.Name,
+                    Format(obj.Date, Constants.DATE_FORMAT),
                     obj.TotalAmount)
             Next
 
@@ -57,7 +57,7 @@
             ids.Add(itemsGrid("Id", row.Index).Value)
         Next
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim returns = context.salesreturns _
                       .Where(Function(c) ids.Contains(c.Id)).ToList()
 
@@ -70,10 +70,10 @@
                 For Each rtnItem In rtn.salesreturnitems
                     Dim totalReturn = rtnItem.Quantity
 
-                    Dim qry As String = "select i.* from salesorderitems i, customers c, stocks s, salesorders so " & _
-                        "where i.salesorderid = so.id and i.stockid = s.id and so.customerid = c.id " & _
-                        "and so.posteddate is not null and ucase(c.name) = '" & rtn.customer.Name.ToUpper & "' " & _
-                        "and s.id = '" & rtnItem.stockId & "' and i.discount1 = '" & rtnItem.Discount1 & "' " & _
+                    Dim qry As String = "select i.* from salesorderitems i, customers c, stocks s, salesorders so " &
+                        "where i.salesorderid = so.id and i.stockid = s.id and so.customerid = c.id " &
+                        "and so.posteddate is not null and ucase(c.name) = '" & rtn.customer.Name.ToUpper & "' " &
+                        "and s.id = '" & rtnItem.stockId & "' and i.discount1 = '" & rtnItem.Discount1 & "' " &
                         "and i.discount2 = '" & rtnItem.Discount2 & "' and c.active = true and i.price = '" & rtnItem.Price & "'"
 
                     Dim soItems = context.salesorderitems.SqlQuery(qry) _
@@ -116,7 +116,7 @@
                     rtnItem.stock.QtyOnHand += rtnItem.Quantity
                 Next
 
-                Dim action As String = Controller.currentUser.Username & " posted a sales return (" & _
+                Dim action As String = Controller.currentUser.Username & " posted a sales return (" &
                    rtn.DocumentNo & ")"
                 context.activities.Add(New activity(action))
             Next

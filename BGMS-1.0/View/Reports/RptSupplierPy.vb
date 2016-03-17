@@ -46,7 +46,7 @@
 
         qry += " group by s.name order by s.name, po.date"
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             printDoc.items = context.Database _
                 .SqlQuery(Of _Statement)(qry) _
                 .ToList()
@@ -66,12 +66,12 @@
         printDoc.filter = "Supplier"
         printDoc.docPrefix = "PO"
 
-        Dim qry As String = "select s.name, (po.totalamount - (po.totalreturned + po.totalpaid)) as balance, " & _
-            " po.documentno as docno, po.date" & _
-            " from purchaseorders po, suppliers s where po.supplierid = s.id " & _
-            " and (po.totalamount - (po.totalreturned + po.totalpaid)) > 0 " & _
-            " and po.date >= " & Util.inSql(dateFrom.Value) & _
-            " and po.date <= " & Util.inSql(dateTo.Value) & _
+        Dim qry As String = "select s.name, (po.totalamount - (po.totalreturned + po.totalpaid)) as balance, " &
+            " po.documentno as docno, po.date" &
+            " from purchaseorders po, suppliers s where po.supplierid = s.id " &
+            " and (po.totalamount - (po.totalreturned + po.totalpaid)) > 0 " &
+            " and po.date >= " & Util.inSql(dateFrom.Value) &
+            " and po.date <= " & Util.inSql(dateTo.Value) &
             " and po.posteddate is not null "
 
         If Not String.IsNullOrWhiteSpace(tbFilter.Text) Then
@@ -80,7 +80,7 @@
 
         qry += " order by s.name, po.date"
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             printDoc.items = context.Database _
                 .SqlQuery(Of _StatementDetail)(qry) _
                 .ToList()

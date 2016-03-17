@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>BGMS.My.MyApplication</StartupObject>
     <RootNamespace>BGMS</RootNamespace>
-    <AssemblyName>BGMS-1.1.fix</AssemblyName>
+    <AssemblyName>BGMS-1.2</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -36,7 +36,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>BGMS-1.1.fix.xml</DocumentationFile>
+    <DocumentationFile>BGMS-1.2.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -46,7 +46,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>BGMS-1.1.fix.xml</DocumentationFile>
+    <DocumentationFile>BGMS-1.2.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>

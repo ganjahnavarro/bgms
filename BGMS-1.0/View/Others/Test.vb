@@ -15,13 +15,13 @@ Public Class Test
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         Dim cs = ConfigurationManager.ConnectionStrings("bgmsEntities").ConnectionString
 
-        'Using context As New bgmsEntities(cs.Replace("bgms", "bgmstest"))
+        'Using context as New bgmsEntities(Constants.CONNECTION_STRING_NAME)(cs.Replace("bgms", "bgmstest"))
         ' MsgBox(context.users.Select(Function(c) c.Firstname).FirstOrDefault)
         'End Using
     End Sub
 
     Private Sub Test_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Using context As New bgmsEntities
+        'Using context as New bgmsEntities(Constants.CONNECTION_STRING_NAME)
         '    Dim so = context.salesorders.Where(Function(c) c.Id = 25442).FirstOrDefault
         '    Dim d1 As Double = FormatNumber(CDbl(so.TotalAmount), 2)
         '    Dim d2 As Double = FormatNumber(CDbl(so.TotalAmount), 2)

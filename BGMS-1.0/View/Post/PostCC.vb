@@ -24,18 +24,18 @@
     End Sub
 
     Private Sub loadUnposteds()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim unposteds = context.customercollections _
                 .Where(Function(c) c.PostedDate.Equals(Nothing)).ToList()
 
             itemsGrid.Rows.Clear()
 
             For Each obj In unposteds
-                itemsGrid.Rows.Add( _
-                    obj.Id, _
-                    obj.DocumentNo, _
-                    obj.customer.Name, _
-                    Format(obj.Date, Constants.DATE_FORMAT), _
+                itemsGrid.Rows.Add(
+                    obj.Id,
+                    obj.DocumentNo,
+                    obj.customer.Name,
+                    Format(obj.Date, Constants.DATE_FORMAT),
                     obj.TotalPaid)
             Next
 
@@ -56,14 +56,14 @@
             ids.Add(itemsGrid("Id", row.Index).Value)
         Next
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim ccs = context.customercollections _
                       .Where(Function(c) ids.Contains(c.Id)).ToList()
 
             For Each cc In ccs
                 cc.PostedDate = docDate.Value
 
-                Dim action As String = Controller.currentUser.Username & _
+                Dim action As String = Controller.currentUser.Username &
                     " posted a customer collection (" & cc.DocumentNo & ")"
                 context.activities.Add(New activity(action))
 

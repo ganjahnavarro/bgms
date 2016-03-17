@@ -72,22 +72,22 @@
         printDoc.filter = groupBy
         printDoc.report_name = "PURCHASE MONITORING BY " & groupBy.ToUpper
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             printDoc.report_detail = "From " & dateFrom.Value.ToShortDateString & " To " & dateTo.Value.ToShortDateString
 
-            Dim sel As String = If(groupBy.ToUpper.Equals("STOCK"), _
-                "select s.name, c.name as filter, concat('UNIT: ', u.name) as unit, ", _
+            Dim sel As String = If(groupBy.ToUpper.Equals("STOCK"),
+                "select s.name, c.name as filter, concat('UNIT: ', u.name) as unit, ",
                 "select c.name, concat(s.name, ' (', u.name, ')') as filter, ")
 
             '"po.discount1, po.discount2, po.discount3 " & _
             'and (po.totalAmount - (po.totalpaid + po.totalreturned)) <= 0" & _
-            Dim qry As String = sel & " po.date, po.documentno as docno, i.quantity " & _
-                "as qtyordered, i.quantityreturned as qtyrtn, (i.quantity - i.quantityreturned) " & _
-                "as qtysales, i.price, ((i.quantity - i.quantityreturned) * i.price) as amount " & _
-                "from purchaseorderitems i, purchaseorders po, stocks s, suppliers c, units u " & _
-                "where i.purchaseorderid = po.id and i.stockid = s.id and po.supplierid = c.id " & _
-                "and s.unitid = u.id and po.posteddate is not null " & _
-                " and po.date >= " & Util.inSql(dateFrom.Value) & _
+            Dim qry As String = sel & " po.date, po.documentno as docno, i.quantity " &
+                "as qtyordered, i.quantityreturned as qtyrtn, (i.quantity - i.quantityreturned) " &
+                "as qtysales, i.price, ((i.quantity - i.quantityreturned) * i.price) as amount " &
+                "from purchaseorderitems i, purchaseorders po, stocks s, suppliers c, units u " &
+                "where i.purchaseorderid = po.id and i.stockid = s.id and po.supplierid = c.id " &
+                "and s.unitid = u.id and po.posteddate is not null " &
+                " and po.date >= " & Util.inSql(dateFrom.Value) &
                 " and po.date <= " & Util.inSql(dateTo.Value)
 
             If (Not String.IsNullOrWhiteSpace(tbSupplier.Text)) Then
@@ -104,7 +104,7 @@
                 printDoc.report_detail += " All Stock."
             End If
 
-            qry += If(groupBy.ToUpper.Equals("STOCK"), _
+            qry += If(groupBy.ToUpper.Equals("STOCK"),
                       " order by s.name, po.date", " order by c.name, po.date")
 
             printDoc.items = context.Database.SqlQuery(Of _Monitor)(qry).ToList

@@ -16,33 +16,39 @@ Public Class Controller
     Public Shared stockDictionary As New Dictionary(Of String, String)
 
     Private Sub postConstruct(sender As Object, e As EventArgs) Handles MyBase.Load
-        'loadConfig()
+        Dim connected As Boolean = False
+
         Try
-            init()
-            Using context As New bgmsEntities
+            'Try access master server
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_MASTER)
                 currentUser = context.users.FirstOrDefault
+                Constants.CONNECTION_STRING_NAME = Constants.CONNECTION_STRING_NAME_MASTER
+                connected = True
             End Using
-
-            initStocksDictionary()
-
-            hotkeyListener.Enabled = True
-            pollTimer.Enabled = True
         Catch ex As Exception
-            MsgBox("Can't connect to database. Check network connection. Server (192.168.1.125): " + ex.Message)
-            Me.Close()
+            Try
+                'Try access slave server
+                Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_SLAVE)
+                    currentUser = context.users.FirstOrDefault
+                    Constants.CONNECTION_STRING_NAME = Constants.CONNECTION_STRING_NAME_SLAVE
+                    connected = True
+                End Using
+            Catch exc As Exception
+                connected = False
+            End Try
+        Finally
+            If connected Then
+                init()
+                initStocksDictionary()
+                hotkeyListener.Enabled = True
+                pollTimer.Enabled = True
+            Else
+                MsgBox("Can't connect to both servers. Check network connection. Use 'ping' and 'ipconfig'")
+                Me.Close()
+            End If
         End Try
-    End Sub
 
-    Private Sub loadConfig()
-        'config.Clear()
-
-        'Dim tmp() As String
-        'Dim settings() As String = File.ReadAllLines(Util.getPathCreateIfNotExists(Constants.FILE_CONFIG))
-
-        'For Each setting As String In settings
-        '    tmp = setting.Split(New Char() {CChar("=")})
-        '    config.Add(tmp(0), tmp(1))
-        'Next
+        Console.WriteLine("SERVER CONNECTION STRING: " & Constants.CONNECTION_STRING_NAME)
     End Sub
 
     Private Sub formShown(sender As Object, e As EventArgs) Handles Me.Shown
@@ -83,7 +89,7 @@ Public Class Controller
 
     Private Sub initRecentActivities()
         activityList.Items.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             activityList.Items.AddRange(context.activities _
                 .OrderByDescending(Function(c) c.Id) _
                 .Select(Function(c) c.Description).Take(14).ToArray())
@@ -92,7 +98,7 @@ Public Class Controller
 
     Public Sub initStocks()
         stockList.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             stockList.AddRange(context.stocks.Where(Function(c) c.Active = True) _
                 .Select(Function(c) c.Name.Trim.ToUpper).ToArray())
         End Using
@@ -100,7 +106,7 @@ Public Class Controller
 
     Public Sub initStocksDictionary()
         stockDictionary.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             stockDictionary = context.stocks.Where(Function(c) c.Active = True) _
                 .OrderBy(Function(c) c.Name) _
                 .ToDictionary(Function(c) c.Name.ToUpper.Trim, Function(c) c.Description)
@@ -109,7 +115,7 @@ Public Class Controller
 
     Public Sub initAgents()
         agentList.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             agentList.AddRange(context.agents.Where(Function(c) c.Active = True) _
                 .Select(Function(c) c.Name.ToUpper).ToArray())
         End Using
@@ -117,7 +123,7 @@ Public Class Controller
 
     Public Sub initCustomers()
         customerList.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             customerList.AddRange(context.customers.Where(Function(c) c.Active = True) _
                 .Select(Function(c) c.Name.ToUpper).ToArray())
         End Using
@@ -125,7 +131,7 @@ Public Class Controller
 
     Public Sub initCategories()
         categoryList.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             categoryList.AddRange(context.categories.Where(Function(c) c.Active = True) _
                 .Select(Function(c) c.Name.ToUpper).ToArray())
         End Using
@@ -133,7 +139,7 @@ Public Class Controller
 
     Public Sub initSuppliers()
         supplierList.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             supplierList.AddRange(context.suppliers.Where(Function(c) c.Active = True) _
                 .Select(Function(c) c.Name.ToUpper).ToArray())
         End Using
@@ -141,7 +147,7 @@ Public Class Controller
 
     Public Sub initUnits()
         unitList.Clear()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             unitList.AddRange(context.units.Where(Function(c) c.Active = True) _
                 .Select(Function(c) c.Name.ToUpper).ToArray())
         End Using

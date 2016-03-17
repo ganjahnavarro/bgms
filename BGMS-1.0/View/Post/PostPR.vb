@@ -25,18 +25,18 @@
     End Sub
 
     Private Sub loadUnposteds()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim unposteds = context.purchasereturns _
                 .Where(Function(c) c.PostedDate.Equals(Nothing)).ToList()
 
             itemsGrid.Rows.Clear()
 
             For Each obj In unposteds
-                itemsGrid.Rows.Add( _
-                    obj.Id, _
-                    obj.DocumentNo, _
-                    obj.supplier.Name, _
-                    Format(obj.Date, Constants.DATE_FORMAT), _
+                itemsGrid.Rows.Add(
+                    obj.Id,
+                    obj.DocumentNo,
+                    obj.supplier.Name,
+                    Format(obj.Date, Constants.DATE_FORMAT),
                     obj.TotalAmount)
             Next
 
@@ -57,14 +57,14 @@
             ids.Add(itemsGrid("Id", row.Index).Value)
         Next
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim returns = context.purchasereturns _
                       .Where(Function(c) ids.Contains(c.Id)).ToList()
 
             For Each rtn In returns
                 rtn.PostedDate = docDate.Value
 
-                Dim action As String = Controller.currentUser.Username & " posted a purchase return (" & _
+                Dim action As String = Controller.currentUser.Username & " posted a purchase return (" &
                     rtn.DocumentNo & ")"
                 context.activities.Add(New activity(action))
 
@@ -74,11 +74,11 @@
                 For Each rtnItem In rtn.purchasereturnitems
                     Dim totalReturn = rtnItem.Quantity
 
-                    Dim qry As String = "select i.* from purchaseorderitems i, suppliers sup, stocks s, purchaseorders po " & _
-                        "where i.purchaseorderid = po.id and i.stockid = s.id and po.supplierid = sup.id " & _
-                        "and po.posteddate is not null and ucase(sup.name) = '" & rtn.supplier.Name.ToUpper & "' " & _
-                        "and s.id = '" & rtnItem.stockId & "' and i.discount1 = '" & rtnItem.Discount1 & "' " & _
-                        "and i.discount2 = '" & rtnItem.Discount2 & "' and i.discount3 = '" & rtnItem.Discount3 & _
+                    Dim qry As String = "select i.* from purchaseorderitems i, suppliers sup, stocks s, purchaseorders po " &
+                        "where i.purchaseorderid = po.id and i.stockid = s.id and po.supplierid = sup.id " &
+                        "and po.posteddate is not null and ucase(sup.name) = '" & rtn.supplier.Name.ToUpper & "' " &
+                        "and s.id = '" & rtnItem.stockId & "' and i.discount1 = '" & rtnItem.Discount1 & "' " &
+                        "and i.discount2 = '" & rtnItem.Discount2 & "' and i.discount3 = '" & rtnItem.Discount3 &
                         "' and sup.active = true and i.price = '" & rtnItem.Price & "'"
 
                     Dim poItems = context.purchaseorderitems.SqlQuery(qry) _

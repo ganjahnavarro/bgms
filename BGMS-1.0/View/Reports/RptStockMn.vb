@@ -95,7 +95,7 @@
         printDoc.shOnHand = shOnHand.Checked
         printDoc.report_detail = detail
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             printDoc.items = context.Database _
                 .SqlQuery(Of _StockMonitor)(qry) _
                 .ToList()

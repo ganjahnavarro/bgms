@@ -66,7 +66,7 @@
     End Sub
 
     Private Sub setLatestDR()
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim nextCounter = context.counters.Where(Function(c) c.Prefix.Equals("DR")).FirstOrDefault
             tbDoc.Text = "DR" & nextCounter.Count
         End Using
@@ -201,13 +201,13 @@
     End Sub
 
     Public Sub deleteObject() Implements IControl.deleteObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.salesorders.Where(Function(c) _
                 c.Id.Equals(currentObject.Id)).FirstOrDefault
             context.salesorderitems.RemoveRange(currentObject.salesorderitems)
             context.salesorders.Remove(currentObject)
 
-            Dim action As String = Controller.currentUser.Username & " deleted a sales order (" & _
+            Dim action As String = Controller.currentUser.Username & " deleted a sales order (" &
                currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -255,7 +255,7 @@
     End Sub
 
     Public Sub loadObject() Implements IControl.loadObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             If Not IsNothing(currentObject) Then
                 currentObject = context.salesorders _
                     .Include("Customer").Include("SalesOrderItems").Include("Agent") _
@@ -282,7 +282,7 @@
             Exit Sub
         End If
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim nextObj As New salesorder
             nextObj = context.salesorders _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) > 0) _
@@ -296,7 +296,7 @@
     End Sub
 
     Public Sub previousObject() Implements IControl.previousObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim prevObj As New salesorder
             prevObj = context.salesorders _
                 .Where(Function(c) c.DocumentNo.CompareTo(currentObject.DocumentNo) < 0) _
@@ -310,7 +310,7 @@
     End Sub
 
     Public Sub firstObject() Implements IControl.firstObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim firstObj As New salesorder
             firstObj = context.salesorders _
                 .OrderBy(Function(c) c.DocumentNo).FirstOrDefault
@@ -323,7 +323,7 @@
     End Sub
 
     Public Sub lastObject() Implements IControl.lastObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim lastObj As New salesorder
             lastObj = context.salesorders _
                 .OrderByDescending(Function(c) c.DocumentNo).FirstOrDefault
@@ -353,13 +353,13 @@
     End Sub
 
     Public Sub saveObject() Implements IControl.saveObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = New salesorder
             setObjectValues(context)
             context.salesorders.Add(currentObject)
 
             updateCounter(context)
-            Dim action As String = Controller.currentUser.Username & " created a sales order (" & _
+            Dim action As String = Controller.currentUser.Username & " created a sales order (" &
                 currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -415,13 +415,13 @@
     End Function
 
     Public Sub updateObject() Implements IControl.updateObject
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             currentObject = context.salesorders _
                 .Where(Function(c) c.Id.Equals(currentObject.Id)).FirstOrDefault()
             setObjectValues(context)
 
             updateCounter(context)
-            Dim action As String = Controller.currentUser.Username & " updated a sales order (" & _
+            Dim action As String = Controller.currentUser.Username & " updated a sales order (" &
                currentObject.DocumentNo & ")"
             context.activities.Add(New activity(action))
 
@@ -465,7 +465,7 @@
         If Controller.updateMode.Equals(Constants.UPDATE_MODE_CREATE) _
             OrElse Not currentObject.DocumentNo.ToUpper.Equals(tbDoc.Text.ToUpper) Then
 
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 Dim duplicate = context.salesorders _
                     .Where(Function(c) c.DocumentNo.ToUpper.Equals(tbDoc.Text.ToUpper)).FirstOrDefault
 
@@ -474,7 +474,7 @@
                     Dim ctr = context.counters.Where(Function(c) c.Prefix.Equals(doc)).FirstOrDefault
 
                     If Not IsNothing(ctr) Then
-                        Dim maxExistingValQuery As String = "select cast(substring(documentno, 3) as unsigned) as nextval from salesorders" & _
+                        Dim maxExistingValQuery As String = "select cast(substring(documentno, 3) as unsigned) as nextval from salesorders" &
                             " where documentno like '" & doc & "%' order by cast(substring(documentno, 3) as unsigned) desc limit 1"
                         Dim maxExistingVal As Integer = context.Database.SqlQuery(Of Integer)(maxExistingValQuery).FirstOrDefault
 
@@ -501,7 +501,7 @@
             c.Prefix.ToUpper.Equals(doc)).FirstOrDefault
 
         If Not IsNothing(ctr) Then
-            Dim maxExistingValQuery As String = "select cast(substring(documentno, 3) as unsigned) as nextval from salesorders" & _
+            Dim maxExistingValQuery As String = "select cast(substring(documentno, 3) as unsigned) as nextval from salesorders" &
             " where documentno like '" & doc & "%' order by cast(substring(documentno, 3) as unsigned) desc limit 1"
             Dim maxExistingVal As Integer = context.Database.SqlQuery(Of Integer)(maxExistingValQuery).FirstOrDefault
 
@@ -593,7 +593,7 @@
         retainIds.Clear()
 
         For rowIndex = 0 To enterGrid.RowCount - 2
-            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGrid("Id", rowIndex).Value), _
+            Dim itemId As Integer = If(String.IsNullOrEmpty(enterGrid("Id", rowIndex).Value),
                 Nothing, enterGrid("Id", rowIndex).Value)
 
             If Not IsNothing(itemId) And itemId <> 0 Then
@@ -622,7 +622,7 @@
         Next
     End Sub
 
-    Private Sub setItemValues(ByRef orderItem As salesorderitem, _
+    Private Sub setItemValues(ByRef orderItem As salesorderitem,
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
 
@@ -698,7 +698,7 @@
                 End If
 
                 prevStockName = stockName
-                Using context As New bgmsEntities
+                Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                     selectedStock = context.stocks _
                         .Where(Function(c) c.Name.Equals(stockName) And c.Active = True).FirstOrDefault
 
@@ -753,14 +753,14 @@
         Return getRowAmount(qty, price, discount1, discount2)
     End Function
 
-    Public Function getRowAmount(ByVal qty As Double, ByVal price As Double, _
+    Public Function getRowAmount(ByVal qty As Double, ByVal price As Double,
             ByVal discount1 As Double, ByVal discount2 As Double) As Double
         If Not IsNothing(qty) And Not IsNothing(price) Then
             Dim amount = qty * price
-            amount = If(IsNothing(discount1), amount, _
+            amount = If(IsNothing(discount1), amount,
                         amount - (amount * (discount1 / 100)))
 
-            amount = If(IsNothing(discount2), amount, _
+            amount = If(IsNothing(discount2), amount,
                         amount - (amount * (discount2 / 100)))
             Return amount
         End If
@@ -792,15 +792,15 @@
 
         setReadOnlyColumns()
 
-        enterGrid.Columns.Item("Cost").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Cost").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Price").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Price").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc1").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc1").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Disc2").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Disc2").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
-        enterGrid.Columns.Item("Amount").DefaultCellStyle.Alignment = _
+        enterGrid.Columns.Item("Amount").DefaultCellStyle.Alignment =
             DataGridViewContentAlignment.MiddleRight
 
         enterGrid.Columns.Item("Disc1").DefaultCellStyle.Format = "N2"
@@ -921,7 +921,7 @@
         Dim printDoc As New PrintTransaction
 
         If btnPrint.Visible And Not IsNothing(currentObject) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 printDoc.name = currentObject.customer.Name
                 printDoc.agent = currentObject.agent.Name
                 printDoc.address = currentObject.customer.Address
@@ -929,11 +929,11 @@
                 printDoc.docDate = currentObject.Date
 
                 printDoc.items = context.Database _
-                    .SqlQuery(Of _Transaction)( _
-                        "select i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, s.name as stock, " & _
-                        "s.description, i.price, i.discount1, i.discount2, 0 " & _
-                        "from salesorderitems i, stocks s, units u " & _
-                        "where i.stockid = s.id and s.unitid = u.id " & _
+                    .SqlQuery(Of _Transaction)(
+                        "select i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, s.name as stock, " &
+                        "s.description, i.price, i.discount1, i.discount2, 0 " &
+                        "from salesorderitems i, stocks s, units u " &
+                        "where i.stockid = s.id and s.unitid = u.id " &
                         "and i.salesorderid = '" & currentObject.Id & "'") _
                     .ToList()
             End Using
@@ -944,7 +944,7 @@
 
     Private Sub tbCustomer_TextChanged(sender As Object, e As EventArgs) Handles tbCustomer.TextChanged
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 Dim cust As customer = context.customers.Where(Function(c) _
                     c.Name.ToUpper.Equals(tbCustomer.Text.ToUpper) And c.Active = True).FirstOrDefault
 

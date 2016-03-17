@@ -805,7 +805,7 @@ Partial Class Controller
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1142, 821)
+        Me.ClientSize = New System.Drawing.Size(1142, 764)
         Me.ControlBox = False
         Me.Controls.Add(Me.mainPanel)
         Me.Font = New System.Drawing.Font("Lucida Sans", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

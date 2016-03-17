@@ -126,11 +126,11 @@
     Private Sub filterGrid()
         itemsGrid.Rows.Clear()
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim stocks = getFilteredStock()
 
             For Each stock In stocks
-                itemsGrid.Rows.Add(stock.Id, stock.Name, _
+                itemsGrid.Rows.Add(stock.Id, stock.Name,
                     stock.Description, stock.Price, stock.QtyOnHand, stock.Cost)
             Next
         End Using
@@ -155,13 +155,13 @@
 
         If byCategory Then
             qry += " and ucase(c.name) like '%" & tbCategory.Text & "%'"
-            qry = qry.Replace("from stocks s where", _
+            qry = qry.Replace("from stocks s where",
                         "from stocks s, categories c where s.categoryid = c.id and")
         End If
 
         qry += " order by s.name limit 300"
 
-        Using context As New bgmsEntities
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Return context.stocks.SqlQuery(qry).ToList
         End Using
     End Function
@@ -208,7 +208,7 @@
         Else
             Dim unit As String
 
-            Using context As New bgmsEntities
+            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                 unit = context.stocks.Where(Function(c) _
                     c.Name.ToUpper.Equals(lblStock.Text.ToUpper)) _
                     .Select(Function(c) c.unit.Name).FirstOrDefault
