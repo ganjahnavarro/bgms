@@ -63,6 +63,7 @@
 
             For Each rtn In returns
                 rtn.PostedDate = docDate.Value
+                rtn.ModifyDate = DateTime.Now
 
                 'Posting
                 Dim soUsed As New List(Of salesorder)
@@ -78,14 +79,6 @@
 
                     Dim soItems = context.salesorderitems.SqlQuery(qry) _
                         .OrderByDescending(Function(c) c.Id).ToList
-
-                    '.Where(Function(c) c.salesorder.customer.Name.ToUpper.Equals(rtnItem.salesreturn.customer.Name.ToUpper) _
-                    '        And c.salesorder.customer.Active = True _
-                    '        And c.stockId.Equals(rtnItem.stockId) _
-                    '        And c.Price.Equals(rtnItem.Price) _
-                    '        And c.Discount1.Equals(rtnItem.Discount1) _
-                    '        And c.Discount2.Equals(rtnItem.Discount2) _
-                    '        And Not c.salesorder.PostedDate.Equals(Nothing))
 
                     soUsed.Clear()
 
@@ -111,6 +104,7 @@
                     'Update total returned of salesorders
                     For Each so In soUsed
                         so.TotalReturned = so.getTotalReturnedFromItems
+                        so.ModifyDate = DateTime.Now
                     Next
 
                     rtnItem.stock.QtyOnHand += rtnItem.Quantity

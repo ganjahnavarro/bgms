@@ -62,6 +62,7 @@
 
             For Each order In pos
                 order.PostedDate = docDate.Value
+                order.ModifyDate = DateTime.Now
 
                 'Posting
                 For Each item In order.salesorderitems

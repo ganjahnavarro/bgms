@@ -62,6 +62,7 @@
 
             For Each cc In ccs
                 cc.PostedDate = docDate.Value
+                cc.ModifyDate = DateTime.Now
 
                 Dim action As String = Controller.currentUser.Username &
                     " posted a customer collection (" & cc.DocumentNo & ")"
@@ -70,6 +71,7 @@
                 'Posting
                 For Each so In cc.collectionorderitems
                     so.salesorder.TotalPaid += so.Amount
+                    so.salesorder.ModifyDate = DateTime.Now
                 Next
             Next
             context.SaveChanges()

@@ -119,7 +119,7 @@
         toObject.Commission = fromObject.Commission
         toObject.Tin = fromObject.Tin
 
-        toObject.AgentId = context.customers.Where(Function(c) c.Name = fromObject.customer.Name And c.Active).Select(Function(c) c.Id).FirstOrDefault
+        toObject.AgentId = context.agents.Where(Function(c) c.Name = fromObject.agent.Name And c.Active).Select(Function(c) c.Id).FirstOrDefault
     End Sub
 
 End Class

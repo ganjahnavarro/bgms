@@ -63,6 +63,7 @@
 
             For Each payment In payments
                 payment.PostedDate = docDate.Value
+                payment.ModifyDate = DateTime.Now
 
                 Dim action As String = Controller.currentUser.Username & " posted a supplier payment (" &
                    payment.DocumentNo & ")"
@@ -71,6 +72,7 @@
                 'Posting
                 For Each po In payment.paymentorderitems
                     po.purchaseorder.TotalPaid += po.Amount
+                    po.purchaseorder.ModifyDate = DateTime.Now
                 Next
             Next
             context.SaveChanges()

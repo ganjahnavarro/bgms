@@ -468,6 +468,9 @@
     <Compile Include="View\Syncer\CategorySyncer.vb" />
     <Compile Include="View\Syncer\CustomerSyncer.vb" />
     <Compile Include="View\Syncer\PurchaseOrderSyncer.vb" />
+    <Compile Include="View\Syncer\PurchaseReturnSyncer.vb" />
+    <Compile Include="View\Syncer\SalesOrderSyncer.vb" />
+    <Compile Include="View\Syncer\SalesReturnSyncer.vb" />
     <Compile Include="View\Syncer\StockSyncer.vb" />
     <Compile Include="View\Syncer\SupplierSyncer.vb" />
     <Compile Include="View\Syncer\UnitSyncer.vb" />

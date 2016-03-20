@@ -11,7 +11,6 @@
     Dim currentPrefix, currentUnprefixedDoc As String
 
     Private Sub postConstruct(sender As Object, e As EventArgs) Handles MyBase.Load
-        Controller.initStocksDictionary()
         Controller.initCustomers()
         tbCustomer.AutoCompleteSource = AutoCompleteSource.CustomSource
         tbCustomer.AutoCompleteMode = AutoCompleteMode.SuggestAppend

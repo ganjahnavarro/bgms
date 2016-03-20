@@ -10,6 +10,7 @@
 
             If Not String.IsNullOrEmpty(lastSyncDateString) Then
                 Date.TryParse(lastSyncDateString, Constants.LAST_SYNC_DATE)
+                syncLabel.Text = "Last sync date: " & Constants.LAST_SYNC_DATE
             Else
                 Constants.LAST_SYNC_DATE = DateTime.MinValue
             End If
@@ -21,7 +22,7 @@
 
         If masterOn AndAlso slaveOn Then
             syncTables()
-            MsgBox("Sync completed!")
+            MsgBox("Database sync completed!")
 
             Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_MASTER)
                 context.Database.ExecuteSqlCommand _
@@ -57,14 +58,21 @@
     End Sub
 
     Private Sub syncTables()
+        Console.WriteLine("Syncing started..")
+
         AgentSyncer.sync()
-        'UnitSyncer.sync()
-        'CategorySyncer.sync()
-        'SupplierSyncer.sync()
-        'CustomerSyncer.sync()
-        'StockSyncer.sync()
+        UnitSyncer.sync()
+        CategorySyncer.sync()
+        SupplierSyncer.sync()
+        CustomerSyncer.sync()
+        StockSyncer.sync()
 
         PurchaseOrderSyncer.sync()
+        SalesOrderSyncer.sync()
+        PurchaseReturnSyncer.sync()
+        SalesReturnSyncer.sync()
+
+        Console.WriteLine("Syncing completed..")
     End Sub
 
 End Class

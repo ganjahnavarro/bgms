@@ -550,8 +550,6 @@
     Private Sub setItemValues(ByRef orderItem As salesreturnitem,
                               ByVal rowIndex As Integer, ByRef context As bgmsEntities)
         Dim stockName As String = enterGrid("Stock", rowIndex).Value
-        Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-        stockCode = stockCode.Trim
 
         orderItem.Price = enterGrid("Price", rowIndex).Value
         orderItem.Discount1 = enterGrid("Disc1", rowIndex).Value
@@ -559,7 +557,7 @@
         orderItem.Quantity = enterGrid("Qty", rowIndex).Value
 
         orderItem.stockId = context.stocks _
-                   .Where(Function(c) c.Name.ToUpper.Equals(stockCode.ToUpper) And c.Active = True) _
+                   .Where(Function(c) c.Name.ToUpper.Equals(stockName.ToUpper.Trim) And c.Active = True) _
                    .Select(Function(c) c.Id).FirstOrDefault
     End Sub
 
@@ -617,19 +615,20 @@
 
     Private Sub stockChanged(ByVal e As DataGridViewCellEventArgs)
         If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
-            Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
-            Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-            stockCode = stockCode.Trim
+            Dim stockName As String = enterGrid("Stock", e.RowIndex).Value
 
-            If Not IsNothing(stockCode) Then
-                If stockCode.ToUpper.Equals(prevStockName.ToUpper) Then
+            If Not IsNothing(stockName) Then
+                stockName = stockName.ToUpper.Trim
+
+                If stockName.ToUpper.Equals(prevStockName.ToUpper) Then
                     Exit Sub
                 End If
 
-                prevStockName = stockCode
+                prevStockName = stockName
+
                 Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                     selectedStock = context.stocks _
-                        .Where(Function(c) c.Name.Equals(stockCode) And c.Active = True).FirstOrDefault
+                        .Where(Function(c) c.Name.Equals(stockName) And c.Active = True).FirstOrDefault
 
                     If Not IsNothing(selectedStock) Then
                         enterGrid("Desc", e.RowIndex).Value = selectedStock.Description
@@ -980,15 +979,14 @@
     Private Sub enterGrid_RowEnter(sender As Object, e As DataGridViewCellEventArgs) Handles enterGrid.RowEnter
         If Not String.IsNullOrEmpty(Controller.updateMode) Then
             If Not IsNothing(enterGrid("Stock", e.RowIndex).Value) Then
-                Dim stockName As String = enterGrid("Stock", e.RowIndex).Value.ToString
-                Dim stockCode As String = stockName.Substring(0, stockName.LastIndexOf(":"))
-                stockCode = stockCode.Trim
+                Dim stockName As String = enterGrid("Stock", e.RowIndex).Value
 
-                If Not IsNothing(stockCode) Then
-                    prevStockName = stockCode
+                If Not IsNothing(stockName) Then
+                    stockName = stockName.ToUpper.Trim
+                    prevStockName = stockName
                     Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
                         selectedStock = context.stocks _
-                            .Where(Function(c) c.Name.Equals(stockCode) _
+                            .Where(Function(c) c.Name.Equals(stockName) _
                                 And c.Active = True).FirstOrDefault
 
                         If Not IsNothing(selectedStock) Then

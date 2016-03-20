@@ -63,6 +63,7 @@
 
             For Each rtn In returns
                 rtn.PostedDate = docDate.Value
+                rtn.ModifyDate = DateTime.Now
 
                 Dim action As String = Controller.currentUser.Username & " posted a purchase return (" &
                     rtn.DocumentNo & ")"
@@ -83,15 +84,6 @@
 
                     Dim poItems = context.purchaseorderitems.SqlQuery(qry) _
                         .OrderByDescending(Function(c) c.Id).ToList
-
-                    '.Where(Function(c) c.po.customer.Name.ToUpper.Equals(rtnItem.pr.customer.Name.ToUpper) _
-                    '        And c.po.sup.Active = True _
-                    '        And c.stockId.Equals(rtnItem.stockId) _
-                    '        And c.Price.Equals(rtnItem.Price) _
-                    '        And c.Discount1.Equals(rtnItem.Discount1) _
-                    '        And c.Discount2.Equals(rtnItem.Discount2) _
-                    '        And c.Discount3.Equals(rtnItem.Discount3) _
-                    '        And Not c.po.PostedDate.Equals(Nothing))
 
                     poUsed.Clear()
 
@@ -117,6 +109,7 @@
                     'Update total returned of purchaseorders
                     For Each po In poUsed
                         po.TotalReturned = po.getTotalReturnedFromItems
+                        po.ModifyDate = DateTime.Now
                     Next
 
                     rtnItem.stock.QtyOnHand += rtnItem.Quantity
