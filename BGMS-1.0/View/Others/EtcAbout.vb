@@ -57,7 +57,7 @@
     End Sub
 
     Private Sub syncTables()
-        'AgentSyncer.sync()
+        AgentSyncer.sync()
         'UnitSyncer.sync()
         'CategorySyncer.sync()
         'SupplierSyncer.sync()

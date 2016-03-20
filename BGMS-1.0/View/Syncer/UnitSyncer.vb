@@ -9,8 +9,21 @@
         Dim unsyncedMaster As New Dictionary(Of String, unit)
         Dim unsyncedSlave As New Dictionary(Of String, unit)
 
-        loadAllRecords(masterDictionary, Constants.CONNECTION_STRING_NAME_MASTER)
-        loadAllRecords(slaveDictionary, Constants.CONNECTION_STRING_NAME_SLAVE)
+        loadAllRecordsByDate(masterDictionary, Constants.CONNECTION_STRING_NAME_MASTER)
+        loadAllRecordsByDate(slaveDictionary, Constants.CONNECTION_STRING_NAME_SLAVE)
+
+        Dim keys As New List(Of String)
+
+        For Each pair In masterDictionary
+            keys.Add(pair.Value.Name)
+        Next
+
+        For Each pair In slaveDictionary
+            keys.Add(pair.Value.Name)
+        Next
+
+        loadAllRecords(masterDictionary, Constants.CONNECTION_STRING_NAME_MASTER, keys)
+        loadAllRecords(slaveDictionary, Constants.CONNECTION_STRING_NAME_SLAVE, keys)
 
         loadUnsyncedRecords(masterDictionary, slaveDictionary, unsyncedMaster)
         loadUnsyncedRecords(slaveDictionary, masterDictionary, unsyncedSlave)
@@ -24,10 +37,20 @@
         Console.WriteLine("Updated units: " & updatedCount)
     End Sub
 
-    Private Shared Sub loadAllRecords(ByRef dictionary As Dictionary(Of String, unit), ByVal connection As String)
+    Private Shared Sub loadAllRecordsByDate(ByRef dictionary As Dictionary(Of String, unit), ByVal connection As String)
         Using context As New bgmsEntities(connection)
             dictionary = context.units _
-                .Where(Function(c) c.Active = True) _
+                .Where(Function(c) c.Active = True AndAlso c.ModifyDate >= Constants.LAST_SYNC_DATE) _
+                .ToDictionary(Function(c) c.Name & "@" & c.ModifyDate.ToString, Function(c) c)
+        End Using
+    End Sub
+
+    Private Shared Sub loadAllRecords(ByRef dictionary As Dictionary(Of String, unit),
+        ByVal connection As String, ByVal keys As List(Of String))
+
+        Using context As New bgmsEntities(connection)
+            dictionary = context.units _
+                .Where(Function(c) c.Active = True AndAlso keys.Contains(c.Name)) _
                 .ToDictionary(Function(c) c.Name & "@" & c.ModifyDate.ToString, Function(c) c)
         End Using
     End Sub
