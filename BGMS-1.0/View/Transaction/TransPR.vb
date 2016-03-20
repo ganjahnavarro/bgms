@@ -393,7 +393,7 @@
 
         currentObject.Date = docDate.Value
         currentObject.ModifyBy = Controller.currentUser.Username
-        currentObject.ModifyDate = DateTime.Today
+        currentObject.ModifyDate = DateTime.Now
         currentObject.Remarks = tbRemarks.Text
         currentObject.TotalAmount = totalAmount
 

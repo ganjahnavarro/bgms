@@ -389,7 +389,7 @@
         currentObject.TotalAmount = totalAmount
 
         currentObject.ModifyBy = Controller.currentUser.Username
-        currentObject.ModifyDate = DateTime.Today
+        currentObject.ModifyDate = DateTime.Now
 
         If String.IsNullOrEmpty(tbAgent.Text) Then
             currentObject.agent = Nothing

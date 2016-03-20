@@ -509,7 +509,7 @@
             Constants.DEFAULT_BANK, tbBank.Text)
 
         currentObject.ModifyBy = Controller.currentUser.Username
-        currentObject.ModifyDate = DateTime.Today
+        currentObject.ModifyDate = DateTime.Now
 
         If String.IsNullOrEmpty(tbCustomer.Text) Then
             currentObject.customer = Nothing

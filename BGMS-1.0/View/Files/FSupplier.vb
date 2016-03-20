@@ -234,7 +234,7 @@
         currentObject.Address = tbAddress.Text
         currentObject.Tin = tbLast.Text
         currentObject.Fax = tbFax.Text
-        currentObject.ModifyDate = DateTime.Today
+        currentObject.ModifyDate = DateTime.Now
         currentObject.ModifyBy = Controller.currentUser.Username
         currentObject.Active = True
     End Sub

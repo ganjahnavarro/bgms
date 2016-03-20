@@ -209,7 +209,7 @@
 
     Public Sub setObjectValues()
         currentObject.Name = tbLast.Text
-        currentObject.ModifyDate = DateTime.Today
+        currentObject.ModifyDate = DateTime.Now
         currentObject.ModifyBy = Controller.currentUser.Username
         currentObject.Active = True
     End Sub

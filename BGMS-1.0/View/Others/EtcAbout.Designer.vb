@@ -36,6 +36,8 @@ Partial Class EtcAbout
         Me.Label2 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.syncLabel = New System.Windows.Forms.Label()
+        Me.syncButton = New System.Windows.Forms.Button()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -143,11 +145,11 @@ Partial Class EtcAbout
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Tahoma", 10.0!)
         Me.Label3.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.Label3.Location = New System.Drawing.Point(582, 426)
+        Me.Label3.Location = New System.Drawing.Point(574, 426)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(156, 17)
+        Me.Label3.Size = New System.Drawing.Size(173, 17)
         Me.Label3.TabIndex = 20
-        Me.Label3.Text = "ganjaboi.navarro@gmail"
+        Me.Label3.Text = "ganjahnavarro@gmail.com"
         '
         'Label2
         '
@@ -181,12 +183,34 @@ Partial Class EtcAbout
         Me.Label1.Text = "BIGIE MULTI SALES, INC. WHOLESALER"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
+        'syncLabel
+        '
+        Me.syncLabel.AutoSize = True
+        Me.syncLabel.Font = New System.Drawing.Font("Tahoma", 10.0!)
+        Me.syncLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.syncLabel.Location = New System.Drawing.Point(12, 393)
+        Me.syncLabel.Name = "syncLabel"
+        Me.syncLabel.Size = New System.Drawing.Size(97, 17)
+        Me.syncLabel.TabIndex = 30
+        Me.syncLabel.Text = "last sync date:"
+        '
+        'syncButton
+        '
+        Me.syncButton.Location = New System.Drawing.Point(15, 417)
+        Me.syncButton.Name = "syncButton"
+        Me.syncButton.Size = New System.Drawing.Size(75, 23)
+        Me.syncButton.TabIndex = 31
+        Me.syncButton.Text = "Sync"
+        Me.syncButton.UseVisualStyleBackColor = True
+        '
         'EtcAbout
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
         Me.ClientSize = New System.Drawing.Size(750, 452)
+        Me.Controls.Add(Me.syncButton)
+        Me.Controls.Add(Me.syncLabel)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.Label10)
@@ -227,4 +251,6 @@ Partial Class EtcAbout
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents syncLabel As Label
+    Friend WithEvents syncButton As Button
 End Class

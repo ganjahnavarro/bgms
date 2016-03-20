@@ -254,7 +254,7 @@
         currentObject.Cost = If(String.IsNullOrWhiteSpace(tbCost.Text), Nothing, tbCost.Text)
         currentObject.Price = If(String.IsNullOrWhiteSpace(tbLast.Text), Nothing, tbLast.Text)
         currentObject.QtyOnHand = If(String.IsNullOrWhiteSpace(tbOnHand.Text), Nothing, tbOnHand.Text)
-        currentObject.ModifyDate = DateTime.Today
+        currentObject.ModifyDate = DateTime.Now
         currentObject.ModifyBy = Controller.currentUser.Username
         currentObject.Active = True
 
@@ -291,7 +291,7 @@
 
             If (currentObject.QtyOnHand - prevQtyOnHand <> 0) Then
                 Dim adj As New adjustment
-                adj.ModifyDate = DateTime.Today
+                adj.ModifyDate = DateTime.Now
                 adj.ModifyBy = Controller.currentUser.Username
                 adj.Quantity = currentObject.QtyOnHand - prevQtyOnHand
                 adj.stockId = currentObject.Id
