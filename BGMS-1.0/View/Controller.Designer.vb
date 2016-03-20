@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Controller
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Controller
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Controller))
@@ -79,6 +79,10 @@ Partial Class Controller
         Me.hotkeyListener = New System.Windows.Forms.Timer(Me.components)
         Me.notificationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.pollTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.syncMessage = New System.Windows.Forms.Label()
         Me.mainPanel.SuspendLayout()
         Me.logoutPanel.SuspendLayout()
         CType(Me.imgLogout, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -98,11 +102,14 @@ Partial Class Controller
         Me.filesPanel.SuspendLayout()
         CType(Me.imgFiles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.topPanel.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'mainPanel
         '
         Me.mainPanel.BackColor = System.Drawing.Color.Transparent
+        Me.mainPanel.Controls.Add(Me.Panel1)
         Me.mainPanel.Controls.Add(Me.logoutPanel)
         Me.mainPanel.Controls.Add(Me.aboutPanel)
         Me.mainPanel.Controls.Add(Me.usersPanel)
@@ -165,7 +172,7 @@ Partial Class Controller
         Me.aboutPanel.Cursor = System.Windows.Forms.Cursors.Hand
         Me.aboutPanel.Location = New System.Drawing.Point(628, 634)
         Me.aboutPanel.Name = "aboutPanel"
-        Me.aboutPanel.Size = New System.Drawing.Size(259, 181)
+        Me.aboutPanel.Size = New System.Drawing.Size(125, 181)
         Me.aboutPanel.TabIndex = 16
         '
         'lblAbout
@@ -174,7 +181,7 @@ Partial Class Controller
         Me.lblAbout.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblAbout.Font = New System.Drawing.Font("Tahoma", 15.75!)
         Me.lblAbout.ForeColor = System.Drawing.Color.FromArgb(CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer))
-        Me.lblAbout.Location = New System.Drawing.Point(161, 79)
+        Me.lblAbout.Location = New System.Drawing.Point(32, 111)
         Me.lblAbout.Name = "lblAbout"
         Me.lblAbout.Size = New System.Drawing.Size(67, 25)
         Me.lblAbout.TabIndex = 16
@@ -185,9 +192,9 @@ Partial Class Controller
         '
         Me.imgAbout.Cursor = System.Windows.Forms.Cursors.Hand
         Me.imgAbout.Image = Global.BGMS.My.Resources.Resources._about
-        Me.imgAbout.Location = New System.Drawing.Point(26, 34)
+        Me.imgAbout.Location = New System.Drawing.Point(34, 44)
         Me.imgAbout.Name = "imgAbout"
-        Me.imgAbout.Size = New System.Drawing.Size(120, 120)
+        Me.imgAbout.Size = New System.Drawing.Size(60, 60)
         Me.imgAbout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.imgAbout.TabIndex = 16
         Me.imgAbout.TabStop = False
@@ -800,12 +807,60 @@ Partial Class Controller
         '
         Me.pollTimer.Interval = 10000
         '
+        'Panel1
+        '
+        Me.Panel1.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.Panel1.Controls.Add(Me.syncMessage)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.PictureBox1)
+        Me.Panel1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Panel1.Location = New System.Drawing.Point(762, 634)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(125, 181)
+        Me.Panel1.TabIndex = 17
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Label1.Font = New System.Drawing.Font("Tahoma", 15.75!)
+        Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer))
+        Me.Label1.Location = New System.Drawing.Point(36, 111)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(56, 25)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "Sync"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox1.Image = Global.BGMS.My.Resources.Resources.browser
+        Me.PictureBox1.Location = New System.Drawing.Point(34, 44)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(60, 60)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox1.TabIndex = 16
+        Me.PictureBox1.TabStop = False
+        '
+        'syncMessage
+        '
+        Me.syncMessage.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.syncMessage.ForeColor = System.Drawing.Color.DimGray
+        Me.syncMessage.Location = New System.Drawing.Point(7, 8)
+        Me.syncMessage.Name = "syncMessage"
+        Me.syncMessage.Size = New System.Drawing.Size(112, 31)
+        Me.syncMessage.TabIndex = 17
+        Me.syncMessage.Text = "Message"
+        Me.syncMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'Controller
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1142, 764)
+        Me.ClientSize = New System.Drawing.Size(1142, 756)
         Me.ControlBox = False
         Me.Controls.Add(Me.mainPanel)
         Me.Font = New System.Drawing.Font("Lucida Sans", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -843,6 +898,9 @@ Partial Class Controller
         Me.filesPanel.PerformLayout()
         CType(Me.imgFiles, System.ComponentModel.ISupportInitialize).EndInit()
         Me.topPanel.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -901,4 +959,8 @@ Partial Class Controller
     Friend WithEvents hotkeyListener As System.Windows.Forms.Timer
     Friend WithEvents notificationTimer As System.Windows.Forms.Timer
     Friend WithEvents pollTimer As System.Windows.Forms.Timer
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents Label1 As Label
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents syncMessage As Label
 End Class

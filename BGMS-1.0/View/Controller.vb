@@ -6,6 +6,8 @@ Public Class Controller
     Public Shared currentUser As user
     Public Shared config As New Dictionary(Of String, String)
 
+    Public Shared syncing As Boolean
+
     Public Shared stockList As New AutoCompleteStringCollection
     Public Shared agentList As New AutoCompleteStringCollection
     Public Shared categoryList As New AutoCompleteStringCollection
@@ -49,6 +51,7 @@ Public Class Controller
         End Try
 
         Console.WriteLine("SERVER CONNECTION STRING: " & Constants.CONNECTION_STRING_NAME)
+        'aboutPanel.Location = New Point(settingsPanel.Location.X, settingsPanel.Location.Y + settingsPanel.Height + 10)
     End Sub
 
     Private Sub formShown(sender As Object, e As EventArgs) Handles Me.Shown
@@ -61,6 +64,27 @@ Public Class Controller
 
     Private Sub pollTimer_Tick(sender As Object, e As EventArgs) Handles pollTimer.Tick
         initRecentActivities()
+        checkLastSyncTime()
+    End Sub
+
+    Private Sub checkLastSyncTime()
+        If Not IsNothing(Constants.LAST_SYNC_DATE) Then
+            Dim timeSpan As TimeSpan = DateTime.Now.Subtract(Constants.LAST_SYNC_DATE)
+
+            If timeSpan.TotalMinutes >= 10 Then
+                sync()
+            End If
+        End If
+    End Sub
+
+    Private Sub sync()
+        If syncing = False Then
+            syncing = True
+            syncMessage.Text = "Sync started.."
+            Syncer.syncAll()
+            syncMessage.Text = "Last Sync: " & Constants.LAST_SYNC_DATE.ToString("MM/dd/yy HH:mm")
+            syncing = False
+        End If
     End Sub
 
 #Region "Init"
@@ -71,6 +95,9 @@ Public Class Controller
         initRecentActivities()
         initPanels()
         initStocks()
+
+        Syncer.loadLastSyncDate()
+        syncMessage.Text = "Last Sync: " & Constants.LAST_SYNC_DATE.ToString("MM/dd/yy HH:mm")
     End Sub
 
     Private Sub initPanels()
@@ -1192,6 +1219,14 @@ Public Class Controller
                 TransSR.firstObject()
                 Exit Select
         End Select
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        sync()
+    End Sub
+
+    Private Sub Label1_Click_1(sender As Object, e As EventArgs) Handles Label1.Click
+        sync()
     End Sub
 
 #End Region

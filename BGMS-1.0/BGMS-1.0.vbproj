@@ -468,6 +468,7 @@
     <Compile Include="View\Syncer\CategorySyncer.vb" />
     <Compile Include="View\Syncer\CustomerCollectionSyncer.vb" />
     <Compile Include="View\Syncer\CustomerSyncer.vb" />
+    <Compile Include="View\Syncer\GarbageCollector.vb" />
     <Compile Include="View\Syncer\PurchaseOrderSyncer.vb" />
     <Compile Include="View\Syncer\PurchaseReturnSyncer.vb" />
     <Compile Include="View\Syncer\SalesOrderSyncer.vb" />
@@ -475,6 +476,7 @@
     <Compile Include="View\Syncer\StockSyncer.vb" />
     <Compile Include="View\Syncer\SupplierPaymentSyncer.vb" />
     <Compile Include="View\Syncer\SupplierSyncer.vb" />
+    <Compile Include="View\Syncer\Syncer.vb" />
     <Compile Include="View\Syncer\UnitSyncer.vb" />
     <Compile Include="View\Transaction\SelectCC.Designer.vb">
       <DependentUpon>SelectCC.vb</DependentUpon>

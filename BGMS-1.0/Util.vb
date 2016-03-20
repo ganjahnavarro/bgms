@@ -16,7 +16,6 @@ Public Class Util
     End Sub
 
     Public Shared Sub notify(ByVal msg As String, ByVal color As Color)
-        Console.WriteLine("msg: " & msg)
         notifyDisplay(True, msg, color)
         Constants.NOTIFICATION_TICK_COUNT = 0
     End Sub
