@@ -130,7 +130,7 @@
             toObject.purchaseorderitems.Add(newItem)
         Next
 
-        toObject.supplierId = context.suppliers.Where(Function(c) c.Name = fromObject.supplier.Name And c.Active).Select(Function(c) c.Id).FirstOrDefault
+        toObject.supplierId = context.suppliers.Where(Function(c) c.Name = fromObject.supplier.Name AndAlso c.Active).Select(Function(c) c.Id).FirstOrDefault
     End Sub
 
     Private Shared Sub copyObjectItemValues(ByVal fromItem As purchaseorderitem, ByRef toItem As purchaseorderitem, ByRef context As bgmsEntities)

@@ -72,6 +72,8 @@
         PurchaseReturnSyncer.sync()
         SalesReturnSyncer.sync()
 
+        CustomerCollectionSyncer.sync()
+
         Console.WriteLine("Syncing completed..")
     End Sub
 
