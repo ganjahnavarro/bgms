@@ -29,12 +29,6 @@
         End Using
     End Sub
 
-    'Private Sub loadPreviousUsername()
-    '    tbUsername.Text = If(Controller.config.ContainsKey("PREVIOUS_USERNAME"), _
-    '        Controller.config.Item("PREVIOUS_USERNAME"), String.Empty)
-    '    tbPassword.Select()
-    'End Sub
-
     Private Sub validateUsernameAndPassword() Handles btnLogin.Click
         If Not String.IsNullOrWhiteSpace(tbUsername.Text) _
             And Not String.IsNullOrWhiteSpace(tbPassword.Text) Then
@@ -43,7 +37,6 @@
                 If user.Username = tbUsername.Text _
                     And user.Password = tbPassword.Text Then
 
-                    'saveUsername(user)
                     Controller.currentUser = user
                     Controller.mainPanel.Visible = True
                     tbPassword.Clear()
@@ -55,10 +48,6 @@
         lblNoti.Visible = True
     End Sub
 
-    'Private Sub saveUsername(ByVal user As user)
-    '    Controller.config.Item("PREVIOUS_USERNAME") = user.Username
-    'End Sub
-
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Controller.Close()
         Me.Close()
@@ -67,4 +56,5 @@
     Private Sub EtcLogin_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         tbUsername.Focus()
     End Sub
+
 End Class

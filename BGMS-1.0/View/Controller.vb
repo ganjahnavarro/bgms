@@ -68,7 +68,9 @@ Public Class Controller
     End Sub
 
     Private Sub checkLastSyncTime()
-        If Not IsNothing(Constants.LAST_SYNC_DATE) Then
+        If Not IsNothing(currentUser) AndAlso currentUser.Username.ToUpper = Constants.DEFAULT_USER _
+            AndAlso Not IsNothing(Constants.LAST_SYNC_DATE) Then
+
             Dim timeSpan As TimeSpan = DateTime.Now.Subtract(Constants.LAST_SYNC_DATE)
 
             If timeSpan.TotalMinutes >= 10 Then
@@ -78,6 +80,11 @@ Public Class Controller
     End Sub
 
     Private Sub sync()
+        If currentUser.Admin = False Then
+            syncMessage.Text = "Sync is for Admin use only"
+            Exit Sub
+        End If
+
         If syncing = False Then
             syncing = True
             syncMessage.Text = "Sync started.."
@@ -1226,6 +1233,10 @@ Public Class Controller
     End Sub
 
     Private Sub Label1_Click_1(sender As Object, e As EventArgs) Handles Label1.Click
+        sync()
+    End Sub
+
+    Private Sub syncMessage_Click(sender As Object, e As EventArgs) Handles syncMessage.Click
         sync()
     End Sub
 

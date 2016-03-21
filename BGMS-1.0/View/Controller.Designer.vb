@@ -25,6 +25,10 @@ Partial Class Controller
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Controller))
         Me.mainPanel = New System.Windows.Forms.Panel()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.syncMessage = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.logoutPanel = New System.Windows.Forms.Panel()
         Me.lblLogout = New System.Windows.Forms.Label()
         Me.imgLogout = New System.Windows.Forms.PictureBox()
@@ -79,11 +83,9 @@ Partial Class Controller
         Me.hotkeyListener = New System.Windows.Forms.Timer(Me.components)
         Me.notificationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.pollTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.syncMessage = New System.Windows.Forms.Label()
         Me.mainPanel.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.logoutPanel.SuspendLayout()
         CType(Me.imgLogout, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.aboutPanel.SuspendLayout()
@@ -102,8 +104,6 @@ Partial Class Controller
         Me.filesPanel.SuspendLayout()
         CType(Me.imgFiles, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.topPanel.SuspendLayout()
-        Me.Panel1.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'mainPanel
@@ -126,6 +126,54 @@ Partial Class Controller
         Me.mainPanel.Name = "mainPanel"
         Me.mainPanel.Size = New System.Drawing.Size(1145, 824)
         Me.mainPanel.TabIndex = 3
+        '
+        'Panel1
+        '
+        Me.Panel1.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.Panel1.Controls.Add(Me.syncMessage)
+        Me.Panel1.Controls.Add(Me.Label1)
+        Me.Panel1.Controls.Add(Me.PictureBox1)
+        Me.Panel1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Panel1.Location = New System.Drawing.Point(762, 634)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(125, 181)
+        Me.Panel1.TabIndex = 17
+        '
+        'syncMessage
+        '
+        Me.syncMessage.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.syncMessage.ForeColor = System.Drawing.Color.DimGray
+        Me.syncMessage.Location = New System.Drawing.Point(7, 8)
+        Me.syncMessage.Name = "syncMessage"
+        Me.syncMessage.Size = New System.Drawing.Size(112, 31)
+        Me.syncMessage.TabIndex = 17
+        Me.syncMessage.Text = "Message"
+        Me.syncMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Label1.Font = New System.Drawing.Font("Tahoma", 15.75!)
+        Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer))
+        Me.Label1.Location = New System.Drawing.Point(36, 111)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(56, 25)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "Sync"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.PictureBox1.Image = Global.BGMS.My.Resources.Resources.browser
+        Me.PictureBox1.Location = New System.Drawing.Point(34, 44)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(60, 60)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox1.TabIndex = 16
+        Me.PictureBox1.TabStop = False
         '
         'logoutPanel
         '
@@ -807,54 +855,6 @@ Partial Class Controller
         '
         Me.pollTimer.Interval = 10000
         '
-        'Panel1
-        '
-        Me.Panel1.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Panel1.BackColor = System.Drawing.Color.Gainsboro
-        Me.Panel1.Controls.Add(Me.syncMessage)
-        Me.Panel1.Controls.Add(Me.Label1)
-        Me.Panel1.Controls.Add(Me.PictureBox1)
-        Me.Panel1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Panel1.Location = New System.Drawing.Point(762, 634)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(125, 181)
-        Me.Panel1.TabIndex = 17
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Label1.Font = New System.Drawing.Font("Tahoma", 15.75!)
-        Me.Label1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer), CType(CType(25, Byte), Integer))
-        Me.Label1.Location = New System.Drawing.Point(36, 111)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(56, 25)
-        Me.Label1.TabIndex = 16
-        Me.Label1.Text = "Sync"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox1.Image = Global.BGMS.My.Resources.Resources.browser
-        Me.PictureBox1.Location = New System.Drawing.Point(34, 44)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(60, 60)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox1.TabIndex = 16
-        Me.PictureBox1.TabStop = False
-        '
-        'syncMessage
-        '
-        Me.syncMessage.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.syncMessage.ForeColor = System.Drawing.Color.DimGray
-        Me.syncMessage.Location = New System.Drawing.Point(7, 8)
-        Me.syncMessage.Name = "syncMessage"
-        Me.syncMessage.Size = New System.Drawing.Size(112, 31)
-        Me.syncMessage.TabIndex = 17
-        Me.syncMessage.Text = "Message"
-        Me.syncMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'Controller
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
@@ -872,6 +872,9 @@ Partial Class Controller
         Me.Name = "Controller"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.mainPanel.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.logoutPanel.ResumeLayout(False)
         Me.logoutPanel.PerformLayout()
         CType(Me.imgLogout, System.ComponentModel.ISupportInitialize).EndInit()
@@ -898,9 +901,6 @@ Partial Class Controller
         Me.filesPanel.PerformLayout()
         CType(Me.imgFiles, System.ComponentModel.ISupportInitialize).EndInit()
         Me.topPanel.ResumeLayout(False)
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

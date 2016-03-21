@@ -75,6 +75,7 @@
         SalesReturnSyncer.sync()
 
         CustomerCollectionSyncer.sync()
+        SupplierPaymentSyncer.sync()
 
         Console.WriteLine("Syncing completed..")
     End Sub
