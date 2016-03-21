@@ -136,8 +136,14 @@
             Dim action As String = Controller.currentUser.Username & " deleted an agent (" &
                 currentObject.Name & ")"
             context.activities.Add(New activity(action))
-
             context.SaveChanges()
+        End Using
+
+        'trash
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim trashAction = "update agents set active = false where name = ''" & currentObject.Name & "''" &
+                " and modifydate <= ''" & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") & "''"
+            context.Database.ExecuteSqlCommand("insert into trash(date, action) values(current_date, '" & trashAction & "')")
         End Using
     End Sub
 

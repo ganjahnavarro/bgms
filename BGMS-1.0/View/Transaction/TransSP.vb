@@ -239,6 +239,23 @@
             context.SaveChanges()
         End Using
 
+        'trash
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
+            Dim trashItemActionA = "delete from paymentcheckitems where supplierpaymentid in " &
+                " (select id from supplierpayments where documentno = ''" & currentObject.DocumentNo & "''" &
+                " and modifydate <= ''" & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") & "'')"
+
+            Dim trashItemActionB = "delete from paymentorderitems where supplierpaymentid in " &
+                " (select id from supplierpayments where documentno = ''" & currentObject.DocumentNo & "''" &
+                " and modifydate <= ''" & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") & "'')"
+
+            Dim trashAction = "delete from supplierpayments where documentno = ''" & currentObject.DocumentNo & "''" &
+                " and modifydate <= ''" & DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") & "''"
+
+            context.Database.ExecuteSqlCommand("insert into trash(date, action) values(current_date," &
+                " '" & trashItemActionA & ";" & trashItemActionB & ";" & trashAction & "')")
+        End Using
+
         currentObject = Nothing
     End Sub
 

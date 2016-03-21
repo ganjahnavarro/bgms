@@ -21,6 +21,7 @@
         loadLastSyncDate()
 
         If masterOn AndAlso slaveOn Then
+            GarbageCollector.collect()
             syncTables()
 
             Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_MASTER)
