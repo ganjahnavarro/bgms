@@ -78,11 +78,13 @@ Partial Class Controller
         Me.lblFSupp = New System.Windows.Forms.Label()
         Me.lblFStock = New System.Windows.Forms.Label()
         Me.topPanel = New System.Windows.Forms.Panel()
+        Me.serverLabel = New System.Windows.Forms.Label()
         Me.minimizeButton = New System.Windows.Forms.Label()
         Me.closeButton = New System.Windows.Forms.Label()
         Me.hotkeyListener = New System.Windows.Forms.Timer(Me.components)
         Me.notificationTimer = New System.Windows.Forms.Timer(Me.components)
         Me.pollTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.syncTimer = New System.Windows.Forms.Timer(Me.components)
         Me.mainPanel.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -803,6 +805,7 @@ Partial Class Controller
         Me.topPanel.BackColor = System.Drawing.Color.FromArgb(CType(CType(21, Byte), Integer), CType(CType(101, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.topPanel.BackgroundImage = Global.BGMS.My.Resources.Resources.grdt
         Me.topPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.topPanel.Controls.Add(Me.serverLabel)
         Me.topPanel.Controls.Add(Me.minimizeButton)
         Me.topPanel.Controls.Add(Me.closeButton)
         Me.topPanel.Cursor = System.Windows.Forms.Cursors.Hand
@@ -811,6 +814,16 @@ Partial Class Controller
         Me.topPanel.Name = "topPanel"
         Me.topPanel.Size = New System.Drawing.Size(1145, 54)
         Me.topPanel.TabIndex = 1
+        '
+        'serverLabel
+        '
+        Me.serverLabel.AutoSize = True
+        Me.serverLabel.ForeColor = System.Drawing.Color.LightGray
+        Me.serverLabel.Location = New System.Drawing.Point(9, 6)
+        Me.serverLabel.Name = "serverLabel"
+        Me.serverLabel.Size = New System.Drawing.Size(88, 16)
+        Me.serverLabel.TabIndex = 4
+        Me.serverLabel.Text = "Connected at:"
         '
         'minimizeButton
         '
@@ -854,6 +867,10 @@ Partial Class Controller
         'pollTimer
         '
         Me.pollTimer.Interval = 10000
+        '
+        'syncTimer
+        '
+        Me.syncTimer.Interval = 600000
         '
         'Controller
         '
@@ -901,6 +918,7 @@ Partial Class Controller
         Me.filesPanel.PerformLayout()
         CType(Me.imgFiles, System.ComponentModel.ISupportInitialize).EndInit()
         Me.topPanel.ResumeLayout(False)
+        Me.topPanel.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -963,4 +981,6 @@ Partial Class Controller
     Friend WithEvents Label1 As Label
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents syncMessage As Label
+    Friend WithEvents serverLabel As Label
+    Friend WithEvents syncTimer As Timer
 End Class

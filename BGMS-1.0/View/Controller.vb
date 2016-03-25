@@ -21,37 +21,41 @@ Public Class Controller
         Dim connected As Boolean = False
 
         Try
-            'Try access master server
-            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_MASTER)
-                currentUser = context.users.FirstOrDefault
-                Constants.CONNECTION_STRING_NAME = Constants.CONNECTION_STRING_NAME_MASTER
-                connected = True
-            End Using
+            tryConnect(Constants.CONNECTION_STRING_NAME_MASTER, "Connected at: Primary Server", connected)
         Catch ex As Exception
             Try
-                'Try access slave server
-                Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_SLAVE)
-                    currentUser = context.users.FirstOrDefault
-                    Constants.CONNECTION_STRING_NAME = Constants.CONNECTION_STRING_NAME_SLAVE
-                    connected = True
-                End Using
+                tryConnect(Constants.CONNECTION_STRING_NAME_SLAVE, "Connected at: Secondary Server", connected)
             Catch exc As Exception
-                connected = False
+                Try
+                    tryConnect(Constants.CONNECTION_STRING_NAME_LOCALHOST, "Connected at: Local Server", connected)
+                Catch exce As Exception
+                    connected = False
+                End Try
             End Try
         Finally
+            Console.WriteLine("Server: " & Constants.CONNECTION_STRING_NAME)
+
             If connected Then
                 init()
                 initStocksDictionary()
                 hotkeyListener.Enabled = True
                 pollTimer.Enabled = True
+                syncTimer.Enabled = True
             Else
                 MsgBox("Can't connect to both servers. Check network connection. Use 'ping' and 'ipconfig'")
                 Me.Close()
             End If
         End Try
+    End Sub
 
-        Console.WriteLine("SERVER CONNECTION STRING: " & Constants.CONNECTION_STRING_NAME)
-        'aboutPanel.Location = New Point(settingsPanel.Location.X, settingsPanel.Location.Y + settingsPanel.Height + 10)
+    Private Sub tryConnect(ByVal connectionString As String, ByVal message As String,
+        ByRef connection As Boolean)
+        Using context As New bgmsEntities(connectionString)
+            currentUser = context.users.FirstOrDefault
+            Constants.CONNECTION_STRING_NAME = connectionString
+            connection = True
+            serverLabel.Text = message
+        End Using
     End Sub
 
     Private Sub formShown(sender As Object, e As EventArgs) Handles Me.Shown
@@ -64,19 +68,6 @@ Public Class Controller
 
     Private Sub pollTimer_Tick(sender As Object, e As EventArgs) Handles pollTimer.Tick
         initRecentActivities()
-        checkLastSyncTime()
-    End Sub
-
-    Private Sub checkLastSyncTime()
-        If Not IsNothing(currentUser) AndAlso currentUser.Username.ToUpper = Constants.DEFAULT_USER _
-            AndAlso Not IsNothing(Constants.LAST_SYNC_DATE) Then
-
-            Dim timeSpan As TimeSpan = DateTime.Now.Subtract(Constants.LAST_SYNC_DATE)
-
-            If timeSpan.TotalMinutes >= 10 Then
-                sync()
-            End If
-        End If
     End Sub
 
     Private Sub sync()
@@ -1238,6 +1229,12 @@ Public Class Controller
 
     Private Sub syncMessage_Click(sender As Object, e As EventArgs) Handles syncMessage.Click
         sync()
+    End Sub
+
+    Private Sub syncTimer_Tick(sender As Object, e As EventArgs) Handles syncTimer.Tick
+        If Not IsNothing(currentUser) AndAlso currentUser.Username.ToUpper = Constants.DEFAULT_USER Then
+            sync()
+        End If
     End Sub
 
 #End Region

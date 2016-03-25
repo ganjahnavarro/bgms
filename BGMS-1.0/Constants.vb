@@ -38,6 +38,7 @@
     Public Shared CONNECTION_STRING_NAME As String = String.Empty
     Public Shared CONNECTION_STRING_NAME_MASTER As String = "name=master"
     Public Shared CONNECTION_STRING_NAME_SLAVE As String = "name=slave"
+    Public Shared CONNECTION_STRING_NAME_LOCALHOST As String = "name=localhost"
 
     Public Shared LAST_SYNC_DATE As DateTime
 

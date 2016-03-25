@@ -1,10 +1,12 @@
-﻿Public Class Syncer
+﻿Imports MySql.Data.MySqlClient
+
+Public Class Syncer
 
     Private Shared masterOn, slaveOn As Boolean
     Public Shared message As String
 
     Public Shared Sub loadLastSyncDate()
-        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_MASTER)
+        Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME)
             Dim lastSyncDateString As String = context.Database.SqlQuery(Of String) _
                 ("select value from attributes where name = 'LAST_SYNC_DATE'").FirstOrDefault
 
@@ -18,9 +20,9 @@
 
     Public Shared Sub syncAll()
         validateConnection()
-        loadLastSyncDate()
 
         If masterOn AndAlso slaveOn Then
+            loadLastSyncDate()
             GarbageCollector.collect()
             syncTables()
 
@@ -41,21 +43,23 @@
         slaveOn = False
 
         Try
-            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_MASTER)
-                context.users.FirstOrDefault
-                masterOn = True
-            End Using
+            Dim masterConnection As New MySqlConnection()
+            masterConnection.ConnectionString = "server=192.168.1.125;user id=root;database=bgms"
+            masterConnection.Open()
+            masterOn = True
+            masterConnection.Close()
         Catch ex As Exception
             message += "Primary server is not available. "
         End Try
 
         Try
-            Using context As New bgmsEntities(Constants.CONNECTION_STRING_NAME_SLAVE)
-                context.users.FirstOrDefault
-                slaveOn = True
-            End Using
+            Dim slaveConnection As New MySqlConnection()
+            slaveConnection.ConnectionString = "server=192.168.1.150;user id=root;database=bgms"
+            slaveConnection.Open()
+            slaveOn = True
+            slaveConnection.Close()
         Catch ex As Exception
-            message += "Primary server is not available. "
+            message += "Secondary server is not available. "
         End Try
     End Sub
 

@@ -259,9 +259,9 @@
                 Exit Select
 
             Case "SALES RETURN"
-                rptQry = "select o.documentno, o.date, concat(f.name, ' (', ag.name, ')') as filter, o.totalamount " & _
-                    "from salesreturns o, agents ag, customers f " & _
-                    "where f.agentid = ag.id and o.customerid = f.id "
+                rptQry = "select o.documentno, o.date, concat(c.name, ' (', f.name, ')') as filter, o.totalamount " &
+                    "from salesreturns o, agents f, customers c " &
+                    "where c.agentid = f.id and o.customerid = c.id "
                 Exit Select
 
             Case "CUSTOMER COLLECTION"
@@ -330,10 +330,10 @@
                 Exit Select
 
             Case "SALES RETURN"
-                rptQry = "select o.documentno, o.date, concat(f.name, ' (', ag.name, ')') as filter, o.totalamount, " & _
-                    "s.name as stock, i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, " & _
-                    "i.price from salesreturns o, agents ag, customers f, stocks s, units u, salesreturnitems i " & _
-                    "where i.salesreturnid = o.id and f.agentid = ag.id and o.customerid = f.id and i.stockid = s.id " & _
+                rptQry = "select o.documentno, o.date, concat(c.name, ' (', f.name, ')') as filter, o.totalamount, " &
+                    "s.name as stock, i.quantity, if(i.quantity > 1, u.pluralname, u.name) as unit, " &
+                    "i.price from salesreturns o, agents f, customers c, stocks s, units u, salesreturnitems i " &
+                    "where i.salesreturnid = o.id and c.agentid = f.id and o.customerid = c.id and i.stockid = s.id " &
                     "and s.unitid = u.id and o.posteddate is not null"
                 appendFiltersOnQuery()
                 Exit Select
