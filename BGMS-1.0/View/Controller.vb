@@ -70,7 +70,7 @@ Public Class Controller
         initRecentActivities()
     End Sub
 
-    Private Sub sync()
+    Private Sub sync(ByVal manual As Boolean)
         If currentUser.Admin = False Then
             syncMessage.Text = "Sync is for Admin use only"
             Exit Sub
@@ -79,8 +79,15 @@ Public Class Controller
         If syncing = False Then
             syncing = True
             syncMessage.Text = "Sync started.."
-            Syncer.syncAll()
-            syncMessage.Text = "Last Sync: " & Constants.LAST_SYNC_DATE.ToString("MM/dd/yy HH:mm")
+
+            Dim successful As Boolean = Syncer.syncAll(manual)
+
+            If successful Then
+                syncMessage.Text = "Last Sync: " & Constants.LAST_SYNC_DATE.ToString("MM/dd/yy HH:mm")
+            Else
+                syncMessage.Text = "Please check connection.."
+            End If
+
             syncing = False
         End If
     End Sub
@@ -1220,20 +1227,20 @@ Public Class Controller
     End Sub
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
-        sync()
+        sync(True)
     End Sub
 
     Private Sub Label1_Click_1(sender As Object, e As EventArgs) Handles Label1.Click
-        sync()
+        sync(True)
     End Sub
 
     Private Sub syncMessage_Click(sender As Object, e As EventArgs) Handles syncMessage.Click
-        sync()
+        sync(True)
     End Sub
 
     Private Sub syncTimer_Tick(sender As Object, e As EventArgs) Handles syncTimer.Tick
         If Not IsNothing(currentUser) AndAlso currentUser.Username.ToUpper = Constants.DEFAULT_USER Then
-            sync()
+            sync(False)
         End If
     End Sub
 

@@ -18,7 +18,7 @@ Public Class Syncer
         End Using
     End Sub
 
-    Public Shared Sub syncAll()
+    Public Shared Function syncAll(ByVal manual As Boolean) As Boolean
         validateConnection()
 
         If masterOn AndAlso slaveOn Then
@@ -32,10 +32,17 @@ Public Class Syncer
 
                 Constants.LAST_SYNC_DATE = DateTime.Now
             End Using
+
+            Return True
         Else
+            If manual Then
+                MsgBox("Sync failed. Not connected to primary and/or secondary server. Please check connection and try again.")
+            End If
+
             Console.WriteLine("Error syncing databases: " & message)
+            Return False
         End If
-    End Sub
+    End Function
 
     Private Shared Sub validateConnection()
         message = String.Empty
